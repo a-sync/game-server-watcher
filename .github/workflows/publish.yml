@@ -1,0 +1,20 @@
+name: ☁️ Deploy to the cloud
+
+on:
+  push:
+    branches:
+      - cloud
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 🐙 Add new remote, and push to master
+        run: |
+          git remote add cloudnode ${{ secrets.CLOUD_REPO_URL }}
+          git push -f cloudnode cloud:master

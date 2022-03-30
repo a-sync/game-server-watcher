@@ -1,0 +1,26 @@
+{
+  "name": "gsw",
+  "version": "1.0.0",
+  "description": "Game Server Watcher",
+  "main": "server",
+  "scripts": {
+    "start": "tsc && node server.js",
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "a-sync@devs.space",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "12.20",
+    "@types/utf8": "^3.0.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  }
+}
