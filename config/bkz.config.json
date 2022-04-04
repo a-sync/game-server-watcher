@@ -1,0 +1,15 @@
+[
+    {
+        "host": "armahu.ddns.net",
+        "port": 2332,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": ["955162997410639962"]
+        },
+        "telegram": {
+            "chatIds": ["325831302"]
+        }
+    }
+]
+
