@@ -110,7 +110,7 @@ class ServerInfoMessage {
             infoText = [
                 gs.niceName,
                 gs.info.game + ' / ' + gs.info.map,
-                gs.info.connect,
+                '`' + gs.info.connect + '`',
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
             ].join('\n');
             if (gs.info.players.length > 0 && gs.info.players[0].name !== undefined) {
