@@ -27,24 +27,26 @@ function saveDb() {
 exports.saveDb = saveDb;
 class GameServer {
     constructor(config) {
-        console.log('game-server.init', config.host, config.port, config.type, config.appId);
+        this.online = false;
+        console.log('game-server init', config.host, config.port, config.type, config.appId);
         this.config = config;
         this.history = new ServerHistory(config.host + ':' + config.port);
+        this._niceName = config.host + ':' + config.port;
     }
     async update() {
-        let info;
-        info = await this.gamedig();
+        let info = await this.gamedig();
         if (!info && STEAM_WEB_API_KEY) {
             info = await this.steam();
         }
         if (info) {
+            this.online = true;
             this.info = info;
             this.history.add(info);
         }
         else {
-            console.error('game-server.update no info!');
+            this.online = false;
+            console.error('game-server not available', this.config.host, this.config.port);
         }
-        return;
     }
     async gamedig() {
         try {
@@ -111,21 +113,25 @@ class GameServer {
     }
     get niceName() {
         var _a;
-        let nn = ((_a = this.info) === null || _a === void 0 ? void 0 : _a.name) || '';
-        for (let i = 0; i < nn.length; i++) {
-            if (nn[i] == '^') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
-            }
-            else if (nn[i] == '█') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i + 1);
-            }
-            else if (nn[i] == '�') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
+        let nn = (_a = this.info) === null || _a === void 0 ? void 0 : _a.name;
+        if (nn) {
+            for (let i = 0; i < nn.length; i++) {
+                if (nn[i] == '^') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
+                }
+                else if (nn[i] == '█') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 1);
+                }
+                else if (nn[i] == '�') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
+                }
+                ;
             }
             ;
+            if (nn)
+                this._niceName = nn;
         }
-        ;
-        return nn;
+        return this._niceName;
     }
 }
 exports.GameServer = GameServer;

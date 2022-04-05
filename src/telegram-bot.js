@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.serverUpdate = exports.init = void 0;
 const grammy_1 = require("grammy");
-const hhmmss_1 = __importDefault(require("./lib/hhmmss"));
 const lowdb_1 = require("@commonify/lowdb");
+const hhmmss_1 = __importDefault(require("./lib/hhmmss"));
 const DATA_PATH = process.env.DATA_PATH || './data/';
+const DBG = Boolean(process.env.DBG || false);
 const adapter = new lowdb_1.JSONFile(DATA_PATH + 'telegram.json');
 const db = new lowdb_1.Low(adapter);
 const serverInfoMessages = [];
@@ -15,14 +16,21 @@ let bot;
 async function init(token) {
     console.log('telegram-bot starting...');
     bot = new grammy_1.Bot(token);
+    bot.catch(e => {
+        console.error('telegram-bot ERROR', e.message || e);
+    });
     const me = await bot.api.getMe();
     console.log('telegram-bot ready', me);
-    // bot.on('message:text', ctx => {ctx.reply('echo: ' + ctx.message.text);});
-    // bot.command('start', ctx => ctx.reply('cmd.start.response'));
-    // bot.start();
+    if (DBG) {
+        bot.on('message:text', ctx => {
+            if (ctx.message.text === 'ping')
+                ctx.reply('pong');
+        });
+        // bot.command('ping', ctx => ctx.reply('/pong'));
+        bot.start();
+    }
     await db.read();
     db.data = db.data || [];
-    return;
 }
 exports.init = init;
 async function getServerInfoMessage(cid, host, port) {
@@ -46,42 +54,11 @@ async function getServerInfoMessage(cid, host, port) {
     return m;
 }
 async function serverUpdate(gs) {
-    var _a, _b, _c, _d;
-    if (!gs.info)
-        return;
-    console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
+    if (DBG)
+        console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
     for (const cid of gs.config.telegram.chatIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        const stats = gs.history.stats();
-        let statsText = '';
-        if (stats.length > 0) {
-            const s = stats.pop();
-            if (s) {
-                statsText = ' (hourly max: ' + s.max + ', hourly avg: ' + s.avg.toFixed(1) + ')';
-            }
-        }
-        const infoText = [
-            gs.niceName,
-            gs.info.game + ' / ' + gs.info.map,
-            gs.info.connect,
-            'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
-        ];
-        if (((_a = gs.info) === null || _a === void 0 ? void 0 : _a.players.length) > 0) {
-            infoText.push('```');
-            for (const p of (_b = gs.info) === null || _b === void 0 ? void 0 : _b.players) {
-                let playerLine = '';
-                if (((_c = p.raw) === null || _c === void 0 ? void 0 : _c.time) !== undefined) {
-                    playerLine += '[' + (0, hhmmss_1.default)(p.raw.time) + '] ';
-                }
-                playerLine += p.name;
-                if (((_d = p.raw) === null || _d === void 0 ? void 0 : _d.score) !== undefined) {
-                    playerLine += ' [score: ' + p.raw.score + ']';
-                }
-                infoText.push(playerLine);
-            }
-            infoText.push('```');
-        }
-        m.setText(infoText.join('\n'));
+        m.updatePost(gs);
     }
 }
 exports.serverUpdate = serverUpdate;
@@ -118,10 +95,42 @@ class ServerInfoMessage {
             await db.write();
         }
     }
-    async setText(text) {
-        console.log('setText', this.host, this.port);
+    async updatePost(gs) {
+        var _a, _b;
+        let infoText = gs.niceName + ' offline...';
+        if (gs.info && gs.online) {
+            const stats = gs.history.stats();
+            let statsText = '';
+            if (stats.length > 0) {
+                const s = stats.slice(-1).pop();
+                if (s) {
+                    statsText = ' (hourly avg/max: ' + s.avg.toFixed(1) + '/' + s.max + ') ';
+                }
+            }
+            infoText = [
+                gs.niceName,
+                gs.info.game + ' / ' + gs.info.map,
+                gs.info.connect,
+                'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
+            ].join('\n');
+            if (gs.info.players.length > 0 && gs.info.players[0].name !== undefined) {
+                const pnArr = [];
+                for (const p of gs.info.players) {
+                    let playerLine = '';
+                    if (((_a = p.raw) === null || _a === void 0 ? void 0 : _a.time) !== undefined) {
+                        playerLine += (0, hhmmss_1.default)(p.raw.time) + ' ';
+                    }
+                    playerLine += p.name;
+                    if (((_b = p.raw) === null || _b === void 0 ? void 0 : _b.score) !== undefined) {
+                        playerLine += ' (' + p.raw.score + ')';
+                    }
+                    pnArr.push(playerLine);
+                }
+                infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length) + '\n```';
+            }
+        }
         try {
-            await bot.api.editMessageText(this.chatId, this.messageId, text, { parse_mode: 'Markdown' });
+            await bot.api.editMessageText(this.chatId, this.messageId, infoText, { parse_mode: 'Markdown' });
         }
         catch (e) {
             console.log(e.message || e);

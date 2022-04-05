@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -25,10 +29,11 @@ const discordBot = __importStar(require("./discord-bot"));
 const telegramBot = __importStar(require("./telegram-bot"));
 const fs_1 = require("fs");
 const { readFile } = fs_1.promises;
-const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '1', 10);
+const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const GSW_CONFIG = process.env.GSW_CONFIG || './config/default.config.json';
+const DBG = Boolean(process.env.DBG || false);
 class Watcher {
     constructor() {
         this.servers = [];
@@ -47,8 +52,9 @@ class Watcher {
             this.servers.push(gs);
         }
     }
-    check() {
-        console.log('watcher checking...');
+    async check() {
+        if (DBG)
+            console.log('watcher checking...');
         const promises = [];
         for (const gs of this.servers) {
             promises.push(gs.update().then(() => {
@@ -60,24 +66,20 @@ class Watcher {
                 }
             }));
         }
-        return Promise.allSettled(promises).then(() => (0, game_server_1.saveDb)());
+        await Promise.allSettled(promises);
+        await (0, game_server_1.saveDb)();
     }
 }
 let loop = null;
 async function main() {
-    console.log('reading config...', GSW_CONFIG);
+    console.log('reading config', GSW_CONFIG);
     const buffer = await readFile(GSW_CONFIG);
-    console.log('buffer', buffer.toString());
-    try {
     const conf = JSON.parse(buffer.toString());
     const watcher = new Watcher();
     await watcher.init(conf);
     console.log('starting loop...', REFRESH_TIME_MINUTES);
     loop = setInterval(async () => { await watcher.check(); }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
-    } catch (e) {
-        console.error(e.message || e);
-    }
     // return watcher;
 }
 exports.main = main;

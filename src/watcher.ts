@@ -5,10 +5,11 @@ import * as telegramBot from './telegram-bot';
 import { promises as fs } from 'fs';
 const { readFile } = fs;
 
-const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '1', 10);
+const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const GSW_CONFIG = process.env.GSW_CONFIG || './config/default.config.json';
+const DBG = Boolean(process.env.DBG || false);
 
 export interface WatcherConfig {
     host: string;
@@ -45,8 +46,8 @@ class Watcher {
         }
     }
 
-    check() {
-        console.log('watcher checking...');
+    async check() {
+        if (DBG) console.log('watcher checking...');
 
         const promises: Promise<void>[] = [];
         for (const gs of this.servers) {
@@ -61,13 +62,14 @@ class Watcher {
             }));
         }
 
-        return Promise.allSettled(promises).then(() => saveDb());
+        await Promise.allSettled(promises);
+        await saveDb();
     }
 }
 
 let loop = null;
 export async function main() {
-    console.log('reading config...', GSW_CONFIG);
+    console.log('reading config', GSW_CONFIG);
     const buffer = await readFile(GSW_CONFIG);
     const conf = JSON.parse(buffer.toString());
 

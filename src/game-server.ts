@@ -55,29 +55,31 @@ export class GameServer {
     public info?: Info;
     public config: WatcherConfig;
     public history: ServerHistory;
+    private _niceName: string;
+    public online: boolean = false;
 
     constructor(config: WatcherConfig) {
-        console.log('game-server.init', config.host, config.port, config.type, config.appId);
+        console.log('game-server init', config.host, config.port, config.type, config.appId);
         this.config = config;
         this.history = new ServerHistory(config.host + ':' + config.port);
+        this._niceName = config.host + ':' + config.port;
     }
 
     async update() {
-        let info: Info | null;
-        info = await this.gamedig();
+        let info = await this.gamedig();
 
         if (!info && STEAM_WEB_API_KEY) {
             info = await this.steam();
         }
 
         if (info) {
+            this.online = true;
             this.info = info;
             this.history.add(info);
         } else {
-            console.error('game-server.update no info!');
+            this.online = false;
+            console.error('game-server not available', this.config.host, this.config.port);
         }
-
-        return;
     }
 
     async gamedig(): Promise<Info | null> {
@@ -88,7 +90,7 @@ export class GameServer {
                 type: this.config.type,
             }) as qRes;
 
-            const raw = res.raw as { game: string; folder: string;};
+            const raw = res.raw as { game: string; folder: string; };
             const game = raw.game || raw.folder || this.config.type;
 
             const players: Player[] = res.players;//todo: map / filter
@@ -151,19 +153,23 @@ export class GameServer {
     }
 
     get niceName() {
-        let nn = this.info?.name || '';
+        let nn = this.info?.name;
 
-        for (let i = 0; i < nn.length; i++) {
-            if (nn[i] == '^') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i+2);
-            } else if (nn[i] == '█') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i+1);
-            } else if (nn[i] == '�') {
-                nn = nn.slice(0, i) + ' ' + nn.slice(i+2);
+        if (nn) {
+            for (let i = 0; i < nn.length; i++) {
+                if (nn[i] == '^') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
+                } else if (nn[i] == '█') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 1);
+                } else if (nn[i] == '�') {
+                    nn = nn.slice(0, i) + ' ' + nn.slice(i + 2);
+                };
             };
-        };
 
-        return nn;
+            if (nn) this._niceName = nn;
+        }
+
+        return this._niceName;
     }
 }
 
@@ -197,7 +203,7 @@ class ServerHistory {
 
         const d = new Date();
         const dh = this.yyyymmddhh(d);
-        
+
         if (!db.data.population[this.id]) {
             db.data.population[this.id] = [];
         }

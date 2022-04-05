@@ -11,8 +11,8 @@ const watcher_1 = require("./src/watcher");
 const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE || '0', 10);
 const APP_HOST = process.env.app_host || '0.0.0.0';
 const APP_PORT = parseInt(process.env.app_port || '8080', 10);
-const DBG = Boolean(process.env.DBG || false);
 const SECRET = process.env.SECRET || 'secret';
+const DBG = Boolean(process.env.DBG || false);
 (0, http_1.createServer)(async (req, res) => {
     if (DBG)
         console.log('DBG: %j %j', (new Date()), req.url);
@@ -23,17 +23,6 @@ const SECRET = process.env.SECRET || 'secret';
             'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
         });
         fs_1.default.createReadStream('./index.html').pipe(res);
-    }
-    else if (reqUrl.pathname === '/discord/post') { //DEBUG
-        console.log('REQ.HEADERS', req.headers);
-        let body = '';
-        req.on('data', (chunk) => {
-            body += chunk; // convert Buffer to string
-        });
-        req.on('end', () => {
-            console.log('POST.DATA:', String(body));
-            res.end('');
-        });
     }
     else if (reqUrl.pathname === '/ping') {
         console.log('ping');

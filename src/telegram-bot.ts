@@ -1,9 +1,10 @@
 import { Bot } from 'grammy';
+import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
-import { Low, JSONFile } from '@commonify/lowdb';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
+const DBG = Boolean(process.env.DBG || false);
 
 interface TelegramData {
     chatId: string;
@@ -22,17 +23,24 @@ export async function init(token: string) {
     console.log('telegram-bot starting...');
     bot = new Bot(token);
 
+    bot.catch(e => {
+        console.error('telegram-bot ERROR', e.message || e);
+    });
+
     const me = await bot.api.getMe();
     console.log('telegram-bot ready', me);
 
-    // bot.on('message:text', ctx => {ctx.reply('echo: ' + ctx.message.text);});
-    // bot.command('start', ctx => ctx.reply('cmd.start.response'));
-    // bot.start();
+    if(DBG) {
+        bot.on('message:text', ctx => {
+            if (ctx.message.text === 'ping')
+            ctx.reply('pong');
+        });
+        // bot.command('ping', ctx => ctx.reply('/pong'));
+        bot.start();
+    }
 
     await db.read();
     db.data = db.data || [];
-
-    return;
 }
 
 async function getServerInfoMessage(cid: string, host: string, port: number) {
@@ -62,46 +70,11 @@ async function getServerInfoMessage(cid: string, host: string, port: number) {
 }
 
 export async function serverUpdate(gs: GameServer) {
-    if (!gs.info) return;
-
-    console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
+    if (DBG) console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
 
     for (const cid of gs.config.telegram.chatIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-
-        const stats = gs.history.stats();
-        let statsText = '';
-        if (stats.length > 0) {
-            const s = stats.pop();
-            if (s) {
-                statsText = ' (hourly max: ' + s.max + ', hourly avg: ' + s.avg.toFixed(1) + ')';
-            }
-        }
-
-        const infoText: string[] = [
-            gs.niceName,
-            gs.info.game + ' / ' + gs.info.map,
-            gs.info.connect,
-            'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
-        ];
-
-        if (gs.info?.players.length > 0) {
-            infoText.push('```');
-            for(const p of gs.info?.players) {
-                let playerLine = '';
-                if (p.raw?.time !== undefined) {
-                    playerLine += '[' + hhmmss(p.raw.time) + '] ';
-                }
-                playerLine += p.name;
-                if (p.raw?.score !== undefined) {
-                    playerLine += ' [score: ' + p.raw.score + ']';
-                }
-                infoText.push(playerLine);
-            }
-            infoText.push('```');
-        }
-
-        m.setText(infoText.join('\n'));
+        m.updatePost(gs);
     }
 }
 
@@ -145,10 +118,45 @@ class ServerInfoMessage {
         }
     }
 
-    async setText(text: string) {
-        console.log('setText', this.host, this.port);
+    async updatePost(gs: GameServer) {
+        let infoText = gs.niceName + ' offline...';
+
+        if (gs.info && gs.online) {
+            const stats = gs.history.stats();
+            let statsText = '';
+            if (stats.length > 0) {
+                const s = stats.slice(-1).pop();
+                if (s) {
+                    statsText = ' (hourly avg/max: ' + s.avg.toFixed(1) + '/' + s.max + ') ';
+                }
+            }
+
+            infoText = [
+                gs.niceName,
+                gs.info.game + ' / ' + gs.info.map,
+                gs.info.connect,
+                'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
+            ].join('\n');
+
+            if (gs.info.players.length > 0 && gs.info.players[0].name !== undefined) {
+                const pnArr: string[] = [];
+                for(const p of gs.info.players) {
+                    let playerLine = '';
+                    if (p.raw?.time !== undefined) {
+                        playerLine += hhmmss(p.raw.time) + ' ';
+                    }
+                    playerLine += p.name;
+                    if (p.raw?.score !== undefined) {
+                        playerLine += ' (' + p.raw.score + ')';
+                    }
+                    pnArr.push(playerLine);
+                }
+                infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length) + '\n```';
+            }
+        }
+
         try {
-            await bot.api.editMessageText(this.chatId, this.messageId, text, {parse_mode: 'Markdown'});
+            await bot.api.editMessageText(this.chatId, this.messageId, infoText, {parse_mode: 'Markdown'});
         } catch (e: any) {
             console.log(e.message || e);
         }
