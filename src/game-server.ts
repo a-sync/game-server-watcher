@@ -6,7 +6,7 @@ import getIP from './lib/getip';
 import { WatcherConfig } from './watcher';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
-const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '10', 10);
+const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
 
 interface GameServerDb {
@@ -25,14 +25,12 @@ export async function initDb() {
     };
 }
 
-export function saveDb() {
-    return db.write();
-}
-
-interface gsPlayer extends Player {
-    raw?: {
-        [key: string]: any;
-    };
+export async function saveDb() {
+    try {
+        return await db.write();
+    } catch (e: any) {
+        console.error(e.message || e);
+    }
 }
 
 export interface Info {
@@ -42,7 +40,7 @@ export interface Info {
     map: string;
     playersNum: number;
     playersMax: number;
-    players: gsPlayer[];
+    players: GsPlayer[];
 }
 
 interface qRes extends QueryResult {
@@ -93,7 +91,10 @@ export class GameServer {
             const raw = res.raw as { game: string; folder: string; };
             const game = raw.game || raw.folder || this.config.type;
 
-            const players: Player[] = res.players;//todo: map / filter
+            const players: GsPlayer[] = res.players.map((p: Player) => {
+                return new GsPlayer(p);
+            });
+
             return {
                 connect: res.connect,
                 name: res.name,
@@ -170,6 +171,26 @@ export class GameServer {
         }
 
         return this._niceName;
+    }
+}
+
+class GsPlayer {
+    private _player: Player;
+
+    constructor (p: Player) {
+        this._player = p;
+    }
+
+    get (prop: string): string | undefined {
+        const p = this._player as any;
+
+        if (p[prop] !== undefined) {
+            return String(p[prop]);
+        } else if (p.raw && p.raw[prop] !== undefined) {
+            return String(p.raw[prop]);
+        }
+
+        return undefined;
     }
 }
 

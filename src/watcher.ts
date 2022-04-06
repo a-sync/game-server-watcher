@@ -67,7 +67,6 @@ class Watcher {
     }
 }
 
-let loop = null;
 export async function main() {
     console.log('reading config', GSW_CONFIG);
     const buffer = await readFile(GSW_CONFIG);
@@ -77,7 +76,8 @@ export async function main() {
     await watcher.init(conf);
 
     console.log('starting loop...', REFRESH_TIME_MINUTES);
-    loop = setInterval(async () => { await watcher.check() }, 1000 * 60 * REFRESH_TIME_MINUTES);
+    const loop = setInterval(async () => { await watcher.check() }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
-    // return watcher;
+
+    return loop;
 }

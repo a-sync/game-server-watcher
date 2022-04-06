@@ -14,21 +14,24 @@ const db = new lowdb_1.Low(adapter);
 const serverInfoMessages = [];
 let bot;
 async function init(token) {
-    console.log('telegram-bot starting...');
-    bot = new grammy_1.Bot(token);
-    bot.catch(e => {
-        console.error('telegram-bot ERROR', e.message || e);
-    });
-    const me = await bot.api.getMe();
-    console.log('telegram-bot ready', me);
-    if (DBG) {
-        bot.on('message:text', ctx => {
-            if (ctx.message.text === 'ping')
-                ctx.reply('pong');
+    if (!bot) {
+        console.log('telegram-bot starting...');
+        bot = new grammy_1.Bot(token);
+        bot.catch(e => {
+            console.error('telegram-bot ERROR', e.message || e);
         });
-        // bot.command('ping', ctx => ctx.reply('/pong'));
-        bot.start();
+        const me = await bot.api.getMe();
+        console.log('telegram-bot ready', me);
+        if (DBG) {
+            bot.on('message:text', ctx => {
+                if (ctx.message.text === 'ping')
+                    ctx.reply('pong');
+            });
+            // bot.command('ping', ctx => ctx.reply('/pong'));
+            bot.start();
+        }
     }
+    serverInfoMessages.length = 0;
     await db.read();
     db.data = db.data || [];
 }
@@ -58,7 +61,7 @@ async function serverUpdate(gs) {
         console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
     for (const cid of gs.config.telegram.chatIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        m.updatePost(gs);
+        await m.updatePost(gs);
     }
 }
 exports.serverUpdate = serverUpdate;
@@ -92,11 +95,15 @@ class ServerInfoMessage {
             else {
                 db.data[mi].messageId = this.messageId;
             }
-            await db.write();
+            try {
+                await db.write();
+            }
+            catch (e) {
+                console.error(e.message || e);
+            }
         }
     }
     async updatePost(gs) {
-        var _a, _b;
         let infoText = gs.niceName + ' offline...';
         if (gs.info && gs.online) {
             const stats = gs.history.stats();
@@ -113,16 +120,18 @@ class ServerInfoMessage {
                 '`' + gs.info.connect + '`',
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
             ].join('\n');
-            if (gs.info.players.length > 0 && gs.info.players[0].name !== undefined) {
+            if (gs.info.players.length > 0) {
                 const pnArr = [];
                 for (const p of gs.info.players) {
                     let playerLine = '';
-                    if (((_a = p.raw) === null || _a === void 0 ? void 0 : _a.time) !== undefined) {
-                        playerLine += (0, hhmmss_1.default)(p.raw.time) + ' ';
+                    if (p.get('time') !== undefined) {
+                        playerLine += (0, hhmmss_1.default)(p.get('time')) + ' ';
                     }
-                    playerLine += p.name;
-                    if (((_b = p.raw) === null || _b === void 0 ? void 0 : _b.score) !== undefined) {
-                        playerLine += ' (' + p.raw.score + ')';
+                    if (p.get('name') !== undefined) {
+                        playerLine += p.get('name');
+                    }
+                    if (p.get('score') !== undefined) {
+                        playerLine += ' (' + p.get('score') + ')';
                     }
                     pnArr.push(playerLine);
                 }

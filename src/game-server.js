@@ -10,7 +10,7 @@ const lowdb_1 = require("@commonify/lowdb");
 const ipregex_1 = __importDefault(require("./lib/ipregex"));
 const getip_1 = __importDefault(require("./lib/getip"));
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
-const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '10', 10);
+const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const adapter = new lowdb_1.JSONFile(DATA_PATH + 'servers.json');
 const db = new lowdb_1.Low(adapter);
@@ -21,8 +21,13 @@ async function initDb() {
     };
 }
 exports.initDb = initDb;
-function saveDb() {
-    return db.write();
+async function saveDb() {
+    try {
+        return await db.write();
+    }
+    catch (e) {
+        console.error(e.message || e);
+    }
 }
 exports.saveDb = saveDb;
 class GameServer {
@@ -57,7 +62,9 @@ class GameServer {
             });
             const raw = res.raw;
             const game = raw.game || raw.folder || this.config.type;
-            const players = res.players; //todo: map / filter
+            const players = res.players.map((p) => {
+                return new GsPlayer(p);
+            });
             return {
                 connect: res.connect,
                 name: res.name,
@@ -135,6 +142,21 @@ class GameServer {
     }
 }
 exports.GameServer = GameServer;
+class GsPlayer {
+    constructor(p) {
+        this._player = p;
+    }
+    get(prop) {
+        const p = this._player;
+        if (p[prop] !== undefined) {
+            return String(p[prop]);
+        }
+        else if (p.raw && p.raw[prop] !== undefined) {
+            return String(p.raw[prop]);
+        }
+        return undefined;
+    }
+}
 class ServerHistory {
     constructor(id) {
         this.id = id;

@@ -5,9 +5,7 @@
   "main": "server",
   "scripts": {
     "start": "tsc && node server.js",
-    "build": "tsc",
-    "watch": "tsc -w",
-    "dev": "nodemon -e js --exec node server"
+    "dev": "nodemon -e ts --exec \"tsc --incremental && node server.js || exit 1\""
   },
   "keywords": [],
   "author": "a-sync@devs.space",
@@ -18,7 +16,8 @@
     "dotenv": "^16.0.0",
     "gamedig": "github:a-sync/node8-gamedig",
     "got": "^11.8.3",
-    "grammy": "^1.7.1"
+    "grammy": "^1.7.1",
+    "image-charts": "^6.0.18"
   },
   "devDependencies": {
     "@types/gamedig": "^3.0.2",

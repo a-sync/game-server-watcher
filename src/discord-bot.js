@@ -14,30 +14,33 @@ const db = new lowdb_1.Low(adapter);
 const serverInfoMessages = [];
 let bot;
 async function init(token) {
-    console.log('discord-bot starting...');
-    bot = new discord_js_1.Client({
-        messageEditHistoryMaxSize: 0,
-        ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] }
-    });
-    bot.on('error', e => {
-        console.error('discord-bot ERROR', e.message || e);
-    });
-    await new Promise((resolve, reject) => {
-        bot.once('ready', () => {
-            console.log('discord-bot ready', bot.user);
-            bot.removeListener('error', reject);
-            resolve();
+    if (!bot) {
+        console.log('discord-bot starting...');
+        bot = new discord_js_1.Client({
+            messageEditHistoryMaxSize: 0,
+            ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] }
         });
-        bot.once('error', reject);
-        if (DBG) {
-            bot.on('message', msg => {
-                if (msg.content === 'ping') {
-                    msg.reply('pong');
-                }
+        bot.on('error', e => {
+            console.error('discord-bot ERROR', e.message || e);
+        });
+        await new Promise((resolve, reject) => {
+            bot.once('ready', () => {
+                console.log('discord-bot ready', bot.user);
+                bot.removeListener('error', reject);
+                resolve();
             });
-        }
-        return bot.login(token);
-    });
+            bot.once('error', reject);
+            if (DBG) {
+                bot.on('message', msg => {
+                    if (msg.content === 'ping') {
+                        msg.reply('pong');
+                    }
+                });
+            }
+            return bot.login(token);
+        });
+    }
+    serverInfoMessages.length = 0;
     await db.read();
     db.data = db.data || [];
 }
@@ -47,7 +50,7 @@ async function serverUpdate(gs) {
         console.log('discord.serverUpdate', gs.config.host, gs.config.port, gs.config.discord);
     for (const cid of gs.config.discord.channelIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        m.updatePost(gs);
+        await m.updatePost(gs);
     }
 }
 exports.serverUpdate = serverUpdate;
@@ -82,9 +85,14 @@ class ServerInfoMessage {
         this.channel = await bot.channels.fetch(this.channelId);
         if (msgId) {
             this.messageId = msgId;
-            this.message = await this.channel.messages.fetch(msgId);
+            try {
+                this.message = await this.channel.messages.fetch(msgId);
+            }
+            catch (e) {
+                console.error(e.message || e);
+            }
         }
-        else {
+        if (!msgId || !this.message) {
             let embed = new discord_js_1.MessageEmbed();
             embed.setTitle('Initializing server info... ' + (new Date()).toISOString());
             embed.setColor('#00ff00');
@@ -106,11 +114,16 @@ class ServerInfoMessage {
             else {
                 db.data[mi].messageId = this.messageId;
             }
-            await db.write();
+            try {
+                await db.write();
+            }
+            catch (e) {
+                console.error(e.message || e);
+            }
         }
     }
     async updatePost(gs) {
-        var _a, _b, _c, _d;
+        var _a, _b;
         if (!this.message)
             return;
         const embed = new discord_js_1.MessageEmbed();
@@ -119,10 +132,11 @@ class ServerInfoMessage {
         embed.setFooter('Last updated');
         embed.setTimestamp();
         if (gs.info && gs.online) {
-            embed.setTitle(gs.niceName);
+            embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor('#000000');
             embed.addField('Game', gs.info.game, true);
             embed.addField('Map', gs.info.map, true);
+            embed.addField('Players', gs.info.playersNum + '/' + gs.info.playersMax, true);
             embed.addField('Connect', 'steam://connect/' + gs.info.connect);
             if (((_a = gs.info) === null || _a === void 0 ? void 0 : _a.players.length) > 0) {
                 const pNames = [];
@@ -131,13 +145,13 @@ class ServerInfoMessage {
                 let c = 0;
                 for (const p of (_b = gs.info) === null || _b === void 0 ? void 0 : _b.players) {
                     c++;
-                    pNames.push(p.name || 'n/a');
-                    pTimes.push((0, hhmmss_1.default)(((_c = p.raw) === null || _c === void 0 ? void 0 : _c.time) || 0));
-                    pScores.push(((_d = p.raw) === null || _d === void 0 ? void 0 : _d.score) || '0');
+                    pNames.push(p.get('name') || 'n/a');
+                    pTimes.push((0, hhmmss_1.default)(p.get('time') || 0));
+                    pScores.push(p.get('score') || '0');
                 }
-                embed.addField('Players ' + gs.info.playersNum + '/' + gs.info.playersMax, '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
-                embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
+                embed.addField('Name', '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
                 embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
+                embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
             }
         }
         try {

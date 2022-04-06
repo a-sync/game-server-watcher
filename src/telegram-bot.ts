@@ -20,25 +20,28 @@ const serverInfoMessages: ServerInfoMessage[] = [];
 
 let bot: Bot;
 export async function init(token: string) {
-    console.log('telegram-bot starting...');
-    bot = new Bot(token);
+    if (!bot) {
+        console.log('telegram-bot starting...');
+        bot = new Bot(token);
 
-    bot.catch(e => {
-        console.error('telegram-bot ERROR', e.message || e);
-    });
-
-    const me = await bot.api.getMe();
-    console.log('telegram-bot ready', me);
-
-    if(DBG) {
-        bot.on('message:text', ctx => {
-            if (ctx.message.text === 'ping')
-            ctx.reply('pong');
+        bot.catch(e => {
+            console.error('telegram-bot ERROR', e.message || e);
         });
-        // bot.command('ping', ctx => ctx.reply('/pong'));
-        bot.start();
+
+        const me = await bot.api.getMe();
+        console.log('telegram-bot ready', me);
+
+        if(DBG) {
+            bot.on('message:text', ctx => {
+                if (ctx.message.text === 'ping')
+                ctx.reply('pong');
+            });
+            // bot.command('ping', ctx => ctx.reply('/pong'));
+            bot.start();
+        }
     }
 
+    serverInfoMessages.length = 0;
     await db.read();
     db.data = db.data || [];
 }
@@ -74,7 +77,7 @@ export async function serverUpdate(gs: GameServer) {
 
     for (const cid of gs.config.telegram.chatIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        m.updatePost(gs);
+        await m.updatePost(gs);
     }
 }
 
@@ -114,7 +117,11 @@ class ServerInfoMessage {
                 db.data[mi].messageId = this.messageId;
             }
 
-            await db.write();
+            try {
+                await db.write();
+            } catch (e: any) {
+                console.error(e.message || e);
+            }
         }
     }
 
@@ -138,16 +145,18 @@ class ServerInfoMessage {
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
             ].join('\n');
 
-            if (gs.info.players.length > 0 && gs.info.players[0].name !== undefined) {
+            if (gs.info.players.length > 0) {
                 const pnArr: string[] = [];
                 for(const p of gs.info.players) {
                     let playerLine = '';
-                    if (p.raw?.time !== undefined) {
-                        playerLine += hhmmss(p.raw.time) + ' ';
+                    if (p.get('time') !== undefined) {
+                        playerLine += hhmmss(p.get('time')) + ' ';
                     }
-                    playerLine += p.name;
-                    if (p.raw?.score !== undefined) {
-                        playerLine += ' (' + p.raw.score + ')';
+                    if (p.get('name') !== undefined) {
+                        playerLine += p.get('name');
+                    }
+                    if (p.get('score') !== undefined) {
+                        playerLine += ' (' + p.get('score') + ')';
                     }
                     pnArr.push(playerLine);
                 }

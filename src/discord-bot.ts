@@ -21,37 +21,40 @@ const serverInfoMessages: ServerInfoMessage[] = [];
 
 let bot: Client;
 export async function init(token: string) {
-    console.log('discord-bot starting...');
-    bot = new Client({
-        messageEditHistoryMaxSize: 0,
-        ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] }
-    });
-
-    bot.on('error', e => {
-        console.error('discord-bot ERROR', e.message || e);
-    });
-
-    await new Promise<void>((resolve, reject) => {
-        bot.once('ready', () => {
-            console.log('discord-bot ready', bot.user);
-
-            bot.removeListener('error', reject);
-            resolve();
+    if (!bot) {
+        console.log('discord-bot starting...');
+        bot = new Client({
+            messageEditHistoryMaxSize: 0,
+            ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] }
         });
 
-        bot.once('error', reject);
+        bot.on('error', e => {
+            console.error('discord-bot ERROR', e.message || e);
+        });
 
-        if (DBG) {
-            bot.on('message', msg => {
-                if (msg.content === 'ping') {
-                    msg.reply('pong');
-                }
+        await new Promise<void>((resolve, reject) => {
+            bot.once('ready', () => {
+                console.log('discord-bot ready', bot.user);
+
+                bot.removeListener('error', reject);
+                resolve();
             });
-        }
 
-        return bot.login(token);
-    });
+            bot.once('error', reject);
 
+            if (DBG) {
+                bot.on('message', msg => {
+                    if (msg.content === 'ping') {
+                        msg.reply('pong');
+                    }
+                });
+            }
+
+            return bot.login(token);
+        });
+    }
+
+    serverInfoMessages.length = 0;
     await db.read();
     db.data = db.data || [];
 }
@@ -61,7 +64,7 @@ export async function serverUpdate(gs: GameServer) {
 
     for (const cid of gs.config.discord.channelIds) {
         let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        m.updatePost(gs);
+        await m.updatePost(gs);
     }
 }
 
@@ -110,8 +113,14 @@ class ServerInfoMessage {
 
         if (msgId) {
             this.messageId = msgId;
-            this.message = await this.channel.messages.fetch(msgId);
-        } else {
+            try {
+                this.message = await this.channel.messages.fetch(msgId);
+            } catch (e: any) {
+                console.error(e.message || e);
+            }
+        }
+
+        if (!msgId || !this.message) {
             let embed = new MessageEmbed();
             embed.setTitle('Initializing server info... ' + (new Date()).toISOString());
             embed.setColor('#00ff00');
@@ -136,7 +145,11 @@ class ServerInfoMessage {
                 db.data[mi].messageId = this.messageId;
             }
 
-            await db.write();
+            try {
+                await db.write();
+            } catch (e: any) {
+                console.error(e.message || e);
+            }
         }
     }
 
@@ -149,11 +162,12 @@ class ServerInfoMessage {
         embed.setTimestamp();
 
         if (gs.info && gs.online) {
-            embed.setTitle(gs.niceName);
+            embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor('#000000');
 
             embed.addField('Game', gs.info.game, true);
             embed.addField('Map', gs.info.map, true);
+            embed.addField('Players', gs.info.playersNum + '/' + gs.info.playersMax, true);
             embed.addField('Connect', 'steam://connect/' + gs.info.connect);
 
             if (gs.info?.players.length > 0) {
@@ -163,14 +177,14 @@ class ServerInfoMessage {
                 let c = 0;
                 for (const p of gs.info?.players) {
                     c++;
-                    pNames.push(p.name || 'n/a');
-                    pTimes.push(hhmmss(p.raw?.time || 0));
-                    pScores.push(p.raw?.score || '0');
+                    pNames.push(p.get('name') || 'n/a');
+                    pTimes.push(hhmmss(p.get('time') || 0));
+                    pScores.push(p.get('score') || '0');
                 }
 
-                embed.addField('Players ' + gs.info.playersNum + '/' + gs.info.playersMax, '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
-                embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
+                embed.addField('Name', '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
                 embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
+                embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
             }
         }
 

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -66,7 +70,6 @@ class Watcher {
         await (0, game_server_1.saveDb)();
     }
 }
-let loop = null;
 async function main() {
     console.log('reading config', GSW_CONFIG);
     const buffer = await readFile(GSW_CONFIG);
@@ -74,8 +77,8 @@ async function main() {
     const watcher = new Watcher();
     await watcher.init(conf);
     console.log('starting loop...', REFRESH_TIME_MINUTES);
-    loop = setInterval(async () => { await watcher.check(); }, 1000 * 60 * REFRESH_TIME_MINUTES);
+    const loop = setInterval(async () => { await watcher.check(); }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
-    // return watcher;
+    return loop;
 }
 exports.main = main;

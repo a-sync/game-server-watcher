@@ -4,8 +4,7 @@ The goals of this repo:
     1. get gamedig server info
     1. get steam api server info
  1. should be able to host on a free service (target atm: cloudno.de (nodejs v12.20.1))
- 1. discord bot (show and refresh server info (on command?))
- 1. telegram bot (send updates (on command?))
+ 1. show and refresh server info via bots (eg.: discord, telegram, slack etc.)
 
 # Self host on cloudno.de
 ## Part 1: create and setup github repo
@@ -15,7 +14,7 @@ The goals of this repo:
 //TODO: create app, copy git url & append with `login:token@`
 // on github: goto settings --> secrets \[actions\], setup CLOUDNODE_REPO_URL
 
-## Part 3 (optional): create and invite discord bot
+## Part 3 (optional): create and invite discord bot and get token
 //TODO: create discord bot; invite to server(guild) with permissions: view channels, send messages, message history, embed stuff, create bot auth token and setup DISCORD_BOT_TOKEN in cloud app env  
 
 ## Part 4 (optional): create telegram bot and get token
@@ -27,3 +26,28 @@ The goals of this repo:
 ## Part 6: create `cloud` branch, configure and deploy the service
 //TODO: create a custom.config.json file, and setup GSW_CONFIG in cloud app env to point to it.
 //git branch cloud && git add . && git commit -m :shipit: && git push origin cloud
+
+# Manage
+A few web endpoints are available to clear out service data.  
+Make sure to configure a proper `SECRET` env var to enable these!
+
+### Servers `/flush/servers/SECRET`
+Removes the stored game server data. (population history)
+
+### Telegram `/flush/telegram/SECRET`
+The bot has no cleanup functionality atm. If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.
+
+### Discord `/flush/discord/SECRET`
+The bot has no cleanup functionality atm. If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.
+
+# Development
+## Running locally
+```
+npm i
+npm run dev
+```
+
+## Nodejs v12 dependency limitations
+* node8-gamedig
+* [discord.js v12](https://discord.js.org/#/docs/discord.js/v12/general/welcome) (discord API v8)  
+* got v11
