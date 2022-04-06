@@ -16,6 +16,7 @@ Possible features / configuration options to add:
    * configurable field & order to sort by
    * max length for player names & nr of players
  * custom embed fields for discord
+ * configurable timezone for graph x-axis
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
  * detect server restart, notify when player number crosses a threshold
@@ -31,7 +32,7 @@ Possible features / configuration options to add:
 //TODO: fork this repo
 
 ## Part 2: create and setup cloudno.de repo
-//TODO: create app, copy git url & append with `login:token@`
+//TODO: create app, copy git url & append with `login:token@`; set `DATA_PATH=/mnt/` in cloud app env
 // on github: goto settings --> secrets \[actions\], setup `CLOUDNODE_REPO_URL` secret
 
 ## Part 3 (optional): create and invite discord bot and get token
