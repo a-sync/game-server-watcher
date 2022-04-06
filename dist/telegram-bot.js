@@ -106,19 +106,11 @@ class ServerInfoMessage {
     async updatePost(gs) {
         let infoText = gs.niceName + ' offline...';
         if (gs.info && gs.online) {
-            const stats = gs.history.stats();
-            let statsText = '';
-            if (stats.length > 0) {
-                const s = stats.slice(-1).pop();
-                if (s) {
-                    statsText = ' (hourly avg/max: ' + s.avg.toFixed(1) + '/' + s.max + ') ';
-                }
-            }
             infoText = [
                 gs.niceName,
                 gs.info.game + ' / ' + gs.info.map,
                 '`' + gs.info.connect + '`',
-                'Players ' + gs.info.playersNum + '/' + gs.info.playersMax + statsText
+                'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
             if (gs.info.players.length > 0) {
                 const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax) + ')';
