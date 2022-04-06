@@ -2,10 +2,10 @@
   "name": "game-server-watcher",
   "version": "1.0.0",
   "description": "Game Server Watcher",
-  "main": "server",
+  "main": "src/server",
   "scripts": {
-    "start": "tsc && node server.js",
-    "dev": "nodemon -e ts --exec \"tsc --incremental && node server.js || exit 1\""
+    "start": "tsc && node ./dist/server.js",
+    "dev": "nodemon -e ts --exec \"tsc --incremental && node ./dist/server.js || exit 1\""
   },
   "keywords": [],
   "author": "a-sync@devs.space",
@@ -17,7 +17,8 @@
     "gamedig": "github:a-sync/node8-gamedig",
     "got": "^11.8.3",
     "grammy": "^1.7.1",
-    "image-charts": "^6.0.18"
+    "image-charts": "^6.0.18",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@types/gamedig": "^3.0.2",

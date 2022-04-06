@@ -4,6 +4,7 @@ import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
 import { WatcherConfig } from './watcher';
+import ImageCharts from 'image-charts';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
@@ -29,7 +30,7 @@ export async function saveDb() {
     try {
         return await db.write();
     } catch (e: any) {
-        console.error(e.message || e);
+        console.error('gs.saveDb', e.message || e);
     }
 }
 
@@ -105,7 +106,7 @@ export class GameServer {
                 players
             };
         } catch (e: any) {
-            console.error(e.message || e);
+            console.error(['gs.gamedig',this.config.host,this.config.port].join(':'), e.message || e);
         }
 
         return null;
@@ -147,7 +148,7 @@ export class GameServer {
                 }
             }
         } catch (e: any) {
-            console.error(e.message || e);
+            console.error(['gs.steam',this.config.host,this.config.port].join(':'), e.message || e);
         }
 
         return null;
@@ -203,7 +204,7 @@ interface GroupedPopulation {
     [x: number]: Population[];
 }
 
-interface Stat {
+export interface Stat {
     dateHour: number;
     avg: number;
     max: number;
@@ -219,7 +220,7 @@ class ServerHistory {
         return parseInt(d.toISOString().slice(0, 13).replace(/\D/g, ''), 10);
     }
 
-    add(info: Info) {
+    add(info: Info): void {
         if (!db.data?.population) return;
 
         const d = new Date();
@@ -240,7 +241,7 @@ class ServerHistory {
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);
     }
 
-    stats() {
+    stats(): Stat[] {
         if (!db.data?.population) return [];
 
         const grouped: GroupedPopulation = {};
@@ -264,5 +265,16 @@ class ServerHistory {
         }
 
         return stats.sort((a, b) => a.dateHour - b.dateHour);
+    }
+
+    statsChart(): string {
+
+        //bvs,bvg,bhs,bhg,bvo
+        //p|p3|pc|pd|ls|lc|lxy|ls:nda|lc:nda|lxy:nda|pa|bb|gv|gv:dot|gv:neato|gv:circo|gv:fdp|gv:osage|gv:twopi|qr|r
+
+        const pie = new ImageCharts().cht('bvs').chxt('x,y')
+        .chd('a:2.5,5,8.3').chs('800x400');
+
+        return pie.toURL();
     }
 }

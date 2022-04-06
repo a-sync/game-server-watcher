@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./dist",
         "lib": [
             "es2020"
         ],
@@ -12,8 +14,7 @@
         "resolveJsonModule" : true
     },
     "include": [
-        "src/**/*",
-        "server.ts",
+        "src/**/*"
     ],
     "exclude": [
         "node_modules"

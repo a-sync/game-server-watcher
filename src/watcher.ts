@@ -51,13 +51,21 @@ class Watcher {
 
         const promises: Promise<void>[] = [];
         for (const gs of this.servers) {
-            promises.push(gs.update().then(() => {
+            promises.push(gs.update().then(async () => {
                 if (DISCORD_BOT_TOKEN) {
-                    discordBot.serverUpdate(gs);
+                    try {
+                        await discordBot.serverUpdate(gs);
+                    } catch (e: any) {
+                        console.error(['discord-bot.sup',gs.config.host,gs.config.port].join(':'), e.message || e);
+                    }
                 }
 
                 if (TELEGRAM_BOT_TOKEN) {
-                    telegramBot.serverUpdate(gs);
+                    try {
+                        await telegramBot.serverUpdate(gs);
+                    } catch (e: any) {
+                        console.error(['telegram-bot.sup',gs.config.host,gs.config.port].join(':'), e.message || e);
+                    }
                 }
             }));
         }

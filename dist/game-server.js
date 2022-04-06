@@ -9,6 +9,7 @@ const gamedig_1 = require("gamedig");
 const lowdb_1 = require("@commonify/lowdb");
 const ipregex_1 = __importDefault(require("./lib/ipregex"));
 const getip_1 = __importDefault(require("./lib/getip"));
+const image_charts_1 = __importDefault(require("image-charts"));
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
@@ -26,7 +27,7 @@ async function saveDb() {
         return await db.write();
     }
     catch (e) {
-        console.error(e.message || e);
+        console.error('gs.saveDb', e.message || e);
     }
 }
 exports.saveDb = saveDb;
@@ -76,7 +77,7 @@ class GameServer {
             };
         }
         catch (e) {
-            console.error(e.message || e);
+            console.error(['gs.gamedig', this.config.host, this.config.port].join(':'), e.message || e);
         }
         return null;
     }
@@ -114,7 +115,7 @@ class GameServer {
             }
         }
         catch (e) {
-            console.error(e.message || e);
+            console.error(['gs.steam', this.config.host, this.config.port].join(':'), e.message || e);
         }
         return null;
     }
@@ -203,5 +204,12 @@ class ServerHistory {
             });
         }
         return stats.sort((a, b) => a.dateHour - b.dateHour);
+    }
+    statsChart() {
+        //bvs,bvg,bhs,bhg,bvo
+        //p|p3|pc|pd|ls|lc|lxy|ls:nda|lc:nda|lxy:nda|pa|bb|gv|gv:dot|gv:neato|gv:circo|gv:fdp|gv:osage|gv:twopi|qr|r
+        const pie = new image_charts_1.default().cht('bvs').chxt('x,y')
+            .chd('a:2.5,5,8.3').chs('800x400');
+        return pie.toURL();
     }
 }

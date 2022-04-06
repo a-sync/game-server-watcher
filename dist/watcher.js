@@ -1,11 +1,7 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -57,12 +53,22 @@ class Watcher {
             console.log('watcher checking...');
         const promises = [];
         for (const gs of this.servers) {
-            promises.push(gs.update().then(() => {
+            promises.push(gs.update().then(async () => {
                 if (DISCORD_BOT_TOKEN) {
-                    discordBot.serverUpdate(gs);
+                    try {
+                        await discordBot.serverUpdate(gs);
+                    }
+                    catch (e) {
+                        console.error(['discord-bot.sup', gs.config.host, gs.config.port].join(':'), e.message || e);
+                    }
                 }
                 if (TELEGRAM_BOT_TOKEN) {
-                    telegramBot.serverUpdate(gs);
+                    try {
+                        await telegramBot.serverUpdate(gs);
+                    }
+                    catch (e) {
+                        console.error(['telegram-bot.sup', gs.config.host, gs.config.port].join(':'), e.message || e);
+                    }
                 }
             }));
         }

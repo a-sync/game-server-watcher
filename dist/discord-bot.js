@@ -89,7 +89,7 @@ class ServerInfoMessage {
                 this.message = await this.channel.messages.fetch(msgId);
             }
             catch (e) {
-                console.error(e.message || e);
+                console.error(['discord.init.msg', this.channelId, this.host, this.port].join(':'), e.message || e);
             }
         }
         if (!msgId || !this.message) {
@@ -118,7 +118,7 @@ class ServerInfoMessage {
                 await db.write();
             }
             catch (e) {
-                console.error(e.message || e);
+                console.error(['discord.init.db', this.channelId, this.host, this.port].join(':'), e.message || e);
             }
         }
     }
@@ -153,12 +153,13 @@ class ServerInfoMessage {
                 embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
                 embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
             }
+            embed.setImage(gs.history.statsChart());
         }
         try {
             await this.message.edit(null, { embed });
         }
         catch (e) {
-            console.log(e.message || e);
+            console.error(['discord.up', this.channelId, this.host, this.port].join(':'), e.message || e);
         }
     }
 }

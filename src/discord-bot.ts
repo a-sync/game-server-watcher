@@ -116,7 +116,7 @@ class ServerInfoMessage {
             try {
                 this.message = await this.channel.messages.fetch(msgId);
             } catch (e: any) {
-                console.error(e.message || e);
+                console.error(['discord.init.msg',this.channelId,this.host,this.port].join(':'), e.message || e);
             }
         }
 
@@ -148,13 +148,14 @@ class ServerInfoMessage {
             try {
                 await db.write();
             } catch (e: any) {
-                console.error(e.message || e);
+                console.error(['discord.init.db',this.channelId,this.host,this.port].join(':'), e.message || e);
             }
         }
     }
 
     async updatePost(gs: GameServer) {
         if (!this.message) return;
+
         const embed = new MessageEmbed();
         embed.setTitle(gs.niceName + ' offline...');
         embed.setColor('#ff0000');
@@ -186,12 +187,14 @@ class ServerInfoMessage {
                 embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
                 embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
             }
+
+            embed.setImage(gs.history.statsChart());
         }
 
         try {
             await this.message.edit(null, { embed });
         } catch (e: any) {
-            console.log(e.message || e);
+            console.error(['discord.up',this.channelId,this.host,this.port].join(':'), e.message || e);
         }
     }
 }

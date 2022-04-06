@@ -120,7 +120,7 @@ class ServerInfoMessage {
             try {
                 await db.write();
             } catch (e: any) {
-                console.error(e.message || e);
+                console.error(['telegram.init.db',this.chatId,this.host,this.port].join(':'), e.message || e);
             }
         }
     }
@@ -150,13 +150,13 @@ class ServerInfoMessage {
                 for(const p of gs.info.players) {
                     let playerLine = '';
                     if (p.get('time') !== undefined) {
-                        playerLine += hhmmss(p.get('time')) + ' ';
+                        playerLine += hhmmss(p.get('time') || '0') + ' ';
                     }
                     if (p.get('name') !== undefined) {
-                        playerLine += p.get('name');
+                        playerLine += p.get('name') || 'n/a';
                     }
                     if (p.get('score') !== undefined) {
-                        playerLine += ' (' + p.get('score') + ')';
+                        playerLine += ' (' + (p.get('score') || 0) + ')';
                     }
                     pnArr.push(playerLine);
                 }
@@ -167,7 +167,7 @@ class ServerInfoMessage {
         try {
             await bot.api.editMessageText(this.chatId, this.messageId, infoText, {parse_mode: 'Markdown'});
         } catch (e: any) {
-            console.log(e.message || e);
+            console.error(['telegram.up',this.chatId,this.host,this.port].join(':'), e.message || e);
         }
     }
 }
