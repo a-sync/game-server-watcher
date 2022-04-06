@@ -312,11 +312,14 @@ class ServerHistory {
         const values: string[] = avg.concat(max);
 
         return [
-            'https://image-charts.com/chart?cht=bvg',
-            'chs=600x300',
-            'chma='+e('0,0,10,0'), // margins
+            'https://image-charts.com/chart?cht=lc',
+            'chs=600x300', // image size
             'chf='+e('bg,s,202225'), // background
-            'chg='+e('0,1,5,5,303030'), // grid lines
+            'chma='+e('0,0,10,0'), // margins
+            'chls='+e('2|2'), // line styles
+            // 'chm='+e('B,011040,0,0,0'), // line fill
+            'chg='+e('1,1,2,2,303030'), // grid lines
+            // 'chm='+e('d,ffffff,0,-1,3|d,ffffff,1,-1,3'), // value markers
             'chdl='+e('AVG|MAX'), // labels
             'chdlp=t', // label position
             'chdls='+e('ffffff,10'), // label style
@@ -325,10 +328,10 @@ class ServerHistory {
             'chds=a', // scaling
             'chd='+e('t:'+avg.join(',')+'|'+max.join(',')), // data
             'chl='+e(values.join('|')), // data labels
-            'chlps='+e('color,ffffff|anchor,end|font.size,10|align,top'), // data labels position & style
+            'chlps='+e('color,ffffff|anchor,end|font.size,12|align,top'), // data labels position & style
             'chxl='+e('0:|'+xlabels.join('|')), // x axis labels
             'chxr='+e('1,0,'+playersMax), // axis range
-            'chco='+e('1234ef,fd7501') // bar colors
+            'chco='+e('1234ef,fd7501') // data colors
         ].join('&');
     }
 }

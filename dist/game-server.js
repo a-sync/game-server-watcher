@@ -238,11 +238,14 @@ class ServerHistory {
         }
         const values = avg.concat(max);
         return [
-            'https://image-charts.com/chart?cht=bvg',
+            'https://image-charts.com/chart?cht=lc',
             'chs=600x300',
-            'chma=' + e('0,0,10,0'),
             'chf=' + e('bg,s,202225'),
-            'chg=' + e('0,1,5,5,303030'),
+            'chma=' + e('0,0,10,0'),
+            'chls=' + e('2|2'),
+            // 'chm='+e('B,011040,0,0,0'), // line fill
+            'chg=' + e('1,1,2,2,303030'),
+            // 'chm='+e('d,ffffff,0,-1,3|d,ffffff,1,-1,3'), // value markers
             'chdl=' + e('AVG|MAX'),
             'chdlp=t',
             'chdls=' + e('ffffff,10'),
@@ -251,10 +254,10 @@ class ServerHistory {
             'chds=a',
             'chd=' + e('t:' + avg.join(',') + '|' + max.join(',')),
             'chl=' + e(values.join('|')),
-            'chlps=' + e('color,ffffff|anchor,end|font.size,10|align,top'),
+            'chlps=' + e('color,ffffff|anchor,end|font.size,12|align,top'),
             'chxl=' + e('0:|' + xlabels.join('|')),
             'chxr=' + e('1,0,' + playersMax),
-            'chco=' + e('1234ef,fd7501') // bar colors
+            'chco=' + e('1234ef,fd7501') // data colors
         ].join('&');
     }
 }
