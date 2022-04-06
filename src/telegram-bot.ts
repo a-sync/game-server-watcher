@@ -146,6 +146,7 @@ class ServerInfoMessage {
             ].join('\n');
 
             if (gs.info.players.length > 0) {
+                const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax) + ')';
                 const pnArr: string[] = [];
                 for(const p of gs.info.players) {
                     let playerLine = '';
@@ -160,7 +161,7 @@ class ServerInfoMessage {
                     }
                     pnArr.push(playerLine);
                 }
-                infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length) + '\n```';
+                infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
             }
         }
 

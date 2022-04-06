@@ -9,7 +9,6 @@ const gamedig_1 = require("gamedig");
 const lowdb_1 = require("@commonify/lowdb");
 const ipregex_1 = __importDefault(require("./lib/ipregex"));
 const getip_1 = __importDefault(require("./lib/getip"));
-const image_charts_1 = __importDefault(require("image-charts"));
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
@@ -160,6 +159,7 @@ class GsPlayer {
 }
 class ServerHistory {
     constructor(id) {
+        this._stats = [];
         this.id = id;
     }
     yyyymmddhh(d) {
@@ -181,35 +181,80 @@ class ServerHistory {
         d.setHours(d.getHours() - PLAYERS_HISTORY_HOURS);
         const minDh = this.yyyymmddhh(d);
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);
+        this._stats = [];
     }
     stats() {
         var _a;
         if (!((_a = db.data) === null || _a === void 0 ? void 0 : _a.population))
             return [];
-        const grouped = {};
-        for (const d of db.data.population[this.id]) {
-            if (!grouped[d.dateHour]) {
-                grouped[d.dateHour] = [];
+        if (this._stats.length === 0) {
+            const grouped = {};
+            for (const d of db.data.population[this.id]) {
+                if (!grouped[d.dateHour]) {
+                    grouped[d.dateHour] = [];
+                }
+                grouped[d.dateHour].push(d);
             }
-            grouped[d.dateHour].push(d);
+            const stats = [];
+            for (const dh in grouped) {
+                const avg = grouped[dh].reduce((total, next) => total + next.playersNum, 0) / grouped[dh].length;
+                const max = grouped[dh].reduce((max, next) => next.playersNum > max ? next.playersNum : max, 0);
+                stats.push({
+                    dateHour: parseInt(dh, 10),
+                    avg,
+                    max
+                });
+            }
+            this._stats = stats.sort((a, b) => a.dateHour - b.dateHour);
         }
-        const stats = [];
-        for (const dh in grouped) {
-            const avg = grouped[dh].reduce((total, next) => total + next.playersNum, 0) / grouped[dh].length;
-            const max = grouped[dh].reduce((max, next) => next.playersNum > max ? next.playersNum : max, 0);
-            stats.push({
-                dateHour: parseInt(dh, 10),
-                avg,
-                max
-            });
-        }
-        return stats.sort((a, b) => a.dateHour - b.dateHour);
+        return this._stats;
     }
-    statsChart() {
-        //bvs,bvg,bhs,bhg,bvo
-        //p|p3|pc|pd|ls|lc|lxy|ls:nda|lc:nda|lxy:nda|pa|bb|gv|gv:dot|gv:neato|gv:circo|gv:fdp|gv:osage|gv:twopi|qr|r
-        const pie = new image_charts_1.default().cht('bvs').chxt('x,y')
-            .chd('a:2.5,5,8.3').chs('800x400');
-        return pie.toURL();
+    statsChart(playersMax) {
+        const stats = this.stats();
+        const e = encodeURIComponent;
+        const avg = [];
+        const max = [];
+        const xlabels = [];
+        let lastH;
+        for (const s of stats) {
+            const h = s.dateHour % 100;
+            if (lastH !== undefined) {
+                let nextH = lastH;
+                do {
+                    nextH++;
+                    if (nextH > 23)
+                        nextH = 0;
+                    if (nextH !== h) {
+                        avg.push('_');
+                        max.push('_');
+                        xlabels.push((nextH > 9 ? '' + nextH : '0' + nextH) + ':00');
+                    }
+                } while (nextH !== h);
+            }
+            avg.push(String(Math.round(s.avg)));
+            max.push(String(s.max));
+            xlabels.push(String(s.dateHour).slice(8) + ':00');
+            lastH = h;
+        }
+        const values = avg.concat(max);
+        return [
+            'https://image-charts.com/chart?cht=bvg',
+            'chs=600x300',
+            'chma=' + e('0,0,10,0'),
+            'chf=' + e('bg,s,202225'),
+            'chg=' + e('0,1,5,5,303030'),
+            'chdl=' + e('AVG|MAX'),
+            'chdlp=t',
+            'chdls=' + e('ffffff,10'),
+            'chxt=' + e('x,y'),
+            'chxs=' + e('0,ffffff,12|1,ffffff,15'),
+            'chds=a',
+            'chd=' + e('t:' + avg.join(',') + '|' + max.join(',')),
+            'chl=' + e(values.join('|')),
+            'chlps=' + e('color,ffffff|anchor,end|font.size,10|align,top'),
+            'chxl=' + e('0:|' + xlabels.join('|')),
+            'chxr=' + e('1,0,' + playersMax),
+            'chco=' + e('1234ef,fd7501') // bar colors
+        ].join('&');
     }
 }

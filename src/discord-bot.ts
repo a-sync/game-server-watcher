@@ -188,7 +188,7 @@ class ServerInfoMessage {
                 embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
             }
 
-            embed.setImage(gs.history.statsChart());
+            embed.setImage(gs.history.statsChart(gs.info.playersMax));
         }
 
         try {

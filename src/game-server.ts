@@ -4,7 +4,6 @@ import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
 import { WatcherConfig } from './watcher';
-import ImageCharts from 'image-charts';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
@@ -212,6 +211,8 @@ export interface Stat {
 
 class ServerHistory {
     public id: string;
+    private _stats: Stat[] = [];
+
     constructor(id: string) {
         this.id = id;
     }
@@ -239,42 +240,95 @@ class ServerHistory {
         const minDh = this.yyyymmddhh(d);
 
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);
+
+        this._stats = [];
     }
 
     stats(): Stat[] {
         if (!db.data?.population) return [];
 
-        const grouped: GroupedPopulation = {};
+        if (this._stats.length === 0) {
+            const grouped: GroupedPopulation = {};
 
-        for (const d of db.data.population[this.id]) {
-            if (!grouped[d.dateHour]) {
-                grouped[d.dateHour] = [];
+            for (const d of db.data.population[this.id]) {
+                if (!grouped[d.dateHour]) {
+                    grouped[d.dateHour] = [];
+                }
+                grouped[d.dateHour].push(d);
             }
-            grouped[d.dateHour].push(d);
+
+            const stats: Stat[] = [];
+            for (const dh in grouped) {
+                const avg = grouped[dh].reduce((total, next) => total + next.playersNum, 0) / grouped[dh].length;
+                const max = grouped[dh].reduce((max, next) => next.playersNum > max ? next.playersNum : max, 0);
+                stats.push({
+                    dateHour: parseInt(dh, 10),
+                    avg,
+                    max
+                });
+            }
+
+            this._stats = stats.sort((a, b) => a.dateHour - b.dateHour);
         }
 
-        const stats: Stat[] = [];
-        for (const dh in grouped) {
-            const avg = grouped[dh].reduce((total, next) => total + next.playersNum, 0) / grouped[dh].length;
-            const max = grouped[dh].reduce((max, next) => next.playersNum > max ? next.playersNum : max, 0);
-            stats.push({
-                dateHour: parseInt(dh, 10),
-                avg,
-                max
-            });
-        }
-
-        return stats.sort((a, b) => a.dateHour - b.dateHour);
+        return this._stats;
     }
 
-    statsChart(): string {
+    statsChart(playersMax: number): string {
+        const stats = this.stats();
+        const e = encodeURIComponent;
 
-        //bvs,bvg,bhs,bhg,bvo
-        //p|p3|pc|pd|ls|lc|lxy|ls:nda|lc:nda|lxy:nda|pa|bb|gv|gv:dot|gv:neato|gv:circo|gv:fdp|gv:osage|gv:twopi|qr|r
+        const avg: string[] = [];
+        const max: string[] = [];
+        const xlabels: string[] = [];
 
-        const pie = new ImageCharts().cht('bvs').chxt('x,y')
-        .chd('a:2.5,5,8.3').chs('800x400');
+        let lastH;
+        for (const s of stats) {
+            const h = s.dateHour % 100;
 
-        return pie.toURL();
+            if (lastH !== undefined) {
+                let nextH: number = lastH;
+
+                do {
+                    nextH++;
+                    if (nextH > 23) nextH = 0;
+
+                    if (nextH !== h) {
+                        avg.push('_');
+                        max.push('_');
+                        xlabels.push((nextH > 9 ? ''+nextH : '0'+nextH)+':00');
+                    }
+                } while (nextH !== h);
+            }
+
+            avg.push(String(Math.round(s.avg)));
+            max.push(String(s.max));
+
+            xlabels.push(String(s.dateHour).slice(8) + ':00');
+
+            lastH = h;
+        }
+
+        const values: string[] = avg.concat(max);
+
+        return [
+            'https://image-charts.com/chart?cht=bvg',
+            'chs=600x300',
+            'chma='+e('0,0,10,0'), // margins
+            'chf='+e('bg,s,202225'), // background
+            'chg='+e('0,1,5,5,303030'), // grid lines
+            'chdl='+e('AVG|MAX'), // labels
+            'chdlp=t', // label position
+            'chdls='+e('ffffff,10'), // label style
+            'chxt='+e('x,y'), // displayed axis
+            'chxs='+e('0,ffffff,12|1,ffffff,15'), // axis styles
+            'chds=a', // scaling
+            'chd='+e('t:'+avg.join(',')+'|'+max.join(',')), // data
+            'chl='+e(values.join('|')), // data labels
+            'chlps='+e('color,ffffff|anchor,end|font.size,10|align,top'), // data labels position & style
+            'chxl='+e('0:|'+xlabels.join('|')), // x axis labels
+            'chxr='+e('1,0,'+playersMax), // axis range
+            'chco='+e('1234ef,fd7501') // bar colors
+        ].join('&');
     }
 }

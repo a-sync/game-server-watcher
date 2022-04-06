@@ -16,9 +16,7 @@
     "dotenv": "^16.0.0",
     "gamedig": "github:a-sync/node8-gamedig",
     "got": "^11.8.3",
-    "grammy": "^1.7.1",
-    "image-charts": "^6.0.18",
-    "request": "^2.88.2"
+    "grammy": "^1.7.1"
   },
   "devDependencies": {
     "@types/gamedig": "^3.0.2",

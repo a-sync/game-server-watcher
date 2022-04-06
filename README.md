@@ -20,6 +20,7 @@ Possible features / configuration options to add:
  * watched players (notify when a watched player enters/leaves the server)
  * detect server restart, notify when player number crosses a threshold
  * bot commands
+ * more integrations: slack, ms teams, twillio (email, sms)
 
 # Configuration
 //TODO: env vars  
