@@ -322,7 +322,7 @@ class ServerHistory {
             // 'chm='+e('d,ffffff,0,-1,3|d,ffffff,1,-1,3'), // value markers
             'chdl='+e('AVG|MAX'), // labels
             'chdlp=t', // label position
-            'chdls='+e('ffffff,10'), // label style
+            'chdls='+e('ffffff,8'), // label style
             'chxt='+e('x,y'), // displayed axis
             'chxs='+e('0,ffffff,12|1,ffffff,15'), // axis styles
             'chds=a', // scaling
