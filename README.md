@@ -1,9 +1,19 @@
 # game-server-watcher
+Requirements: [node.js](https://nodejs.org/) _(version 12.20.0 or later)_
+
+# Configuration
+//TODO: env vars (dotenv files supported)  
+//TODO: config file schema description  
+
+### Starting the service
+Install dependencies: `npm i`
+Build & start program: `npm start`
+
 ## The goals of this repo
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
- 1. should be able to host on a free service (_target atm. is cloudno.de (nodejs v12.20.1)_)
+ 1. should be able to host on a free service (_target atm. is cloudno.de (nodejs 12.20.1)_)
  1. graciously add more features based on community feedback 
 
 Get support on [discord](https://discord.gg/4tsbftsGJz) or on [github](https://github.com/a-sync/game-server-watcher/issues/new).  
@@ -26,19 +36,15 @@ More detailed customization options and additional features will be added as req
  * web ui to manage & configure the servers and bots
  * put custom information in the channel name (online status indicator, number of players, map)
 
-# Configuration
-//TODO: env vars  
-//TODO: config file schema description
-
 # Self host on cloudno.de
 You can fork (copy) this repo on github, and automatically deploy your configuration or other changes as a cloud service.
 
 ## Part 1: create and setup github repo
 //TODO: fork this repo
 
-## Part 2: create and setup cloudno.de repo
-//TODO: create app, copy git url & append with `login:token@`; set `DATA_PATH=/mnt/` in cloud app env  
-// on github: goto settings --> secrets \[actions\], setup `CLOUDNODE_REPO_URL` secret
+## Part 2: create and setup [cloudno.de](https://cloudno./de) repo
+//TODO: create app, make sure to set the latest node.js version and leave server.js as entry point; copy https git URL from app and add your username and your token from your profile as authentication to the URL `https://yourlogin:token@cloudno.de/...`; set `DATA_PATH=/mnt/` in cloud app env  
+// on github: goto settings --> secrets --> actions and setup `CLOUDNODE_REPO_URL` secret with the full URL
 
 ## Part 3 (optional): create and invite discord bot and get token
 //TODO: [create discord bot](https://discord.com/developers/applications); invite to server(guild) with permissions: view channels, send messages, message history, embed stuff, create bot auth token and setup `DISCORD_BOT_TOKEN` in cloud app env; find and copy then setup channel ids in config  
