@@ -24,6 +24,7 @@ More detailed customization options and additional features will be added as req
  * bot commands (reinit message, cleanup, start/stop, configure)
  * more integrations: slack, ms teams, twillio (email, sms)
  * web ui to manage & configure the servers and bots
+ * put custom information in the channel name (online status indicator, number of players, map)
 
 # Configuration
 //TODO: env vars  
