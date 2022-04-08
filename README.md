@@ -20,7 +20,7 @@ The main goals of this repo:
 ![telegram](https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png)
 
 ### GSW Control Panel
-![gsw control panel](https://user-images.githubusercontent.com/14183614/167465317-49355e80-792b-4ff6-89ca-0b283ad61034.png)
+![gsw control panel](https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png)
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the cloud branch.  
