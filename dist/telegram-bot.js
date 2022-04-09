@@ -128,7 +128,9 @@ class ServerInfoMessage {
                     }
                     pnArr.push(playerLine);
                 }
-                infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
+                if (pnArr.length > 0) {
+                    infoText += '```\n' + this.escapeMarkdown(pnArr.join('\n')).slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
+                }
             }
         }
         try {
@@ -137,5 +139,15 @@ class ServerInfoMessage {
         catch (e) {
             console.error(['telegram.up', this.chatId, this.host, this.port].join(':'), e.message || e);
         }
+    }
+    escapeMarkdown(str) {
+        return str
+            .replace(/_/g, '\\_')
+            .replace(/-/g, '\\-')
+            .replace('~', '\\~')
+            .replace(/`/g, '\\`')
+            .replace(/\./g, '\\.')
+            .replace(/\</g, '\\<')
+            .replace(/\>/g, '\\>');
     }
 }
