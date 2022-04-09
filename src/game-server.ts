@@ -99,7 +99,7 @@ export class GameServer {
                 connect: res.connect,
                 name: res.name,
                 game: game,
-                map: res.map,
+                map: res.map || '',
                 playersNum: res.numplayers || res.players.length,
                 playersMax: res.maxplayers,
                 players

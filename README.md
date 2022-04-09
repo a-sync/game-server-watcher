@@ -39,25 +39,52 @@ More detailed customization options and additional features will be added as req
 # Self host on cloudno.de
 You can fork (copy) this repo on github, and automatically deploy your configuration or other changes as a cloud service.
 
-## Part 1: create and setup github repo
-//TODO: fork this repo
-
-## Part 2: create and setup [cloudno.de](https://cloudno./de) repo
-//TODO: create app, make sure to set the latest node.js version and leave server.js as entry point; copy https git URL from app and add your username and your token from your profile as authentication to the URL `https://yourlogin:token@cloudno.de/...`; set `DATA_PATH=/mnt/` in cloud app env  
+## Part 1: create and setup [cloudno.de](https://cloudno./de) repo
+1. register account
+1. create app: https://cloudno.de/myapps?new
+//TODO: create app, make sure to set the latest node.js version and leave server.js as entry point; 
+1. provision app
+1. copy https git URL from app 
+1. go to profile copy your token  
+1. add username and as authentication to the URL like `https://username:secrettoken@git.cloudno.de/git/username/xyz`; save it for later (github)
+1. go to application --> manage --> environment
+1. set `DATA_PATH=/mnt/` in cloud app env  
+//go to https://cloudno.de/account --> API tokens
 // on github: goto settings --> secrets --> actions and setup `CLOUDNODE_REPO_URL` secret with the full URL
 
-## Part 3 (optional): create and invite discord bot and get token
-//TODO: [create discord bot](https://discord.com/developers/applications); invite to server(guild) with permissions: view channels, send messages, message history, embed stuff, create bot auth token and setup `DISCORD_BOT_TOKEN` in cloud app env; find and copy then setup channel ids in config  
+## Part 2 (optional): create and invite discord bot and get token
+//TODO: [create discord bot](https://discord.com/developers/applications); 
+1. create app
+1. create bot
+1. under the bots name you should seee a token or an option to reset token 
+1. check message content intent
+1. oauth2 --> url generator --> check bot as scopes; create bot invite link with permissions: view channels, send messages, message history, embed links, add reaction (85056), 
+1. invite bot to servers(guilds)
+1. create bot auth token, copy it 
+1. setup `DISCORD_BOT_TOKEN` in cloud app env
+1. //CONFIG: find and copy then setup channel ids in config  
 
-## Part 4 (optional): create telegram bot and get token
+## Part 3 (optional): create telegram bot and get token
 //TODO: get token from [botfather](https://t.me/botfather) and setup as `TELEGRAM_BOT_TOKEN` in cloud app env; get chat id from [getidsbot](https://t.me/getidsbot) and setup chat ids in config  
 
-## Part 5 (optional): create steam web api key
+## Part 4 (optional): create steam web api key
 //TODO: [request](https://steamcommunity.com/dev/apikey) a web api key and setup as `STEAM_WEB_API_KEY` in cloud app env; set appId fields in config  
 
+## Part 5: create and setup github repo
+//TODO: fork this repo
+1. hit fork button
+1. repo settings page --> actions --> general: allow all actions (if no confirmation comes up, disable then re-enable all actions)
+
+
 ## Part 6: create `cloud` branch, configure and deploy the service
-//TODO: create a custom.config.json file, and setup `GSW_CONFIG` in cloud app env to point to it  
-//create a branch named cloud, commit your changes and push your commits to github; github actions will push your files to cloudno.de and restart the app `git branch cloud && git add . && git commit -m :shipit: && git push origin cloud`
+ 
+1. switch to the `cloud` branch of your fork; (`git checkout -b cloud`)
+1. create a new config file (and setup `GSW_CONFIG` in cloud app env to point to it) or edit config/default.config.json and save it
+1. commit and push your changes (`git add . && git commit -m :shipit: && git push origin cloud`)
+
+You can also just use the github web editor to make changes to the default config file, just make sure to switch to the `cloud` branch to have it automatically deployed.  
+
+Commiting your changes and pushing your commits to github will trigger github actions to push your files to cloudno.de and restart the app 
 
 # Manage
 A few web endpoints are available to clear out service data.  

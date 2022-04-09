@@ -69,7 +69,7 @@ class GameServer {
                 connect: res.connect,
                 name: res.name,
                 game: game,
-                map: res.map,
+                map: res.map || '',
                 playersNum: res.numplayers || res.players.length,
                 playersMax: res.maxplayers,
                 players
@@ -248,7 +248,7 @@ class ServerHistory {
             // 'chm='+e('d,ffffff,0,-1,3|d,ffffff,1,-1,3'), // value markers
             'chdl=' + e('AVG|MAX'),
             'chdlp=t',
-            'chdls=' + e('ffffff,10'),
+            'chdls=' + e('ffffff,8'),
             'chxt=' + e('x,y'),
             'chxs=' + e('0,ffffff,12|1,ffffff,15'),
             'chds=a',
