@@ -183,14 +183,19 @@ class GsPlayer {
 
     get (prop: string): string | undefined {
         const p = this._player as any;
+        let re;
 
         if (p[prop] !== undefined) {
-            return String(p[prop]);
+            re = String(p[prop]);
         } else if (p.raw && p.raw[prop] !== undefined) {
-            return String(p.raw[prop]);
+            re = String(p.raw[prop]);
         }
 
-        return undefined;
+        if (re === 'NaN') {
+            re = undefined;
+        }
+
+        return re;
     }
 }
 

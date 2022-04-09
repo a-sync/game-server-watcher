@@ -142,16 +142,36 @@ class ServerInfoMessage {
                 const pNames = [];
                 const pTimes = [];
                 const pScores = [];
-                let c = 0;
+                const pPings = [];
                 for (const p of (_b = gs.info) === null || _b === void 0 ? void 0 : _b.players) {
-                    c++;
-                    pNames.push(p.get('name') || 'n/a');
-                    pTimes.push((0, hhmmss_1.default)(p.get('time') || 0));
-                    pScores.push(p.get('score') || '0');
+                    if (pNames.join('\n').length > 1016 || pTimes.join('\n').length > 1016 || pScores.join('\n').length > 1016 || pPings.join('\n').length > 1016) {
+                        if (pNames.length)
+                            pNames.pop();
+                        if (pTimes.length)
+                            pTimes.pop();
+                        if (pScores.length)
+                            pScores.pop();
+                        if (pPings.length)
+                            pPings.pop();
+                        break;
+                    }
+                    if (p.get('name') !== undefined)
+                        pNames.push(p.get('name') || 'n/a');
+                    if (p.get('time') !== undefined)
+                        pTimes.push((0, hhmmss_1.default)(p.get('time') || 0));
+                    if (p.get('score') !== undefined)
+                        pScores.push(p.get('score') || '0');
+                    if (p.get('ping') !== undefined)
+                        pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
-                embed.addField('Name', '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
-                embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
-                embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
+                if (pNames.length)
+                    embed.addField('Name', '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
+                if (pTimes.length)
+                    embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
+                if (pScores.length)
+                    embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
+                if (pPings.length)
+                    embed.addField('Ping', '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', true);
             }
             embed.setImage(gs.history.statsChart(gs.info.playersMax));
         }

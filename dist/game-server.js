@@ -148,13 +148,17 @@ class GsPlayer {
     }
     get(prop) {
         const p = this._player;
+        let re;
         if (p[prop] !== undefined) {
-            return String(p[prop]);
+            re = String(p[prop]);
         }
         else if (p.raw && p.raw[prop] !== undefined) {
-            return String(p.raw[prop]);
+            re = String(p.raw[prop]);
         }
-        return undefined;
+        if (re === 'NaN') {
+            re = undefined;
+        }
+        return re;
     }
 }
 class ServerHistory {
