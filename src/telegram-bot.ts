@@ -171,7 +171,6 @@ class ServerInfoMessage {
             .replace(/-/g, '\\-')
             .replace('~', '\\~')
             .replace(/`/g, '\\`')
-            .replace(/\./g, '\\.')
             .replace(/\</g, '\\<')
             .replace(/\>/g, '\\>');
     }
