@@ -213,7 +213,7 @@ class ServerHistory {
         }
         return this._stats;
     }
-    statsChart(playersMax) {
+    statsChart(playersMax = -1) {
         const stats = this.stats();
         const e = encodeURIComponent;
         const avg = [];

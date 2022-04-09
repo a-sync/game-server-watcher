@@ -136,8 +136,8 @@ class ServerInfoMessage {
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
 
+            const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax) + ')';
             if (gs.info.players.length > 0) {
-                const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax) + ')';
                 const pnArr: string[] = [];
                 for(const p of gs.info.players) {
                     let playerLine = '';
@@ -153,9 +153,11 @@ class ServerInfoMessage {
                     pnArr.push(playerLine);
                 }
                 if (pnArr.length > 0) {
-                    infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
+                    infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
                 }
             }
+
+            infoText += chart;
         }
 
         try {

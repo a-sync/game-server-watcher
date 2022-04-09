@@ -279,7 +279,7 @@ class ServerHistory {
         return this._stats;
     }
 
-    statsChart(playersMax: number): string {
+    statsChart(playersMax: number = -1): string {
         const stats = this.stats();
         const e = encodeURIComponent;
 
