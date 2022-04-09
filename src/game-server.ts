@@ -330,7 +330,7 @@ class ServerHistory {
             'chl='+e(values.join('|')), // data labels
             'chlps='+e('color,ffffff|anchor,end|font.size,12|align,top'), // data labels position & style
             'chxl='+e('0:|'+xlabels.join('|')), // x axis labels
-            'chxr='+e('1,0,'+playersMax), // axis range
+            // 'chxr='+e('1,0,'+playersMax), // axis range
             'chco='+e('1234ef,fd7501') // data colors
         ].join('&');
     }

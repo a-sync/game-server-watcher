@@ -256,7 +256,7 @@ class ServerHistory {
             'chl=' + e(values.join('|')),
             'chlps=' + e('color,ffffff|anchor,end|font.size,12|align,top'),
             'chxl=' + e('0:|' + xlabels.join('|')),
-            'chxr=' + e('1,0,' + playersMax),
+            // 'chxr='+e('1,0,'+playersMax), // axis range
             'chco=' + e('1234ef,fd7501') // data colors
         ].join('&');
     }

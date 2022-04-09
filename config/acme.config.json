@@ -1,0 +1,130 @@
+[
+    {
+        "host": "85.190.148.52",
+        "port": 2102,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "935912356335190026"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "85.190.148.62",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "935912356335190026"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "armahu.ddns.net",
+        "port": 2332,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "955162997410639962"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "eu.fridaynightfight.org",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "935912570706071582"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "ops.fridaynightfight.org",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "935912570706071582"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "game.ofcra.org",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "935912599911010395"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "arma.coalitiongroup.net",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "936390342217990205"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    },
+    {
+        "host": "arma.coalitiongroup.net",
+        "port": 2319,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "936390342217990205"
+            ]
+        },
+        "telegram": {
+            "chatIds": [
+                "325831302"
+            ]
+        }
+    }
+]
