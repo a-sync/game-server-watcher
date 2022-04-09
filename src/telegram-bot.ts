@@ -130,8 +130,8 @@ class ServerInfoMessage {
 
         if (gs.info && gs.online) {
             infoText = [
-                gs.niceName,
-                gs.info.game + ' / ' + gs.info.map,
+                this.escapeMarkdown(gs.niceName),
+                this.escapeMarkdown(gs.info.game) + ' / ' + this.escapeMarkdown(gs.info.map),
                 '`' + gs.info.connect + '`',
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
@@ -153,7 +153,7 @@ class ServerInfoMessage {
                     pnArr.push(playerLine);
                 }
                 if (pnArr.length > 0) {
-                    infoText += '```\n' + this.escapeMarkdown(pnArr.join('\n')).slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
+                    infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```' + chart;
                 }
             }
         }
