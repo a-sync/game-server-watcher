@@ -144,7 +144,6 @@ class ServerInfoMessage {
     escapeMarkdown(str) {
         return str
             .replace(/_/g, '\\_')
-            .replace(/-/g, '\\-')
             .replace('~', '\\~')
             .replace(/`/g, '\\`')
             .replace(/\</g, '\\<')
