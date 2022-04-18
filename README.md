@@ -2,6 +2,9 @@
 A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
 ## Table of Contents
+<details>
+<summary>[SHOW / HIDE]</summary>
+
 1. [About the Project](#about-the-project)
 1. [Project Status](#project-status)
 1. [Getting Started](#getting-started)
@@ -18,6 +21,8 @@ A simple discord/telegram bot that can be hosted on a free service to monitor yo
 1. [Authors](#authors)
 1. [Acknowledgments](#acknowledgments)
 
+</details>
+	
 # About the Project
 The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
@@ -27,6 +32,9 @@ The main goals of this repo:
  1. graciously add more features based on community feedback ([discord](https://discord.gg/4tsbftsGJz) / [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)) 
 
 ## Screenshots
+<details>
+<summary>[SHOW / HIDE]</summary>
+
 ### Discord
 ![discord](https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png)
 
@@ -39,6 +47,7 @@ The main goals of this repo:
 The code itself is stable and continuously tested/deployed from the cloud branch.  
 
 The project is in a very early stage. More detailed customization options and additional features will be added as requested.  
+</details>
 
 ### Possible features and configuration options to add in the future
  * optional player list
@@ -115,7 +124,7 @@ The path of the config file used is defined by the `GSW_CONFIG` env var. (defaul
 The config file must be a valid JSON file that holds a list (array) of game server configuration objects.  
 
 <details>
-<summary>example config JSON</summary>
+<summary>[example config JSON]</summary>
 	
 ```json
 [
@@ -149,6 +158,7 @@ The config file must be a valid JSON file that holds a list (array) of game serv
 
 More sample configs are available in the [config folder](./config).
 
+### Game server configuration options
 Each configuration object describes a game server (host, port, gamedig id, steam app id) and all the bots options for that game server. (discord options, telegram options)  
 
 #### host
@@ -181,14 +191,14 @@ Make sure to configure a proper `SECRET` env var to enable these!
 GET `/flush/servers/SECRET`  
 Removes population history data. (configured by `PLAYERS_HISTORY_HOURS`)
 
-### Telegram data
-GET `/flush/telegram/SECRET`  
-If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
-The bot has no cleanup functionality, left over messages must be removed manually.
-
 ### Discord data
 GET `/flush/discord/SECRET`  
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
+The bot has no cleanup functionality, left over messages must be removed manually.
+
+### Telegram data
+GET `/flush/telegram/SECRET`  
+If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
 The bot has no cleanup functionality, left over messages must be removed manually.
 
 **[Back to top](#table-of-contents)**
@@ -197,7 +207,7 @@ The bot has no cleanup functionality, left over messages must be removed manuall
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).  
 
 ## Hosting
-Make sure all the requirements are met!  
+Make sure all the [requirements](#requirements) are met!  
 _**Protip:** check the node.js version with `node -v`._  
 
 ### Build artifacts (optional)
