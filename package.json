@@ -5,7 +5,8 @@
   "main": "src/server",
   "scripts": {
     "start": "tsc && node ./dist/server.js",
-    "dev": "nodemon -e ts --exec \"tsc --incremental && node ./dist/server.js || exit 1\""
+    "dev": "nodemon -e ts --exec \"tsc --incremental && node ./dist/server.js || exit 1\"",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "a-sync@devs.space",

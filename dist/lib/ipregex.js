@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// source: https://github.com/sindresorhus/ip-regex
 const v4 = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
 const v6segment = '[a-fA-F\\d]{1,4}';
 const v6 = `
@@ -14,6 +15,5 @@ const v6 = `
 (?::(?:(?::${v6segment}){0,5}:${v4}|(?::${v6segment}){1,7}|:))             // ::2:3:4:5:6:7:8  ::2:3:4:5:6:7:8  ::8             ::1.2.3.4
 )(?:%[0-9a-zA-Z]{1,})?                                             // %eth0            %1
 `.replace(/\s*\/\/.*$/gm, '').replace(/\n/g, '').trim();
-// Pre-compile only the exact regexes because adding a global flag make regexes stateful
 const v46Exact = new RegExp(`(?:^${v4}$)|(?:^${v6}$)`);
 exports.default = v46Exact;

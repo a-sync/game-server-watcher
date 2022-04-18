@@ -126,5 +126,131 @@
                 "325831302"
             ]
         }
+    },
+    {
+        "host": "51.195.60.161",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493493650817024"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "135.125.188.105",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493493650817024"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "95.111.240.225",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493493650817024"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "51.195.209.188",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "51.195.56.191",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "135.125.140.176",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "135.125.140.177",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "51.195.68.16",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
+    },
+    {
+        "host": "198.244.131.161",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": {
+            "channelIds": [
+                "965493409819283466"
+            ]
+        },
+        "telegram": {
+            "chatIds": []
+        }
     }
 ]

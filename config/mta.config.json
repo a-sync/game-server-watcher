@@ -10,9 +10,7 @@
             ]
         },
         "telegram": {
-            "chatIds": [
-                ""
-            ]
+            "chatIds": []
         }
     }
 ]

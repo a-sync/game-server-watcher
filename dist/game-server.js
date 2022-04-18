@@ -12,6 +12,7 @@ const getip_1 = __importDefault(require("./lib/getip"));
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
+const DBG = Boolean(process.env.DBG || false);
 const adapter = new lowdb_1.JSONFile(DATA_PATH + 'servers.json');
 const db = new lowdb_1.Low(adapter);
 async function initDb() {
@@ -39,11 +40,20 @@ class GameServer {
         this._niceName = config.host + ':' + config.port;
     }
     async update() {
+        if (DBG)
+            console.log('gs.up', this.config.host, this.config.port);
         let info = await this.gamedig();
-        if (!info && STEAM_WEB_API_KEY) {
+        if (DBG)
+            console.log('gs.gamedig', info);
+        if (!info && STEAM_WEB_API_KEY && this.config.appId) {
             info = await this.steam();
+            if (DBG)
+                console.log('gs.steam', info);
         }
         if (info) {
+            if (info.players.length > 0 && DBG) {
+                console.log('gs.players.0', info.players[0]);
+            }
             this.online = true;
             this.info = info;
             this.history.add(info);
