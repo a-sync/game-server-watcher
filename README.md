@@ -24,7 +24,7 @@ The main goals of this repo:
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
  1. should be able to host on a free service (_target atm. is cloudno.de (nodejs 12.20.1)_)
- 1. graciously add more features based on community feedback ([discord](https://discord.gg/4tsbftsGJz) / [github](https://github.com/a-sync/game-server-watcher/issues/new)) 
+ 1. graciously add more features based on community feedback ([discord](https://discord.gg/4tsbftsGJz) / [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)) 
 
 ## Screenshots
 ### Discord
@@ -74,27 +74,28 @@ git clone git@github.com:a-sync/game-server-watcher.git
 The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).
 
 ## Installation
-Use npm or yarn to install/update all the dependencies.
-
+Use npm or yarn to install/update all the dependencies:
 ```
 npm i
 ```
 
-If you don't need to build the source, you can skip development dependencies.  
-
+If you don't need to build the source, you can skip development dependencies:  
 ```
 npm i --only=prod
 ```
 
 ## Usage
-Build the source and start the service in one command.
+Start the built artifacts directly:
+```
+node ./dist/server.js
+```
 
+Build the source and start the service in one command:
 ```
 npm start
 ```
 
-Build, start and auto restart on source changes.
-
+Build, start and auto restart on source changes:
 ```
 npm run dev
 ```
@@ -109,7 +110,7 @@ Refer to the wiki on how to get tokens for:
 
 ### Config file schema
 The game server and bot configurations are stored in JSON files.  
-The path of the config file used is defined by the `GSW_CONFIG` env var. (default: [./config/default.config.json](./config/default.config.json))  
+The path of the config file used is defined by the `GSW_CONFIG` env var. (default: `./config/default.config.json`)  
 
 The config file must be a valid JSON file that holds a list (array) of game server configuration objects.  
 
