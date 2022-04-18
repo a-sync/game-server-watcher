@@ -54,7 +54,7 @@ The project is in a very early stage. More detailed customization options and ad
  * more integrations: slack, ms teams, twillio (email, sms)
  * web ui to manage & configure the servers and bots
  * put custom information in the channel name (online status indicator, number of players, map)
- * github action workflows to deploy to other cloud providers (azure, aws cdk, etc.)
+ * github action workflows to deploy to other cloud providers (azure, aws, etc.)
 
 **[Back to top](#table-of-contents)**
 
@@ -114,38 +114,56 @@ The path of the config file used is defined by the `GSW_CONFIG` env var. (defaul
 
 The config file must be a valid JSON file that holds a list (array) of game server configuration objects.  
 
+<details>
+<summary>example config JSON</summary>
+	
 ```json
 [
     {
-        "host": "0.0.0.0",
-        "port": 0,
+        "host": "localhost",
+        "port": 1234,
         "type": "gamedigID",
         "appId": 0,
         "discord": {
-            "channelIds": []
+            "channelIds": ["9876543210","9080706050"]
+        },
+        "telegram": {
+            "chatIds": ["-100987654"]
+        }
+    },
+    {
+        "host": "127.0.0.1",
+        "port": 54321,
+        "type": "gamedigID",
+        "appId": 0,
+        "discord": {
+            "channelIds": ["9008006007"]
         },
         "telegram": {
             "chatIds": []
         }
-    },
-    ...
+    }
 ]
 ```
+</details>  
 
-Each configuration object describes a game server (host, port, gamedig id, steam app id) and all the bots options for that game server. (discord channel IDs, telegram chat IDs)  
+More sample configs are available in the [config folder](./config).
+
+Each configuration object describes a game server (host, port, gamedig id, steam app id) and all the bots options for that game server. (discord options, telegram options)  
 
 #### host
-String. Can be a domain name or IP.
+**String.** Can be a domain name or IP.
 
 #### port
-Number. The port used by the game server instance.
+**Number.** The port used by the game server instance.
 
 #### type
-String. Gamedig ID from the [supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt).
+**String.** Gamedig ID from the [supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt).
 
 #### appId
-Number. Steam app ID from [steamdb](https://steamdb.info/apps/).  
-_Only used if you have `STEAM_WEB_API_KEY` configured and only as backup. Set it to `0` if you don't need it._
+**Number.** Steam app ID from [steamdb](https://steamdb.info/apps/).  
+_Only used if you have `STEAM_WEB_API_KEY` configured and only as backup.  
+Set it to `0` if you don't need it._
 
 #### discord.channelIds
 String array. List of discord channel IDs.  
