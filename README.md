@@ -6,9 +6,9 @@ A simple discord/telegram bot that can be hosted on a free service to monitor yo
 <summary>[SHOW / HIDE]</summary>
 
 1. [About the Project](#about-the-project)
-1. [Project Status](#project-status)
 1. [Getting Started](#getting-started)
 	1. [Requirements](#requirements)
+	1. [Getting the source](#getting-the-source)
 	1. [Installation](#installation)
 	1. [Usage](#usage)
 	1. [Configuration](#configuration)
@@ -20,6 +20,7 @@ A simple discord/telegram bot that can be hosted on a free service to monitor yo
 1. [License](#license)
 1. [Authors](#authors)
 1. [Acknowledgments](#acknowledgments)
+	1. [Similar projects](#similar-projects)
 
 </details>
 	
@@ -73,7 +74,7 @@ These instructions will get you a copy of the project up and running on your loc
 ## Requirements
 [node.js](https://nodejs.org/) _(version 12.20.0 or later)_  
 
-## Getting the Source
+## Getting the source
 This project is [hosted on github](https://github.com/a-sync/game-server-watcher). You can clone this project directly using this command:
 
 ```
