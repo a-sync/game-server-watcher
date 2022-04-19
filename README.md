@@ -226,7 +226,7 @@ Navigate to the deployment folder and execute the following command:
 ```
 npm i --only=prod
 ```
-_If you can not install dependencies on the host, do a local install and copy the node_modules folder to the host._
+_If you can not install dependencies on the host, do a local install and copy the `./node_modules/` folder to the host._
 
 ### Configuration
 Create a writeable folder for the data storage. (configured by `DATA_PATH` env var, default: `./data/`)  
