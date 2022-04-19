@@ -89,7 +89,7 @@ Use npm or yarn to install/update all the dependencies:
 npm i
 ```
 
-If you don't need to build the source, you can skip development dependencies:  
+If you don't want to build from source, you can skip the development dependencies:  
 ```
 npm i --only=prod
 ```
@@ -111,7 +111,8 @@ npm run dev
 ```
 
 ## Configuration
-The watcher service can be configured via environmental variables. `.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, for avaialable values and defaults check the [default.env](./default.env) file.  
+The behaviour of the watcher service can be configured via environmental variables (env vars).  
+`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [default.env](./default.env) file.  
 
 Refer to the wiki on how to get tokens for:
  * [steam](https://github.com/a-sync/game-server-watcher/wiki/Steam-Web-API-key)
@@ -173,16 +174,16 @@ Each configuration object describes a game server (host, port, gamedig id, steam
 
 #### appId
 **Number.** Steam app ID from [steamdb](https://steamdb.info/apps/).  
-_Only used if you have `STEAM_WEB_API_KEY` configured and only as backup.  
+_Only used if you have `STEAM_WEB_API_KEY` env var configured and only as backup.  
 Set it to `0` if you don't need it._
 
 #### discord.channelIds
-String array. List of discord channel IDs.  
-_Only used if you have `DISCORD_BOT_TOKEN` configured._
+**String array.** List of discord channel IDs.  
+_Only used if you have `DISCORD_BOT_TOKEN` env var configured._
 
 #### telegram.chatIds
-String array. List of telegram chat IDs.  
-_Only used if you have `TELEGRAM_BOT_TOKEN` configured._
+**String array.** List of telegram chat IDs.  
+_Only used if you have `TELEGRAM_BOT_TOKEN` env var configured._
 
 ## Managing the service
 A few web endpoints are available to clear out service data.  
@@ -190,17 +191,17 @@ Make sure to configure a proper `SECRET` env var to enable these!
 
 ### Servers data
 GET `/flush/servers/SECRET`  
-Removes population history data. (configured by `PLAYERS_HISTORY_HOURS`)
+Removes population history data. (configured by `PLAYERS_HISTORY_HOURS` env var)
 
 ### Discord data
 GET `/flush/discord/SECRET`  
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
-The bot has no cleanup functionality, left over messages must be removed manually.
+_The bot has no cleanup functionality, left over messages must be removed manually._
 
 ### Telegram data
 GET `/flush/telegram/SECRET`  
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
-The bot has no cleanup functionality, left over messages must be removed manually.
+_The bot has no cleanup functionality, left over messages must be removed manually._
 
 **[Back to top](#table-of-contents)**
 
@@ -218,17 +219,18 @@ npm run build
 ```
 
 ### Minimum required files on host
-Copy the `./package.json` and `index.html` files and the `./dist/` folder to your deployment folder.
+Copy the `./package.json` and `./index.html` files and the `./dist/` folder to your deployment folder.
  
 ### Install production dependencies on host
 Navigate to the deployment folder and execute the following command:
 ```
 npm i --only=prod
 ```
+_If you can not install dependencies on the host, do a local install and copy the node_modules folder to the host._
 
 ### Configuration
 Create a writeable folder for the data storage. (configured by `DATA_PATH` env var, default: `./data/`)  
-Create a configuration file. (configured by `GSW_CONFIG`, default: `./config/default.config.json`)
+Create a configuration file. (configured by `GSW_CONFIG` env var, default: `./config/default.config.json`)
 
 ### Running
 Run the program from the deployment folder:
