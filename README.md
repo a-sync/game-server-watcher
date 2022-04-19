@@ -277,9 +277,11 @@ This project was inpired by (the sudden disappearance of) "_Game Status#5371_" b
 The IP regex was stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.
 
 ## Similar projects
-https://github.com/soulkobk/DiscordBot_GameStatus  
-https://github.com/discord-gamestatus/discord-gamestatus  
-https://github.com/Ramzi-Sah/game-status-discordbot  
-https://github.com/Ramzi-Sah/game-status-discordbot-selfhosted  
+* https://github.com/soulkobk/DiscordBot_GameStatus  
+* https://github.com/Douile/discord-gamestatus
+* https://github.com/Ramzi-Sah/game-status-discordbot  
+* https://github.com/Ramzi-Sah/game-status-discordbot-selfhosted  
+* https://github.com/msniveau/discord-statusbotv2
+* https://github.com/kevinkjt2000/bowser
 
 **[Back to top](#table-of-contents)**
