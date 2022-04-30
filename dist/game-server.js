@@ -10,7 +10,6 @@ const lowdb_1 = require("@commonify/lowdb");
 const ipregex_1 = __importDefault(require("./lib/ipregex"));
 const getip_1 = __importDefault(require("./lib/getip"));
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
-const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
 const adapter = new lowdb_1.JSONFile(DATA_PATH + 'servers.json');
@@ -56,7 +55,7 @@ class GameServer {
             }
             this.online = true;
             this.info = info;
-            this.history.add(info);
+            this.history.add(info, this.config.graphHistoryHours);
         }
         else {
             this.online = false;
@@ -179,7 +178,7 @@ class ServerHistory {
     yyyymmddhh(d) {
         return parseInt(d.toISOString().slice(0, 13).replace(/\D/g, ''), 10);
     }
-    add(info) {
+    add(info, graphHistoryHours = 12) {
         var _a;
         if (!((_a = db.data) === null || _a === void 0 ? void 0 : _a.population))
             return;
@@ -192,7 +191,7 @@ class ServerHistory {
             dateHour: dh,
             playersNum: info.playersNum
         });
-        d.setHours(d.getHours() - PLAYERS_HISTORY_HOURS);
+        d.setHours(d.getHours() - graphHistoryHours + 1);
         const minDh = this.yyyymmddhh(d);
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);
         this._stats = [];

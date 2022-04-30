@@ -1,7 +1,4 @@
-data/servers.json
-data/discord.json
-data/telegram.json
-
+data/*.json
 # Logs
 logs
 *.log

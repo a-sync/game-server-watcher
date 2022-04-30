@@ -48,9 +48,11 @@ exports.init = init;
 async function serverUpdate(gs) {
     if (DBG)
         console.log('discord.serverUpdate', gs.config.host, gs.config.port, gs.config.discord);
-    for (const cid of gs.config.discord.channelIds) {
-        let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        await m.updatePost(gs);
+    if (gs.config.discord) {
+        for (const ch of gs.config.discord) {
+            let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
+            await m.updatePost(gs);
+        }
     }
 }
 exports.serverUpdate = serverUpdate;

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -19,17 +23,33 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.main = void 0;
+exports.main = exports.updateConfig = exports.readConfig = void 0;
+const lowdb_1 = require("@commonify/lowdb");
 const game_server_1 = require("./game-server");
 const discordBot = __importStar(require("./discord-bot"));
 const telegramBot = __importStar(require("./telegram-bot"));
-const fs_1 = require("fs");
-const { readFile } = fs_1.promises;
-const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);
+const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10); //DEPRECETED
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
-const GSW_CONFIG = process.env.GSW_CONFIG || './config/default.config.json';
+const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
+const adapter = new lowdb_1.JSONFile(DATA_PATH + 'default.config.json');
+const db = new lowdb_1.Low(adapter);
+async function readConfig() {
+    await db.read();
+    return db.data || [];
+}
+exports.readConfig = readConfig;
+async function updateConfig(data) {
+    try {
+        db.data = data;
+        return await db.write();
+    }
+    catch (e) {
+        console.error('w.saveDb', e.message || e);
+    }
+}
+exports.updateConfig = updateConfig;
 class Watcher {
     constructor() {
         this.servers = [];
@@ -77,12 +97,11 @@ class Watcher {
     }
 }
 async function main() {
-    console.log('reading config', GSW_CONFIG);
-    const buffer = await readFile(GSW_CONFIG);
-    const conf = JSON.parse(buffer.toString());
+    await db.read();
+    db.data = db.data || [];
     const watcher = new Watcher();
-    await watcher.init(conf);
-    console.log('starting loop...', REFRESH_TIME_MINUTES);
+    await watcher.init(db.data);
+    console.log('starting loop...');
     const loop = setInterval(async () => { await watcher.check(); }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
     return loop;

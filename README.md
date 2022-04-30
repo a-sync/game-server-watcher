@@ -56,14 +56,14 @@ The project is in a very early stage. More detailed customization options and ad
    * configurable field & order to sort by
    * max length for player names & nr of players
  * custom embed fields for discord
- * configurable timezone for graph x-axis
+ * _configurable timezone for graph x-axis_
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
- * detect server restart, notify when player number crosses a threshold
+ * detect when the server goes offline, notify when player number crosses a threshold
  * bot commands (reinit message, cleanup, start/stop, configure)
  * more integrations: slack, ms teams, twillio (email, sms)
- * web ui to manage & configure the servers and bots
- * put custom information in the channel name (online status indicator, number of players, map)
+ * _web ui to manage & configure the servers and bots_
+ * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (azure, aws, etc.)
 
 **[Back to top](#table-of-contents)**
@@ -119,89 +119,24 @@ Refer to the wiki on how to get tokens for:
  * [discord](https://github.com/a-sync/game-server-watcher/wiki/Discord-bot-token)
  * [telegram](https://github.com/a-sync/game-server-watcher/wiki/Telegram-bot-token)
 
-### Config file schema
-The game server and bot configurations are stored in JSON files.  
-The path of the config file used is defined by the `GSW_CONFIG` env var. (default: `./config/default.config.json`)  
-
-The config file must be a valid JSON file that holds a list (array) of game server configuration objects.  
-
-<details>
-<summary>[example config JSON]</summary>
-	
-```json
-[
-    {
-        "host": "localhost",
-        "port": 1234,
-        "type": "gamedigID",
-        "appId": 0,
-        "discord": {
-            "channelIds": ["9876543210","9080706050"]
-        },
-        "telegram": {
-            "chatIds": ["-100987654"]
-        }
-    },
-    {
-        "host": "127.0.0.1",
-        "port": 54321,
-        "type": "gamedigID",
-        "appId": 0,
-        "discord": {
-            "channelIds": ["9008006007"]
-        },
-        "telegram": {
-            "chatIds": []
-        }
-    }
-]
-```
-</details>  
-
-More sample configs are available in the [config folder](./config).
-
-### Game server configuration options
-Each configuration object describes a game server (host, port, gamedig id, steam app id) and all the bots options for that game server. (discord options, telegram options)  
-
-#### host
-**String.** Can be a domain name or IP.
-
-#### port
-**Number.** The port used by the game server instance.
-
-#### type
-**String.** Gamedig ID from the [supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt).
-
-#### appId
-**Number.** Steam app ID from [steamdb](https://steamdb.info/apps/).  
-_Only used if you have `STEAM_WEB_API_KEY` env var configured and only as backup.  
-Set it to `0` if you don't need it._
-
-#### discord.channelIds
-**String array.** List of discord channel IDs.  
-_Only used if you have `DISCORD_BOT_TOKEN` env var configured._
-
-#### telegram.chatIds
-**String array.** List of telegram chat IDs.  
-_Only used if you have `TELEGRAM_BOT_TOKEN` env var configured._
-
 ## Managing the service
-A few web endpoints are available to clear out service data.  
-Make sure to configure a proper `SECRET` env var to enable these!  
+**GSW Control Panel** is a web based UI that let's you configure and control the Game Server Watcher instance.  
+The web app is served at `http://localhost:8080` by default.  
+_Make sure to configure a proper `SECRET` env var to enable access!_  
 
-### Servers data
-GET `/flush/servers/SECRET`  
-Removes population history data. (configured by `PLAYERS_HISTORY_HOURS` env var)
+### Flush servers data
+Removes population history data. (configured by `graphHistoryHours` server option)
 
-### Discord data
-GET `/flush/discord/SECRET`  
+### Flush discord data
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
-### Telegram data
-GET `/flush/telegram/SECRET`  
+### Flush telegram data
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
+
+### Save Configuration
+Updates the configuration file and restarts the service.
 
 **[Back to top](#table-of-contents)**
 
@@ -249,17 +184,19 @@ node ./dist/server.js
 
 # Further Reading
 * [gamedig supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt)
-* [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
-* [discord API v8 documentation](https://discord.js.org/#/docs/discord.js/v12/class/MessageEmbed)  
-* [telegram API documentation](https://core.telegram.org/bots/api#editmessagetext)
-* [JSON validator](https://jsonformatter.org/)
 * [steamDB](https://steamdb.info/apps/)
+* [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
+* [discord API v8 documentation](https://discord.js.org/#/docs/discord.js/v12/class/MessageEmbed)
+* [telegram API documentation](https://core.telegram.org/bots/api#editmessagetext)
+* [json-editor documentation](https://github.com/json-editor/json-editor#json-schema-support)
+    * [json-editor demos](https://pmk65.github.io/jedemov2/dist/demo.html)
+* [bootstrap 4 reference](https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp)
 
 **[Back to top](#table-of-contents)**
 
 # Contributing
 Public contributions are welcome!  
-Create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes.  
+You can create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or feel free to open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes or work-in-progress features.  
 
 **[Back to top](#table-of-contents)**
 
@@ -276,14 +213,21 @@ Check the list of [contributors](https://github.com/a-sync/game-server-watcher/c
 # Acknowledgments
 This project was inpired by (the sudden disappearance of) "_Game Status#5371_" bot and its creator [Ramzi Saheb](https://github.com/Ramzi-Sah) on discord.  
 
-The IP regex was stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.
+IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
+
+GSW Control Panel icon stolen from [imgur](https://imgur.com/gallery/o8ENYHq).  
+
+Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds).  
+
+All other libraries and dependencies are listed in the _package.json file (dependencies/devDependencies section)_ and the _index.html file (head section)_.  
 
 ## Similar projects
-* https://github.com/soulkobk/DiscordBot_GameStatus  
+* https://github.com/soulkobk/DiscordBot_GameStatus
 * https://github.com/Douile/discord-gamestatus
-* https://github.com/Ramzi-Sah/game-status-discordbot  
+* https://github.com/Ramzi-Sah/game-status-discordbot
 * https://github.com/Ramzi-Sah/game-status-discordbot-selfhosted  
 * https://github.com/msniveau/discord-statusbotv2
 * https://github.com/kevinkjt2000/bowser
+* https://github.com/dev-this/server-query-bot
 
 **[Back to top](#table-of-contents)**

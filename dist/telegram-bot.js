@@ -59,9 +59,11 @@ async function getServerInfoMessage(cid, host, port) {
 async function serverUpdate(gs) {
     if (DBG)
         console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
-    for (const cid of gs.config.telegram.chatIds) {
-        let m = await getServerInfoMessage(cid, gs.config.host, gs.config.port);
-        await m.updatePost(gs);
+    if (gs.config.telegram) {
+        for (const ch of gs.config.telegram) {
+            let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
+            await m.updatePost(gs);
+        }
     }
 }
 exports.serverUpdate = serverUpdate;

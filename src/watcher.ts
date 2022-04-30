@@ -1,33 +1,56 @@
 import { Type } from 'gamedig';
+import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer, initDb, saveDb } from './game-server';
 import * as discordBot from './discord-bot';
 import * as telegramBot from './telegram-bot';
-import { promises as fs } from 'fs';
-const { readFile } = fs;
 
-const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);
+const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);//DEPRECETED
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
-const GSW_CONFIG = process.env.GSW_CONFIG || './config/default.config.json';
+const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
 
-export interface WatcherConfig {
+interface DiscordConfig {
+    channelId: string;
+}
+
+interface TelegramConfig {
+    chatId: string;
+}
+
+export interface GameServerConfig {
     host: string;
     port: number;
     type: Type;
-    appId: number;
-    discord: {
-        channelIds: string[]
-    },
-    telegram: {
-        chatIds: string[];
+    appId?: number;//0
+    updateIntervalMinutes?: number;//5
+    graphHistoryHours?: number;//12
+    serverTimezone?: string;//Europe/London
+    discord?: DiscordConfig[],
+    telegram?: TelegramConfig[];
+}
+
+const adapter = new JSONFile<GameServerConfig[]>(DATA_PATH + 'default.config.json');
+const db = new Low<GameServerConfig[]>(adapter);
+
+export async function readConfig(): Promise<GameServerConfig[]> {
+    await db.read();
+    return db.data || [];
+}
+
+export async function updateConfig(data: GameServerConfig[]) {
+    try {
+        db.data = data;
+        return await db.write();
+    } catch (e: any) {
+        console.error('w.saveDb', e.message || e);
     }
 }
 
 class Watcher {
     private servers: GameServer[] = [];
 
-    async init(config: WatcherConfig[]) {
+    async init(config: GameServerConfig[]) {
         console.log('watcher starting...');
 
         if (DISCORD_BOT_TOKEN) {
@@ -76,14 +99,13 @@ class Watcher {
 }
 
 export async function main() {
-    console.log('reading config', GSW_CONFIG);
-    const buffer = await readFile(GSW_CONFIG);
-    const conf = JSON.parse(buffer.toString());
+    await db.read();
+    db.data = db.data || [];
 
     const watcher = new Watcher();
-    await watcher.init(conf);
+    await watcher.init(db.data);
 
-    console.log('starting loop...', REFRESH_TIME_MINUTES);
+    console.log('starting loop...');
     const loop = setInterval(async () => { await watcher.check() }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
 

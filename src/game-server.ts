@@ -3,10 +3,9 @@ import { Player, query, QueryResult } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
-import { WatcherConfig } from './watcher';
+import { GameServerConfig } from './watcher';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
-const PLAYERS_HISTORY_HOURS = parseInt(process.env.PLAYERS_HISTORY_HOURS || '12', 10);
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
 
@@ -52,12 +51,12 @@ interface qRes extends QueryResult {
 export class GameServer {
     public ip?: string;
     public info?: Info;
-    public config: WatcherConfig;
+    public config: GameServerConfig;
     public history: ServerHistory;
     private _niceName: string;
     public online: boolean = false;
 
-    constructor(config: WatcherConfig) {
+    constructor(config: GameServerConfig) {
         console.log('game-server init', config.host, config.port, config.type, config.appId);
         this.config = config;
         this.history = new ServerHistory(config.host + ':' + config.port);
@@ -81,7 +80,7 @@ export class GameServer {
 
             this.online = true;
             this.info = info;
-            this.history.add(info);
+            this.history.add(info, this.config.graphHistoryHours);
         } else {
             this.online = false;
             console.error('game-server not available', this.config.host, this.config.port);
@@ -234,7 +233,7 @@ class ServerHistory {
         return parseInt(d.toISOString().slice(0, 13).replace(/\D/g, ''), 10);
     }
 
-    add(info: Info): void {
+    add(info: Info, graphHistoryHours: number = 12): void {
         if (!db.data?.population) return;
 
         const d = new Date();
@@ -249,7 +248,7 @@ class ServerHistory {
             playersNum: info.playersNum
         });
 
-        d.setHours(d.getHours() - PLAYERS_HISTORY_HOURS);
+        d.setHours(d.getHours() - graphHistoryHours + 1);
         const minDh = this.yyyymmddhh(d);
 
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);

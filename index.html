@@ -1,8 +1,542 @@
-<html>
-    <head>
-        <meta http-equiv="refresh" content="0; url='https://github.com/a-sync/game-server-watcher'" />
-    </head>
-    <body>
-        <p>Please follow <a href="https://github.com/a-sync/game-server-watcher">this link</a>.</p>
-    </body>
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>GSW Control Panel</title>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://i.imgur.com/2Ok3pxv.png" rel="icon" type="image/x-icon" />
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@latest/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@latest/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@latest/mustache.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/@forevolve/bootstrap-dark@latest/dist/css/toggle-bootstrap-dark.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@latest/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/css/jsoneditor.min.css"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            background-position: top center;
+            transition: background-image 2s ease-in-out 0.5s;
+
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url('https://i.imgur.com/lTly23N.png');
+        }
+
+        body>nav {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+        }
+
+        body>nav button[data-href] {
+            margin-right: 1rem;
+        }
+
+        #spinner {
+            zoom: 2;
+        }
+
+        #config-form-container {
+            background-color: rgba(245, 250, 255, 0.75);
+        }
+
+        #config-form h3.card_title>label {
+            font-weight: 900;
+        }
+
+        #config-form h3>label {
+            margin-right: 1rem;
+        }
+
+        #config-form div[data-schemaid="root"]>div.card-body>div>div {
+            margin-bottom: 3rem;
+        }
+
+        #config-form div[data-schemaid="root"]>div.card-body>div>div:last-child {
+            margin-bottom: inherit;
+        }
+
+        #config-form button {
+            vertical-align: top;
+        }
+
+        #config-form input[type=checkbox] {
+            vertical-align: middle;
+            zoom: 2;
+            cursor: pointer;
+            margin-right: 0.25rem !important;
+        }
+
+        #config-form .btn-group {
+            display: inline-flex !important;
+            margin-bottom: 0.25rem;
+        }
+
+        #config-form .btn-group button {
+            margin-left: 1px;
+            margin-right: 1px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        #config-form .btn-group.je-object__controls {
+            margin: 0 0 0.75rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
+        <span class="navbar-brand mb-0 h1">
+            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30"
+                class="d-inline-block align-middle" alt="">
+            GSW Control Panel
+        </span>
+        <ul class="navbar-nav mr-auto">
+            <!-- <li class="nav-item">
+                <a class="nav-link active" href="#">Configuration</a>
+            </li> -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                    aria-expanded="false">Flush data</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" data-href="flush/servers">Flush servers data</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-href="flush/discord">Flush discord data</a>
+                    <a class="dropdown-item" href="#" data-href="flush/telegram">Flush telegram data</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button id="save" class="btn btn-outline-danger" type="submit">Save Configuration</button>
+        </form>
+    </nav>
+    <main class="container">
+        <section class="row">
+            <div class="col-12 text-center">
+                <div id="spinner" class="spinner-border m-2 justify-content-center text-primary mx-auto"></div>
+            </div>
+            <div class="col-12">
+                <div id="config-form-container" class="p-4 m-2 bg-light border border-white rounded-lg d-none">
+                    <div id="config-form"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="mx-auto text-center pb-2">
+        <a href="https://github.com/a-sync/game-server-watcher"><svg width="16" height="16" viewBox="0 0 16 16"
+                version="1.1" aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg></a>
+    </footer>
+
+    <script>
+        const id = s => document.getElementById(s);
+        const q = qs => document.querySelectorAll(qs);
+        const e = (type, text, options) => {
+            const re = document.createElement(type, options);
+            if (text !== undefined) re.textContent = text;
+            return re;
+        }
+
+        $(async () => {
+            setRandomBg();
+            setInterval(setRandomBg, 60000);
+
+            const gswConfig = await getConfig();
+            if (gswConfig && gswConfig.config) {
+                const editor = new JSONEditor(document.getElementById('config-form'), {
+                    "theme": "bootstrap4",
+                    "iconlib": "fontawesome5",
+                    "object_layout": "normal",
+                    "template": "mustache",
+                    "show_errors": "always",
+                    "required_by_default": 0,
+                    "no_additional_properties": 1,
+                    "display_required_only": 0,
+                    "remove_empty_properties": 1,
+                    "keep_oneof_values": 0,
+                    "ajax": 0,
+                    "ajaxCredentials": 0,
+                    "show_opt_in": 1,
+                    "disable_edit_json": 0,
+                    "disable_collapse": 1,
+                    "disable_properties": 1,
+                    "disable_array_add": 0,
+                    "disable_array_reorder": 1,
+                    "disable_array_delete": 0,
+                    "enable_array_copy": 1,
+                    "array_controls_top": 0,
+                    "disable_array_delete_all_rows": 1,
+                    "disable_array_delete_last_row": 1,
+                    "prompt_before_delete": 1,
+                    "lib_aceeditor": 0,
+                    "lib_autocomplete": 0,
+                    "lib_sceditor": 0,
+                    "lib_simplemde": 1,
+                    "lib_select2": 1,
+                    "lib_selectize": 0,
+                    "lib_choices": 0,
+                    "lib_flatpickr": 1,
+                    "lib_signaturepad": 0,
+                    "lib_mathjs": 0,
+                    "lib_cleavejs": 0,
+                    "lib_jodit": 0,
+                    "lib_jquery": 0,
+                    "lib_dompurify": 1,
+                    "schema": {
+                        "title": "GSW Configuration",
+                        "type": "array",
+                        "default": [],
+                        "minItems": 0,
+                        "uniqueItems": true,
+                        "format": "tabs-top",
+                        "items": {
+                            "title": "Game Server",
+                            "type": "object",
+                            "required": [
+                                "host",
+                                "port",
+                                "type"
+                            ],
+                            "properties": {
+                                "host": {
+                                    "title": "Host name or IP",
+                                    "type": "string"
+                                },
+                                "port": {
+                                    "title": "Port number",
+                                    "type": "integer",
+                                    "format": "number",
+                                    "minimum": 1,
+                                    "maximum": 65535
+                                },
+                                "type": {
+                                    "title": "Gamedig type",
+                                    "description": "Look for the <i>GameDig Type ID</i> in the <a target=\"_blank\" href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
+                                    "type": "string"
+                                },
+                                "appId": {
+                                    "title": "Steam App ID",
+                                    "description": "Look for the <i>AppID</i> in the <a target=\"_blank\" href=\"https://steamdb.info/apps/\">apps list</a>.",
+                                    "type": "integer",
+                                    "format": "number"
+                                },
+                                "updateIntervalMinutes": {
+                                    "title": "Update interval (minutes) [NOT IMPLEMENTED]",
+                                    "type": "integer",
+                                    "format": "range",
+                                    "default": 5,
+                                    "minimum": 1,
+                                    "maximum": 60
+                                },
+                                "graphHistoryHours": {
+                                    "title": "Graph history time span (hours)",
+                                    "type": "integer",
+                                    "default": 12,
+                                    "format": "range",
+                                    "minimum": 1,
+                                    "maximum": 24
+                                },
+                                "serverTimezone": {
+                                    "title": "Time zone of the server [NOT IMPLEMENTED]",
+                                    "type": "string",
+                                    "default": "Europe/London"
+                                },
+                                "discord": {
+                                    "type": "array",
+                                    "title": "Discord channels",
+                                    "description": "The simplest way to get a discord channel ID is to enable developer mode in settings, then right clicking on the channel name will give you the <b>Copy ID</b> option.",
+                                    "format": "table",
+                                    "minItems": 0,
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "object",
+                                        "title": "Channel",
+                                        "required": [
+                                            "channelId"
+                                        ],
+                                        "properties": {
+                                            "channelId": {
+                                                "title": "Channel ID",
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "telegram": {
+                                    "type": "array",
+                                    "title": "Telegram chats",
+                                    "description": "The simplest way to get a telegram chat ID is to invite <a target=\"_blank\" href=\"https://telegram.me/getidsbot\">@getidsbot</a> and use <code>/start</code> to make it post (among other data) the chat ID.",
+                                    "format": "table",
+                                    "minItems": 0,
+                                    "uniqueItems": true,
+                                    "items": {
+                                        "type": "object",
+                                        "title": "Chat",
+                                        "required": [
+                                            "chatId"
+                                        ],
+                                        "properties": {
+                                            "chatId": {
+                                                "type": "string",
+                                                "title": "Chat ID"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    startval: gswConfig.config
+                });
+
+                //todo: onchange (save badge)
+
+                editor.on('ready', function () {
+                    console.log('EDITOR::READY!!');
+
+                    $('#spinner').addClass('d-none');
+                    $('#config-form-container').removeClass('d-none');
+
+                    $('body > nav a[data-href]').click(async e => {
+                        e.preventDefault();
+                        const href = e.currentTarget.dataset.href;
+                        console.log('CLICK < nav a[data-href] href', href);
+                        if (confirm('Call `' + href + '` ?')) {
+                            const btoken = await getBearerToken();
+                            if (btoken) {
+                                const res = await getFetch(href, btoken);
+                                if (res.status === 200) {
+                                    console.log('nav fetch 200', await res.json());
+                                    //todo success
+                                } else {
+                                    console.error('nav fetch error', await res.json());
+                                    //todo error
+                                }
+                            } else {
+                                //todo error
+                            }
+                        }
+                    });
+
+                    $('#save').click(async e => {
+                        e.preventDefault();
+
+                        const uerr = editor.validate();
+                        if (uerr.length) {
+                            console.error('VALIDATION ERROR(S)', uerr);
+                            alert(uerr.map(e => e.path + ' ' + e.message).join('\n'));//todo error
+                        } else {
+                            // all cool
+                            console.log('editor valid!');
+                            const res = await postConfig(editor.getValue());
+                            console.log('#save res', res);
+                        }
+                    });
+
+                    const button_holder = editor.root.theme.getHeaderButtonHolder();
+
+                    const exportBtn = editor.root.getButton('Export', 'save', 'Export As JSON File');
+                    button_holder.appendChild(exportBtn);
+                    editor.root.header.parentNode.insertBefore(button_holder, editor.root.header.nextSibling);
+
+                    exportBtn.addEventListener('click', e => {
+                        e.preventDefault();
+                        const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
+                        const filename = dt + '-gsw.config.json';
+                        const blob = new Blob([JSON.stringify(editor.getValue(), null, 2)], {
+                            type: 'application/json;charset=utf-8'
+                        });
+
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            window.navigator.msSaveOrOpenBlob(blob, filename);
+                        } else {
+                            const a = document.createElement('a');
+                            a.download = filename;
+                            a.href = URL.createObjectURL(blob);
+                            a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+
+                            a.dispatchEvent(new MouseEvent('click', {
+                                'view': window,
+                                'bubbles': true,
+                                'cancelable': false
+                            }));
+                        }
+                    }, false);
+                });
+            } else {
+                console.error('!gswConfig', gswConfig);
+                //TODO: show error alert
+            }
+
+            // TODO: floating alert or json schema button to save / flush etc.
+        });
+
+        async function postConfig(body) {
+            let re = null;
+            try {
+                for (let i = 1; i <= 2; i++) {
+                    const btoken = await getBearerToken();
+                    if (btoken) {
+                        const res = await postFetch('config', JSON.stringify(body), btoken);
+                        if (res.status === 401) {
+                            re = false;
+                            window.localStorage.btoken = null;
+                        } else if (res.status === 200) {
+                            re = await res.json();
+                            break;
+                        }
+                    } else {
+                        re = false;
+                        break;
+                    }
+                }
+            } catch (err) {
+                console.error('getConfig: err, re', err, re);
+                re = null;
+            }
+
+            return re;
+        }
+
+        async function getConfig() {
+            let re = null;
+            try {
+                for (let i = 1; i <= 2; i++) {
+                    const btoken = await getBearerToken();
+                    if (btoken) {
+                        const res = await getFetch('config', btoken);
+                        if (res.status === 401) {
+                            re = false;
+                            window.localStorage.btoken = null;
+                        } else if (res.status === 200) {
+                            re = await res.json();
+                            break;
+                        }
+                    } else {
+                        re = false;
+                        break;
+                    }
+                }
+            } catch (err) {
+                console.error('getConfig: err, re', err, re);
+                re = null;
+            }
+
+            return re;
+        }
+
+        function getFetch(path, btoken) {
+            return fetch('/' + path, {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'x-btoken': btoken,
+                    'content-type': 'application/json'
+                }
+            });
+        }
+
+        function postFetch(path, body, btoken) {
+            return fetch('/' + path, {
+                body,
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'x-btoken': btoken,
+                    'content-type': 'application/json'
+                }
+            });
+        }
+
+        function delayedPrompt(q) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    return resolve(prompt(q));
+                }, 1000);
+            });
+        }
+
+        async function getBearerToken() {
+            if (window.localStorage.btoken) {
+                const salt = window.localStorage.btoken.slice(0, window.localStorage.btoken.length - 141);
+                const valid = window.localStorage.btoken.slice(-141, -128);
+                const hash = window.localStorage.btoken.slice(-128);
+
+                if (salt.length > 24
+                    && valid.length === 13
+                    && hash.length === 128
+                    && /^\d{13}$/.test(valid)
+                    && Date.now() <= Number(valid)) {
+                    return window.localStorage.btoken;
+                }
+            }
+
+            const ans = await delayedPrompt('Admin secret');
+            if (ans) window.localStorage.btoken = await generateBearerToken(ans);
+            else window.localStorage.btoken = null;
+
+            return window.localStorage.btoken;
+        }
+
+        async function generateBearerToken(secret) {
+            const valid = String(Date.now() + 3600000 * 12); // Note: valid for 12 hours
+            const salt = Array.from({ length: 3 }).map(() => Math.random().toString(36).slice(2)).join('');
+            const buff = await crypto.subtle.digest('SHA-512', new TextEncoder('utf-8').encode(salt + valid + secret));
+            const hash = Array.prototype.map.call(new Uint8Array(buff), x => (('00' + x.toString(16)).slice(-2))).join('');
+            return salt + valid + hash;
+        }
+
+        function setRandomBg() {
+            const bgs = [
+                'https://i.imgur.com/bDzhwG5.png',
+                'https://i.imgur.com/rA8JXuI.png',
+                'https://i.imgur.com/pstAPIw.png',
+                'https://i.imgur.com/gQD3xfo.png',
+                'https://i.imgur.com/iKTfM8z.png'
+            ];
+            const bgImg = new Image();
+            bgImg.onload = () => {
+                document.body.style.backgroundAttachment = 'scroll';
+                document.body.style.backgroundRepeat = 'repeat';
+                document.body.style.backgroundSize = 'auto';
+                document.body.style.backgroundImage = 'url(' + bgImg.src + ')';
+            }
+            bgImg.src = bgs[Math.floor(Math.random() * bgs.length)];
+        }
+    </script>
+</body>
+
 </html>

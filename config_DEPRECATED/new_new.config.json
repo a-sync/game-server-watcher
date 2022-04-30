@@ -1,0 +1,103 @@
+[
+    {
+        "host": "85.190.148.52",
+        "port": 2102,
+        "type": "arma3",
+        "appId": 107410,
+        "updateIntervalMinutes": 1,
+        "graphHistoryHours": 18,
+        "serverTimezone": "Europe/London",
+        "discord": [
+            {
+                "channelId": "935912356335190026",
+                "embed": {
+                    "color": "green",
+                    "title": "{{server.name}}",
+                    "url": "https://devs.space/",
+                    "description": "\u200B",
+                    "thumbnail": {
+                        "url": "https://placeholder.com/32x32"
+                    },
+                    "author": {
+                        "name": "smith",
+                        "icon_url": "",
+                        "url": "https://devs.space/"
+                    },
+                    "image": {
+                        "url": "{{graphUrl}}"
+                    },
+                    "footer": {
+                        "text": "Last updated ",
+                        "icon_url": ""
+                    },
+                    "fields": [
+                        {
+                            "name": "Regular field title",
+                            "value": "Some value here"
+                        },
+                        {
+                            "name": "\u200B",
+                            "value": "\u200B"
+                        },
+                        {
+                            "name": "Inline field title",
+                            "value": "Some value here",
+                            "inline": true
+                        },
+                        {
+                            "name": "Inline field title",
+                            "value": "Some value here",
+                            "inline": true
+                        }
+                    ]
+                },
+                "alerts": {
+                    "offline": {
+                        "thresholdMinutes": 5,
+                        "message": "<@&960888260643684382> server offline for more than 5 minutes...",
+                        "persist": true
+                    },
+                    "watchedPlayers": {
+                        "names": [
+                            "admin",
+                            "kiosk",
+                            "pc"
+                        ],
+                        "message": "Watched players online: {{nameList}}"
+                    },
+                    "playerNumGt": {
+                        "thresholdValue": 50,
+                        "thresholdMinutes": 10,
+                        "message": "Server getting crowded!"
+                    },
+                    "playerNumLt": {
+                        "thresholdValue": 1,
+                        "thresholdMinutes": 5,
+                        "message": "Server dead..."
+                    }
+                }
+            }
+        ],
+        "telegram": [
+            {
+                "chatId": "325831302"
+            }
+        ]
+    },
+    {
+        "host": "85.190.148.62",
+        "port": 2302,
+        "type": "arma3",
+        "appId": 107410,
+        "discord": [
+            {
+                "channelId": "935912356335190026"
+            }
+        ],
+        "telegram": [
+            {
+                "chatId": "325831302"
+            }
+        ]
+    }
+]
