@@ -219,10 +219,6 @@
                 const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
                 $(window).on('beforeunload', e => {
                     if (unsavedChanges) return confirmText;
-                    else {
-                        e.preventDefault();
-                        return false;
-                    }
                 });
                 $('#logout').click(e => {
                     e.preventDefault();
@@ -541,6 +537,7 @@
         }
 
         function logout() {
+            $(window).off('beforeunload');
             $('#save-config').addClass('animate__fadeOutDown');
             $('#top-menu').addClass('invisible');
             $('#protected-section').addClass('d-none');
