@@ -8,9 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://i.imgur.com/2Ok3pxv.png" rel="icon" type="image/x-icon" />
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/@forevolve/bootstrap-dark@latest/dist/css/toggle-bootstrap-dark.min.css" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@latest/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/css/jsoneditor.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@latest/dist/purify.min.js"></script>
@@ -18,16 +29,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@latest/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/@forevolve/bootstrap-dark@latest/dist/css/toggle-bootstrap-dark.min.css" rel="stylesheet"> -->
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@latest/dist/css/select2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/css/jsoneditor.min.css"
-        rel="stylesheet">
     <style>
         html,
         body {
@@ -56,15 +57,16 @@
             height: 40px;
         }
 
-        body>nav button[data-href] {
+        body>nav button[data-api] {
             margin-right: 1rem;
         }
 
         #spinner {
             zoom: 2;
+            opacity: 0.7;
         }
 
-        #config-form-container {
+        #protected-section>div>div {
             background-color: rgba(245, 250, 255, 0.75);
         }
 
@@ -112,53 +114,109 @@
         #config-form .btn-group.je-object__controls {
             margin: 0 0 0.75rem 0;
         }
+
+        footer>a>svg {
+            fill: #c6cbd1;
+        }
+
+        #save-config {
+            background-color: rgba(15, 20, 25, 0.9);
+        }
+
+        #save-config ._load_btn {
+            display: none;
+        }
+
+        #save-config .loading ._load_btn {
+            display: inherit;
+        }
+
+        #save-config .loading ._save_btn {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <nav id="top-menu" class="navbar navbar-dark navbar-expand-lg sticky-top invisible">
+    <nav id="top-menu" class="navbar navbar-expand-lg navbar-dark invisible">
         <span class="navbar-brand mb-0 h1">
-            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle"
-                alt="">
+            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle" alt="">
             GSW Control Panel
         </span>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Configuration</a>
+                <a id="top-menu-configuration" class="nav-link active" href="#configuration">Configuration</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                    aria-expanded="false">Flush data</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" data-href="flush/servers">Flush servers data</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-href="flush/discord">Flush discord data</a>
-                    <a class="dropdown-item" href="#" data-href="flush/telegram">Flush telegram data</a>
-                </div>
+            <li class="nav-item">
+                <a id="top-menu-flush" class="nav-link" href="#flush">Flush data</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <button id="save" class="btn btn-outline-danger" type="submit">Save Configuration</button>
             <button id="logout" class="btn btn-outline-danger" type="submit">Logout</button>
         </form>
     </nav>
-    <main class="container d-none">
-        <section class="row">
-            <div class="col-12 text-center">
+
+    <main class="container">
+        <section id="protected-section" class="row d-none">
+            <div class="col-12">
+                <div id="configuration" class="p-4 m-2 bg-light border border-white rounded-lg shadow-lg">
+                    <form method="post" id="config-form"></form>
+                </div>
+                <div id="flush" class="p-4 m-2 bg-light border border-white rounded-lg d-none shadow-lg">
+                    <div id="Flush container">
+                        <h3 class="card-title">Flush data</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-lg btn-danger" data-api="flush/servers">Flush
+                                    servers data</button>
+                                <button type="button" class="btn btn-lg btn-primary" data-api="flush/discord">Flush
+                                    discord data</button>
+                                <button type="button" class="btn btn-lg btn-info" data-api="flush/telegram">Flush
+                                    telegram data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="unprotected-section">
+            <div class="col-12 text-center sticky-top">
                 <div id="spinner" class="spinner-border m-2 justify-content-center text-primary mx-auto"></div>
             </div>
-            <div class="col-12">
-                <div id="config-form-container" class="p-4 m-2 bg-light border border-white rounded-lg">
-                    <div id="config-form"></div>
+            <div id="bye" class="p-4 m-2 d-none">
+                <h3 class="text-light text-center">
+                    Refresh the page to login...
+                </h3>
+                <div class="text-center">
+                    <kbd class="bg-light text-dark">F5</kbd>
                 </div>
             </div>
         </section>
     </main>
-    <footer class="mx-auto text-center pb-2">
-        <a href="https://github.com/a-sync/game-server-watcher"><svg width="16" height="16" viewBox="0 0 16 16"
-                version="1.1" aria-hidden="true">
-                <path fill-rule="evenodd"
-                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+
+    <div id="toast-containers" class="container fixed-bottom mb-1 mb-lg-2 mb-xl-3">
+        <div id="notif-container" class="col-12 mx-auto col-lg-10 col-xl-8">
+        </div>
+        <div id="action-container" class="col-12 mx-auto col-lg-10 col-xl-8">
+            <div id="save-config" class="alert rounded d-none animate__animated animate__fadeInUp animate__faster shadow" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex-inline text-light">Careful &mdash; you have unsaved changes!</div>
+                    <form class="d-flex-inline mr-2 mr-lg-0">
+                        <button id="save-config-reset" class="btn btn-sm text-light" type="reset">Reset</button>
+                        <button id="save-config-submit" class="btn btn-sm btn-success" type="submit">
+                            <span class="_save_btn">Save</span>
+                            <span class="spinner-grow spinner-grow-sm _load_btn" role="status" aria-hidden="true"></span>
+                            <span class="_load_btn">Saving...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mx-auto text-center py-2 d-none">
+        <a href="https://github.com/a-sync/game-server-watcher"><svg width="16" height="16" viewBox="0 0 16 16" version="1.1" aria-hidden="true">
+                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
                 </path>
             </svg></a>
     </footer>
@@ -166,23 +224,59 @@
     <script>
         const id = s => document.getElementById(s);
         const q = qs => document.querySelectorAll(qs);
-        const e = (type, text, options) => {
-            const re = document.createElement(type, options);
-            if (text !== undefined) re.textContent = text;
-            return re;
-        }
 
+        let configEditor;
         $(async () => {
-            const gswFeatures = await getApi('features');
+            const gswFeatures = await fetchApi('GET', 'features');
             if (gswFeatures) {
                 await setRandomBg().catch(() => { });
                 setInterval(setRandomBg, 60000);
 
                 $('#top-menu').removeClass('invisible');
+                $('body > footer').removeClass('d-none');
 
-                const gswConfig = await getApi('config');
+                let unsavedChanges = false;
+                const leaving = ev => {
+                    if (unsavedChanges) {
+                        const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
+                        if (ev) {
+                            return confirmText;
+                        } else {
+                            return confirm(confirmText);
+                        }
+                    }
+
+                    if (!ev) return true;
+                };
+
+                $(window).on('beforeunload', leaving);
+                $('#logout').click(async e => {
+                    e.preventDefault();
+                    if (await leaving()) logout();
+                });
+
+                let initMenu = id('top-menu-configuration');
+                if (document.location.hash.length > 1) {
+                    const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));
+                    if (hashTargetMenu) {
+                        initMenu = hashTargetMenu;
+                    }
+                } else if (window.localStorage.getItem('active.menu')) {
+                    const stateTargetMenu = id('top-menu-' + window.localStorage.getItem('active.menu').slice(1));
+                    if (stateTargetMenu) {
+                        initMenu = stateTargetMenu;
+                    }
+                }
+                menu(initMenu);
+
+                $('body > nav > ul > li > a').click(e => {
+                    e.preventDefault();
+                    menu(e.currentTarget);
+                });
+
+                const gswConfig = await fetchApi('GET', 'config');
                 if (gswConfig && gswConfig.config) {
-                    const editor = new JSONEditor(document.getElementById('config-form'), {
+                    configEditor = new JSONEditor(id('config-form'), {
                         "theme": "bootstrap4",
                         "iconlib": "fontawesome5",
                         "object_layout": "normal",
@@ -222,7 +316,7 @@
                         "lib_jquery": 0,
                         "lib_dompurify": 1,
                         "schema": {
-                            "title": "GSW Configuration",
+                            "title": "Configuration",
                             "type": "array",
                             "default": [],
                             "minItems": 0,
@@ -251,8 +345,7 @@
                                         "type": "integer",
                                         "format": "number",
                                         "options": {
-                                            "grid_columns": 6,
-                                            "hidden": Boolean(gswFeatures.steam)
+                                            "grid_columns": 6
                                         }
                                     },
                                     "host": {
@@ -324,8 +417,7 @@
                                         },
                                         "format": "table",
                                         "options": {
-                                            "grid_columns": 12,
-                                            "hidden": Boolean(gswFeatures.discord)
+                                            "grid_columns": 12
                                         }
                                     },
                                     "telegram": {
@@ -349,8 +441,7 @@
                                         },
                                         "format": "table",
                                         "options": {
-                                            "grid_columns": 12,
-                                            "hidden": Boolean(gswFeatures.telegram)
+                                            "grid_columns": 12
                                         }
                                     }
                                 },
@@ -361,96 +452,17 @@
                         startval: gswConfig.config
                     });
 
-
-
-                    editor.on('ready', () => {
-                        console.log('EDITOR::READY!!');
-
+                    configEditor.on('ready', () => {
+                        $('#config-form').submit(e => {
+                            e.preventDefault();
+                        });
                         $('#spinner').addClass('d-none');
-                        $('body > main').removeClass('d-none');
+                        $('#protected-section').removeClass('d-none');
 
-                        $('body > nav a[data-href]').click(async e => {//debug
-                            e.preventDefault();
-                            const href = e.currentTarget.dataset.href;
-                            console.log('CLICK < nav a[data-href] href', href);
-                            if (confirm('Call `' + href + '` ?')) {
-                                const btoken = await getBearerToken();
-                                if (btoken) {
-                                    const res = await getFetch(href, btoken);
-                                    if (res.status === 200) {
-                                        console.log('nav fetch 200', await res.json());
-                                        //todo success
-                                    } else {
-                                        console.error('nav fetch error', await res.json());
-                                        //todo error
-                                    }
-                                } else {
-                                    //todo error
-                                }
-                            }
-                        });
-
-                        editor.on('change', (maybe) => {//debug
-                                //todo: onchange (save badge)
-                            console.log('what?', maybe);//debug
-                        });
-
-                        let unsavedChanges = false;
-                        const leaving = (e) => {
-                            if (unsavedChanges == 1) {
-                                console.log('unsaved stuff', JSON.stringify(e));//debug
-                                return false;
-                            }
-
-                            return true;
-                        };
-
-                        window.onbeforeunload = leaving;
-
-                        $('#logout').click(async e => {
-                            e.preventDefault();
-
-                            if (await leaving()) {
-                                $('#top-menu').addClass('invisible');
-                                $('body > main').addClass('d-none');
-                                editor.destroy();
-                                localStorage.removeItem('btoken');
-                                //TODO: bye or F5/refresh
-                            }
-                        });
-
-                        $('#save').click(async e => {
-                            e.preventDefault();
-
-                            console.log('jq #save e', e);//dbg disable bs4 button
-                            //editor.activate();//debug
-                            //editor.deactivate();//debug
-                            if (!editor.isEnabled()) return;
-
-                            editor.disable();
-
-                            const uerr = editor.validate();
-                            if (uerr.length) {
-                                console.error('VALIDATION ERROR(S)', uerr);
-                                alert(uerr.map(e => e.path + ' ' + e.message).join('\n'));//todo error
-
-                                editor.enable();
-                            } else {
-                                // all cool
-                                console.log('editor valid!');
-                                const res = await postApi('config', editor.getValue());
-                                console.log('#save res', res);
-
-                                editor.enable();
-                            }
-                        });
-
-                        const button_holder = editor.root.theme.getHeaderButtonHolder();
-
-                        const exportBtn = editor.root.getButton('Export', 'save', 'Export As JSON File');
+                        const button_holder = configEditor.root.theme.getHeaderButtonHolder();
+                        const exportBtn = configEditor.root.getButton('Export', 'save', 'Export As JSON File');
                         button_holder.appendChild(exportBtn);
-                        editor.root.header.parentNode.insertBefore(button_holder, editor.root.header.nextSibling);
-
+                        configEditor.root.header.parentNode.insertBefore(button_holder, configEditor.root.header.nextSibling);
                         exportBtn.addEventListener('click', e => {
                             e.preventDefault();
                             const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
@@ -474,23 +486,181 @@
                                 }));
                             }
                         }, false);
+
+                        let editorCurrVal = configEditor.getValue();
+
+                        const getFormVals = () => {
+                            return JSON.stringify($('#config-form input, #config-form textarea, #config-form select').toArray().map(e => {
+                                if (e.type === 'checkbox') {
+                                    return e.checked ? e.value : undefined;
+                                }
+                                return e.value;
+                            }));
+                        }
+                        let formCurrVal = getFormVals();
+
+                        const checkForChanges = () => {
+                            if (formCurrVal !== getFormVals()) {
+                                unsavedChanges = true;
+                                $('#save-config').removeClass('d-none');
+                                $('#save-config').removeClass('animate__fadeOutDown');
+                            } else {
+                                unsavedChanges = false;
+                                $('#save-config').addClass('animate__fadeOutDown');
+                            }
+                        };
+
+                        $('#config-form input, #config-form textarea').keyup(checkForChanges);
+                        configEditor.on('change', checkForChanges);
+
+                        $('#save-config-submit').click(async e => {
+                            e.preventDefault();
+                            if (!configEditor.isEnabled()) return;
+                            configEditor.disable();
+                            $(e.currentTarget).addClass('loading');
+
+                            const uerr = configEditor.validate();
+                            if (uerr.length) {
+                                notif('warning', 'Validation errors', uerr.map(err => err.path + ' ' + err.message).join('<br>'), undefined, 3 + uerr.length);
+                            } else {
+                                const res = await fetchApi('POST', 'config', configEditor.getValue());
+                                if (res && res.message) {
+                                    editorCurrVal = configEditor.getValue();
+                                    $('#save-config').addClass('animate__fadeOutDown');
+                                    notif('success', '✔️ Changes saved succesfully.', undefined, undefined, 2);
+                                } else {
+                                    notif('danger', '⚠️ Error while saving config.', (res ? res.error : undefined), undefined, 3);
+                                }
+                            }
+
+                            $(e.currentTarget).removeClass('loading');
+                            configEditor.enable();
+                        });
+
+                        $('#save-config-reset').click(e => {
+                            e.preventDefault();
+                            if (!configEditor.isEnabled()) return;
+
+                            configEditor.setValue(editorCurrVal);
+                            $('#save-config').addClass('animate__fadeOutDown');
+                        });
+                    });
+
+                    $('button[data-api]').click(async e => {
+                        e.preventDefault();
+                        const endpoint = e.currentTarget.dataset.api;
+
+                        if (confirm('Sure you want to call `' + endpoint + '`?')) {
+                            const res = await fetchApi('GET', endpoint);
+                            if (res && res.message) {
+                                notif('success', res.message, undefined, undefined, 3);
+                            } else {
+                                notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
+                            }
+                        }
                     });
                 } else {
-                    console.error('!gswConfig', gswConfig);
-                    //TODO: show error alert
+                    notif('danger', '⚠️ Error while loading config.');
                 }
-
             }
-            // TODO: floating alert or json schema button to save / flush etc.
         });
 
-        async function postApi(endpoint, body) {
+        function logout() {
+            $('#save-config').addClass('animate__fadeOutDown');
+            $('#top-menu').addClass('invisible');
+            $('#protected-section').addClass('d-none');
+            $('#spinner').addClass('d-none');
+            $('#bye').removeClass('d-none');
+            $('body > footer').addClass('d-none');
+            if (configEditor) configEditor.destroy();
+            localStorage.removeItem('btoken');
+        }
+
+        function notif(type, html1, html2, html3, dismissable) {
+            let closeTimeout = 0;
+            if (typeof dismissable === 'number') {
+                closeTimeout = dismissable;
+                dismissable = true;
+            }
+
+            const el = $('<div/>', { class: 'alert alert-dismissible fade show shadow alert-' + type, role: 'alert' });
+            el.attr('role', 'alert');
+            if (html2) {
+                const h4 = $('<h4/>', { class: 'alert-heading', html: html1 });
+                el.append(h4);
+
+                const p1 = $('<p/>', { html: html2 });
+                el.append(p1);
+                if (html3) {
+                    el.append($('<hr/>'));
+                    const p2 = $('<p/>', { class: 'mb-0', html: html3 });
+                    el.append(p2);
+                }
+            } else {
+                el.html(html1);
+            }
+
+            if (dismissable !== false) {
+                const button = $('<button/>', { class: 'close', type: 'button', 'data-dismiss': 'alert', 'aria-label': 'Close' });
+
+                const span = $('<span/>', { 'aria-hidden': 'true', html: '&times;' });
+                button.append(span);
+                el.append(button);
+            }
+
+            el.alert();
+
+            if (closeTimeout > 0) {
+                const a = $(el);
+                const timer = setTimeout(a => {
+                    a.alert('close');
+                }, 1000 * closeTimeout, a);
+                a.on('close.bs.alert', function () {
+                    clearTimeout(timer);
+                })
+            }
+
+            $('#notif-container').append(el);
+
+            return el;
+        }
+
+        function menu(activate) {
+            const target = activate.getAttribute('href');
+
+            const menuItems = q('#top-menu > ul > li > a');
+            for (const a of menuItems) {
+                const at = a.getAttribute('href');
+                if (at === target) {
+                    $(at).removeClass('d-none');
+                    $(a).addClass('active');
+
+                    window.history.replaceState(null, null, document.location.pathname + target);
+                    window.localStorage.setItem('active.menu', target);
+                } else {
+                    $(at).addClass('d-none');
+                    $(a).removeClass('active');
+                }
+            }
+        }
+
+        async function fetchApi(method, endpoint, body) {
             let re = null;
+            let errMsg = '';
             try {
                 for (let i = 1; i <= 2; i++) {
                     const btoken = await getBearerToken();
                     if (btoken) {
-                        const res = await postFetch(enpoint, JSON.stringify(body), btoken);
+                        const res = await fetch('/' + endpoint, {
+                            method,
+                            body: (body ? JSON.stringify(body) : undefined),
+                            cache: 'no-cache',
+                            headers: {
+                                'x-btoken': btoken,
+                                'content-type': 'application/json'
+                            }
+                        });
+
                         if (res.status === 401) {
                             re = false;
                             window.localStorage.setItem('btoken', null);
@@ -504,62 +674,17 @@
                     }
                 }
             } catch (err) {
-                console.error('postApi: endpoint, err, re', endpoint, err, re);
+                console.error('reqApi: method, endpoint, body.length, err, re', method, endpoint, (body ? body.length : 0), err, re);
                 re = null;
             }
 
-            return re;
-        }
-
-        async function getApi(endpoint) {
-            let re = null;
-            try {
-                for (let i = 1; i <= 2; i++) {
-                    const btoken = await getBearerToken();
-                    if (btoken) {
-                        const res = await getFetch(endpoint, btoken);
-                        if (res.status === 401) {
-                            re = false;
-                            window.localStorage.removeItem('btoken');
-                        } else if (res.status === 200) {
-                            re = await res.json();
-                            break;
-                        }
-                    } else {
-                        $('#spinner').addClass('d-none');
-                        re = false;
-                        break;
-                    }
-                }
-            } catch (err) {
-                console.error('getApi: endpoint, err, re', endpoint, err, re);
-                re = null;
+            if (!re) {
+                logout();
+                if (errMsg !== '') errMsg = '<br><span class="text-error">API ' + errMsg + '</span>';
+                $('#bye > h3').html($('#bye > h3').html() + errMsg);
             }
 
             return re;
-        }
-
-        function getFetch(path, btoken) {
-            return fetch('/' + path, {
-                method: 'GET',
-                cache: 'no-cache',
-                headers: {
-                    'x-btoken': btoken,
-                    'content-type': 'application/json'
-                }
-            });
-        }
-
-        function postFetch(path, body, btoken) {
-            return fetch('/' + path, {
-                body,
-                method: 'POST',
-                cache: 'no-cache',
-                headers: {
-                    'x-btoken': btoken,
-                    'content-type': 'application/json'
-                }
-            });
         }
 
         async function getBearerToken() {
@@ -577,9 +702,16 @@
                 }
             }
 
-            const ans = await prompt('Admin secret');
-            if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
-            else window.localStorage.removeItem('btoken', null);
+            // TODO: use modalDialog
+            // && typeof window.showModalDialog === 'undefined' 
+            if (typeof HTMLDialogElement === 'function') {
+                const ans = await prompt('Admin secret');
+
+                if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
+                else window.localStorage.removeItem('btoken', null);
+            } else {
+
+            }
 
             return window.localStorage.getItem('btoken');
         }

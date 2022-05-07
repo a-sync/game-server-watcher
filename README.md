@@ -11,7 +11,7 @@ A simple discord/telegram bot that can be hosted on a free service to monitor yo
 	1. [Getting the source](#getting-the-source)
 	1. [Installation](#installation)
 	1. [Usage](#usage)
-	1. [Configuration](#configuration)
+	1. [Settings](#settings)
 	1. [Managing the service](#managing-the-service)
 1. [Deployment](#deployment)
 1. [How to Get Help](#how-to-get-help)
@@ -110,7 +110,7 @@ Build, start and auto restart on source changes:
 npm run dev
 ```
 
-## Configuration
+## Settings
 The behaviour of the watcher service can be configured via environmental variables (env vars).  
 `.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [default.env](./default.env) file.  
 
@@ -124,6 +124,9 @@ Refer to the wiki on how to get tokens for:
 The web app is served at `http://localhost:8080` by default.  
 _Make sure to configure a proper `SECRET` env var to enable access!_  
 
+### Configuration
+Updates the configuration file and restarts the service.
+
 ### Flush servers data
 Removes population history data. (configured by `graphHistoryHours` server option)
 
@@ -134,9 +137,6 @@ _The bot has no cleanup functionality, left over messages must be removed manual
 ### Flush telegram data
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
-
-### Save Configuration
-Updates the configuration file and restarts the service.
 
 **[Back to top](#table-of-contents)**
 
@@ -165,7 +165,6 @@ _If you can not install dependencies on the host, do a local install and copy th
 
 ### Configuration
 Create a writeable folder for the data storage. (configured by `DATA_PATH` env var, default: `./data/`)  
-Create a configuration file. (configured by `GSW_CONFIG` env var, default: `./config/default.config.json`)
 
 ### Running
 Run the program from the deployment folder:
@@ -191,6 +190,7 @@ node ./dist/server.js
 * [json-editor documentation](https://github.com/json-editor/json-editor#json-schema-support)
     * [json-editor demos](https://pmk65.github.io/jedemov2/dist/demo.html)
 * [bootstrap 4 reference](https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp)
+* [mustache documentation](https://github.com/janl/mustache.js#templates)
 
 **[Back to top](#table-of-contents)**
 

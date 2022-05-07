@@ -61,7 +61,7 @@ let loop;
                                 resolve(body);
                             });
                         });
-                        //TODO: validate
+                        // TODO: validate (ajv)
                         await (0, watcher_1.updateConfig)(JSON.parse(String(body)) || []);
                         await restart();
                         re.message = 'Configuration updated. Watcher restarted.';
@@ -73,7 +73,7 @@ let loop;
                 }
                 else if (reqPath[1] === 'flush' && ['servers', 'discord', 'telegram'].includes(reqPath[2])) {
                     await restart(reqPath[2]);
-                    re.message = reqPath[2] + ' data flushed';
+                    re.message = '🗑️ ' + reqPath[2].slice(0, 1).toUpperCase() + reqPath[2].slice(1) + ' data flushed.';
                 }
                 else {
                     status = 400;
@@ -113,7 +113,7 @@ async function restart(flush) {
     }
     if (flush) {
         if (DBG)
-            console.log('deleting ' + flush + ' data');
+            console.log('Deleting ' + flush + ' data');
         try {
             fs_1.default.unlinkSync('./data/' + flush + '.json');
         }

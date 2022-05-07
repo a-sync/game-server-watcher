@@ -70,7 +70,8 @@ createServer(async (req, res) => {
                                 resolve(body);
                             });
                         });
-                        //TODO: validate
+
+                        // TODO: validate (ajv)
                         await updateConfig(JSON.parse(String(body)) || [] as GameServerConfig[]);
                         await restart();
 
@@ -81,7 +82,7 @@ createServer(async (req, res) => {
                     }
                 } else if (reqPath[1] === 'flush' && ['servers', 'discord', 'telegram'].includes(reqPath[2])) {
                     await restart(reqPath[2]);
-                    re.message = reqPath[2] + ' data flushed';
+                    re.message = '🗑️ ' + reqPath[2].slice(0, 1).toUpperCase() + reqPath[2].slice(1) + ' data flushed.';
                 } else {
                     status = 400;
                     re.error = 'Invalid Request';
@@ -122,7 +123,7 @@ async function restart(flush?: string) {
     }
 
     if (flush) {
-        if (DBG) console.log('deleting ' + flush + ' data');
+        if (DBG) console.log('Deleting ' + flush + ' data');
         try {
             fs.unlinkSync('./data/' + flush + '.json');
         } catch (e) { }
