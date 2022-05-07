@@ -14,6 +14,9 @@ const APP_HOST = process.env.app_host || process.env.APP_HOST || '0.0.0.0';
 const APP_PORT = parseInt(process.env.app_port || process.env.APP_PORT || '8080', 10);
 const SECRET = process.env.SECRET || '';
 const DBG = Boolean(process.env.DBG || false);
+const FEET_STEAM = Boolean(process.env.STEAM_WEB_API_KEY);
+const FEET_DISCORD = Boolean(process.env.DISCORD_BOT_TOKEN);
+const FEET_TELEGRAM = Boolean(process.env.TELEGRAM_BOT_TOKEN);
 let loop;
 (0, http_1.createServer)(async (req, res) => {
     if (DBG)
@@ -37,7 +40,14 @@ let loop;
         let re = {};
         if (validateBearerToken(String(req.headers['x-btoken']))) {
             try {
-                if (reqPath[1] === 'config') {
+                if (reqPath[1] === 'features') {
+                    re.features = {
+                        steam: FEET_STEAM,
+                        discord: FEET_DISCORD,
+                        telegram: FEET_TELEGRAM
+                    };
+                }
+                else if (reqPath[1] === 'config') {
                     if (req.method === 'GET') {
                         re.config = await (0, watcher_1.readConfig)();
                     }

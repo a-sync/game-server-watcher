@@ -12,19 +12,20 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@latest/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@latest/dist/purify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mustache@latest/mustache.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@latest/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/@forevolve/bootstrap-dark@latest/dist/css/toggle-bootstrap-dark.min.css" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@latest/dist/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@latest/dist/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/css/jsoneditor.min.css"
         rel="stylesheet">
     <style>
@@ -115,16 +116,16 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark navbar-expand-lg sticky-top">
+    <nav id="top-menu" class="navbar navbar-dark navbar-expand-lg sticky-top invisible">
         <span class="navbar-brand mb-0 h1">
-            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30"
-                class="d-inline-block align-middle" alt="">
+            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle"
+                alt="">
             GSW Control Panel
         </span>
         <ul class="navbar-nav mr-auto">
-            <!-- <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link active" href="#">Configuration</a>
-            </li> -->
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                     aria-expanded="false">Flush data</a>
@@ -138,15 +139,16 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <button id="save" class="btn btn-outline-danger" type="submit">Save Configuration</button>
+            <button id="logout" class="btn btn-outline-danger" type="submit">Logout</button>
         </form>
     </nav>
-    <main class="container">
+    <main class="container d-none">
         <section class="row">
             <div class="col-12 text-center">
                 <div id="spinner" class="spinner-border m-2 justify-content-center text-primary mx-auto"></div>
             </div>
             <div class="col-12">
-                <div id="config-form-container" class="p-4 m-2 bg-light border border-white rounded-lg d-none">
+                <div id="config-form-container" class="p-4 m-2 bg-light border border-white rounded-lg">
                     <div id="config-form"></div>
                 </div>
             </div>
@@ -171,249 +173,327 @@
         }
 
         $(async () => {
-            setRandomBg();
-            setInterval(setRandomBg, 60000);
+            const gswFeatures = await getApi('features');
+            if (gswFeatures) {
+                await setRandomBg().catch(() => { });
+                setInterval(setRandomBg, 60000);
 
-            const gswConfig = await getConfig();
-            if (gswConfig && gswConfig.config) {
-                const editor = new JSONEditor(document.getElementById('config-form'), {
-                    "theme": "bootstrap4",
-                    "iconlib": "fontawesome5",
-                    "object_layout": "normal",
-                    "template": "mustache",
-                    "show_errors": "always",
-                    "required_by_default": 0,
-                    "no_additional_properties": 1,
-                    "display_required_only": 0,
-                    "remove_empty_properties": 1,
-                    "keep_oneof_values": 0,
-                    "ajax": 0,
-                    "ajaxCredentials": 0,
-                    "show_opt_in": 1,
-                    "disable_edit_json": 0,
-                    "disable_collapse": 1,
-                    "disable_properties": 1,
-                    "disable_array_add": 0,
-                    "disable_array_reorder": 1,
-                    "disable_array_delete": 0,
-                    "enable_array_copy": 1,
-                    "array_controls_top": 0,
-                    "disable_array_delete_all_rows": 1,
-                    "disable_array_delete_last_row": 1,
-                    "prompt_before_delete": 1,
-                    "lib_aceeditor": 0,
-                    "lib_autocomplete": 0,
-                    "lib_sceditor": 0,
-                    "lib_simplemde": 1,
-                    "lib_select2": 1,
-                    "lib_selectize": 0,
-                    "lib_choices": 0,
-                    "lib_flatpickr": 1,
-                    "lib_signaturepad": 0,
-                    "lib_mathjs": 0,
-                    "lib_cleavejs": 0,
-                    "lib_jodit": 0,
-                    "lib_jquery": 0,
-                    "lib_dompurify": 1,
-                    "schema": {
-                        "title": "GSW Configuration",
-                        "type": "array",
-                        "default": [],
-                        "minItems": 0,
-                        "uniqueItems": true,
-                        "format": "tabs-top",
-                        "items": {
-                            "title": "Game Server",
-                            "type": "object",
-                            "required": [
-                                "host",
-                                "port",
-                                "type"
-                            ],
-                            "properties": {
-                                "host": {
-                                    "title": "Host name or IP",
-                                    "type": "string"
-                                },
-                                "port": {
-                                    "title": "Port number",
-                                    "type": "integer",
-                                    "format": "number",
-                                    "minimum": 1,
-                                    "maximum": 65535
-                                },
-                                "type": {
-                                    "title": "Gamedig type",
-                                    "description": "Look for the <i>GameDig Type ID</i> in the <a target=\"_blank\" href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
-                                    "type": "string"
-                                },
-                                "appId": {
-                                    "title": "Steam App ID",
-                                    "description": "Look for the <i>AppID</i> in the <a target=\"_blank\" href=\"https://steamdb.info/apps/\">apps list</a>.",
-                                    "type": "integer",
-                                    "format": "number"
-                                },
-                                "updateIntervalMinutes": {
-                                    "title": "Update interval (minutes) [NOT IMPLEMENTED]",
-                                    "type": "integer",
-                                    "format": "range",
-                                    "default": 5,
-                                    "minimum": 1,
-                                    "maximum": 60
-                                },
-                                "graphHistoryHours": {
-                                    "title": "Graph history time span (hours)",
-                                    "type": "integer",
-                                    "default": 12,
-                                    "format": "range",
-                                    "minimum": 1,
-                                    "maximum": 24
-                                },
-                                "serverTimezone": {
-                                    "title": "Time zone of the server [NOT IMPLEMENTED]",
-                                    "type": "string",
-                                    "default": "Europe/London"
-                                },
-                                "discord": {
-                                    "type": "array",
-                                    "title": "Discord channels",
-                                    "description": "The simplest way to get a discord channel ID is to enable developer mode in settings, then right clicking on the channel name will give you the <b>Copy ID</b> option.",
-                                    "format": "table",
-                                    "minItems": 0,
-                                    "uniqueItems": true,
-                                    "items": {
-                                        "type": "object",
-                                        "title": "Channel",
-                                        "required": [
-                                            "channelId"
-                                        ],
-                                        "properties": {
-                                            "channelId": {
-                                                "title": "Channel ID",
-                                                "type": "string"
+                $('#top-menu').removeClass('invisible');
+
+                const gswConfig = await getApi('config');
+                if (gswConfig && gswConfig.config) {
+                    const editor = new JSONEditor(document.getElementById('config-form'), {
+                        "theme": "bootstrap4",
+                        "iconlib": "fontawesome5",
+                        "object_layout": "normal",
+                        "template": "mustache",
+                        "show_errors": "always",
+                        "required_by_default": 0,
+                        "no_additional_properties": 1,
+                        "display_required_only": 0,
+                        "remove_empty_properties": 1,
+                        "keep_oneof_values": 0,
+                        "ajax": 0,
+                        "ajaxCredentials": 0,
+                        "show_opt_in": 1,
+                        "disable_edit_json": 0,
+                        "disable_collapse": 1,
+                        "disable_properties": 1,
+                        "disable_array_add": 0,
+                        "disable_array_reorder": 1,
+                        "disable_array_delete": 0,
+                        "enable_array_copy": 1,
+                        "array_controls_top": 0,
+                        "disable_array_delete_all_rows": 1,
+                        "disable_array_delete_last_row": 1,
+                        "prompt_before_delete": 1,
+                        "lib_aceeditor": 0,
+                        "lib_autocomplete": 0,
+                        "lib_sceditor": 0,
+                        "lib_simplemde": 1,
+                        "lib_select2": 1,
+                        "lib_selectize": 0,
+                        "lib_choices": 0,
+                        "lib_flatpickr": 1,
+                        "lib_signaturepad": 0,
+                        "lib_mathjs": 0,
+                        "lib_cleavejs": 0,
+                        "lib_jodit": 0,
+                        "lib_jquery": 0,
+                        "lib_dompurify": 1,
+                        "schema": {
+                            "title": "GSW Configuration",
+                            "type": "array",
+                            "default": [],
+                            "minItems": 0,
+                            "uniqueItems": true,
+                            "format": "tabs-top",
+                            "items": {
+                                "title": "Game Server",
+                                "type": "object",
+                                "required": [
+                                    "host",
+                                    "port",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "title": "Gamedig type",
+                                        "description": "Look for the <i>GameDig Type ID</i> in the <a target=\"_blank\" href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
+                                        "type": "string",
+                                        "options": {
+                                            "grid_columns": 6
+                                        }
+                                    },
+                                    "appId": {
+                                        "title": "Steam App ID",
+                                        "description": "Look for the <i>AppID</i> in the <a target=\"_blank\" href=\"https://steamdb.info/apps/\">apps list</a>.",
+                                        "type": "integer",
+                                        "format": "number",
+                                        "options": {
+                                            "grid_columns": 6,
+                                            "hidden": Boolean(gswFeatures.steam)
+                                        }
+                                    },
+                                    "host": {
+                                        "title": "Host name or IP",
+                                        "type": "string",
+                                        "options": {
+                                            "grid_columns": 6
+                                        }
+                                    },
+                                    "port": {
+                                        "title": "Port number",
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 65535,
+                                        "format": "number",
+                                        "options": {
+                                            "grid_columns": 6
+                                        }
+                                    },
+                                    "updateIntervalMinutes": {
+                                        "title": "Update interval (minutes) [NOT IMPLEMENTED]",
+                                        "type": "integer",
+                                        "default": 5,
+                                        "minimum": 1,
+                                        "maximum": 60,
+                                        "format": "range",
+                                        "options": {
+                                            "grid_columns": 12
+                                        }
+                                    },
+                                    "graphHistoryHours": {
+                                        "title": "Graph history time span (hours)",
+                                        "type": "integer",
+                                        "default": 12,
+                                        "minimum": 1,
+                                        "maximum": 24,
+                                        "format": "range",
+                                        "options": {
+                                            "grid_columns": 12
+                                        }
+                                    },
+                                    "serverTimezone": {
+                                        "title": "Time zone of the server [NOT IMPLEMENTED]",
+                                        "default": "Europe/London",
+                                        "type": "string",
+                                        "options": {
+                                            "grid_columns": 6,
+                                            "grid_break": true
+                                        }
+                                    },
+                                    "discord": {
+                                        "type": "array",
+                                        "title": "Discord channels",
+                                        "description": "The simplest way to get a discord channel ID is to enable developer mode in settings, then right clicking on the channel name will give you the <b>Copy ID</b> option.",
+                                        "minItems": 0,
+                                        "uniqueItems": true,
+                                        "items": {
+                                            "type": "object",
+                                            "title": "Channel",
+                                            "required": [
+                                                "channelId"
+                                            ],
+                                            "properties": {
+                                                "channelId": {
+                                                    "title": "Channel ID",
+                                                    "type": "string"
+                                                }
                                             }
+                                        },
+                                        "format": "table",
+                                        "options": {
+                                            "grid_columns": 12,
+                                            "hidden": Boolean(gswFeatures.discord)
+                                        }
+                                    },
+                                    "telegram": {
+                                        "type": "array",
+                                        "title": "Telegram chats",
+                                        "description": "The simplest way to get a telegram chat ID is to invite <a target=\"_blank\" href=\"https://telegram.me/getidsbot\">@getidsbot</a> and use <code>/start</code> to make it post (among other data) the chat ID.",
+                                        "minItems": 0,
+                                        "uniqueItems": true,
+                                        "items": {
+                                            "type": "object",
+                                            "title": "Chat",
+                                            "required": [
+                                                "chatId"
+                                            ],
+                                            "properties": {
+                                                "chatId": {
+                                                    "type": "string",
+                                                    "title": "Chat ID"
+                                                }
+                                            }
+                                        },
+                                        "format": "table",
+                                        "options": {
+                                            "grid_columns": 12,
+                                            "hidden": Boolean(gswFeatures.telegram)
                                         }
                                     }
                                 },
-                                "telegram": {
-                                    "type": "array",
-                                    "title": "Telegram chats",
-                                    "description": "The simplest way to get a telegram chat ID is to invite <a target=\"_blank\" href=\"https://telegram.me/getidsbot\">@getidsbot</a> and use <code>/start</code> to make it post (among other data) the chat ID.",
-                                    "format": "table",
-                                    "minItems": 0,
-                                    "uniqueItems": true,
-                                    "items": {
-                                        "type": "object",
-                                        "title": "Chat",
-                                        "required": [
-                                            "chatId"
-                                        ],
-                                        "properties": {
-                                            "chatId": {
-                                                "type": "string",
-                                                "title": "Chat ID"
-                                            }
-                                        }
-                                    }
-                                }
+                                "format": "grid",
+                                "headerTemplate": "{{ self.type }}:{{ self.host }}:{{ self.port }}"
                             }
-                        }
-                    },
-                    startval: gswConfig.config
-                });
+                        },
+                        startval: gswConfig.config
+                    });
 
-                //todo: onchange (save badge)
 
-                editor.on('ready', function () {
-                    console.log('EDITOR::READY!!');
 
-                    $('#spinner').addClass('d-none');
-                    $('#config-form-container').removeClass('d-none');
+                    editor.on('ready', () => {
+                        console.log('EDITOR::READY!!');
 
-                    $('body > nav a[data-href]').click(async e => {
-                        e.preventDefault();
-                        const href = e.currentTarget.dataset.href;
-                        console.log('CLICK < nav a[data-href] href', href);
-                        if (confirm('Call `' + href + '` ?')) {
-                            const btoken = await getBearerToken();
-                            if (btoken) {
-                                const res = await getFetch(href, btoken);
-                                if (res.status === 200) {
-                                    console.log('nav fetch 200', await res.json());
-                                    //todo success
+                        $('#spinner').addClass('d-none');
+                        $('body > main').removeClass('d-none');
+
+                        $('body > nav a[data-href]').click(async e => {//debug
+                            e.preventDefault();
+                            const href = e.currentTarget.dataset.href;
+                            console.log('CLICK < nav a[data-href] href', href);
+                            if (confirm('Call `' + href + '` ?')) {
+                                const btoken = await getBearerToken();
+                                if (btoken) {
+                                    const res = await getFetch(href, btoken);
+                                    if (res.status === 200) {
+                                        console.log('nav fetch 200', await res.json());
+                                        //todo success
+                                    } else {
+                                        console.error('nav fetch error', await res.json());
+                                        //todo error
+                                    }
                                 } else {
-                                    console.error('nav fetch error', await res.json());
                                     //todo error
                                 }
-                            } else {
-                                //todo error
                             }
-                        }
-                    });
-
-                    $('#save').click(async e => {
-                        e.preventDefault();
-
-                        const uerr = editor.validate();
-                        if (uerr.length) {
-                            console.error('VALIDATION ERROR(S)', uerr);
-                            alert(uerr.map(e => e.path + ' ' + e.message).join('\n'));//todo error
-                        } else {
-                            // all cool
-                            console.log('editor valid!');
-                            const res = await postConfig(editor.getValue());
-                            console.log('#save res', res);
-                        }
-                    });
-
-                    const button_holder = editor.root.theme.getHeaderButtonHolder();
-
-                    const exportBtn = editor.root.getButton('Export', 'save', 'Export As JSON File');
-                    button_holder.appendChild(exportBtn);
-                    editor.root.header.parentNode.insertBefore(button_holder, editor.root.header.nextSibling);
-
-                    exportBtn.addEventListener('click', e => {
-                        e.preventDefault();
-                        const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
-                        const filename = dt + '-gsw.config.json';
-                        const blob = new Blob([JSON.stringify(editor.getValue(), null, 2)], {
-                            type: 'application/json;charset=utf-8'
                         });
 
-                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                            window.navigator.msSaveOrOpenBlob(blob, filename);
-                        } else {
-                            const a = document.createElement('a');
-                            a.download = filename;
-                            a.href = URL.createObjectURL(blob);
-                            a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+                        editor.on('change', (maybe) => {//debug
+                                //todo: onchange (save badge)
+                            console.log('what?', maybe);//debug
+                        });
 
-                            a.dispatchEvent(new MouseEvent('click', {
-                                'view': window,
-                                'bubbles': true,
-                                'cancelable': false
-                            }));
-                        }
-                    }, false);
-                });
-            } else {
-                console.error('!gswConfig', gswConfig);
-                //TODO: show error alert
+                        let unsavedChanges = false;
+                        const leaving = (e) => {
+                            if (unsavedChanges == 1) {
+                                console.log('unsaved stuff', JSON.stringify(e));//debug
+                                return false;
+                            }
+
+                            return true;
+                        };
+
+                        window.onbeforeunload = leaving;
+
+                        $('#logout').click(async e => {
+                            e.preventDefault();
+
+                            if (await leaving()) {
+                                $('#top-menu').addClass('invisible');
+                                $('body > main').addClass('d-none');
+                                editor.destroy();
+                                localStorage.removeItem('btoken');
+                                //TODO: bye or F5/refresh
+                            }
+                        });
+
+                        $('#save').click(async e => {
+                            e.preventDefault();
+
+                            console.log('jq #save e', e);//dbg disable bs4 button
+                            //editor.activate();//debug
+                            //editor.deactivate();//debug
+                            if (!editor.isEnabled()) return;
+
+                            editor.disable();
+
+                            const uerr = editor.validate();
+                            if (uerr.length) {
+                                console.error('VALIDATION ERROR(S)', uerr);
+                                alert(uerr.map(e => e.path + ' ' + e.message).join('\n'));//todo error
+
+                                editor.enable();
+                            } else {
+                                // all cool
+                                console.log('editor valid!');
+                                const res = await postApi('config', editor.getValue());
+                                console.log('#save res', res);
+
+                                editor.enable();
+                            }
+                        });
+
+                        const button_holder = editor.root.theme.getHeaderButtonHolder();
+
+                        const exportBtn = editor.root.getButton('Export', 'save', 'Export As JSON File');
+                        button_holder.appendChild(exportBtn);
+                        editor.root.header.parentNode.insertBefore(button_holder, editor.root.header.nextSibling);
+
+                        exportBtn.addEventListener('click', e => {
+                            e.preventDefault();
+                            const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
+                            const filename = dt + '-gsw.config.json';
+                            const blob = new Blob([JSON.stringify(editor.getValue(), null, 2)], {
+                                type: 'application/json;charset=utf-8'
+                            });
+
+                            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                                window.navigator.msSaveOrOpenBlob(blob, filename);
+                            } else {
+                                const a = document.createElement('a');
+                                a.download = filename;
+                                a.href = URL.createObjectURL(blob);
+                                a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+
+                                a.dispatchEvent(new MouseEvent('click', {
+                                    'view': window,
+                                    'bubbles': true,
+                                    'cancelable': false
+                                }));
+                            }
+                        }, false);
+                    });
+                } else {
+                    console.error('!gswConfig', gswConfig);
+                    //TODO: show error alert
+                }
+
             }
-
             // TODO: floating alert or json schema button to save / flush etc.
         });
 
-        async function postConfig(body) {
+        async function postApi(endpoint, body) {
             let re = null;
             try {
                 for (let i = 1; i <= 2; i++) {
                     const btoken = await getBearerToken();
                     if (btoken) {
-                        const res = await postFetch('config', JSON.stringify(body), btoken);
+                        const res = await postFetch(enpoint, JSON.stringify(body), btoken);
                         if (res.status === 401) {
                             re = false;
-                            window.localStorage.btoken = null;
+                            window.localStorage.setItem('btoken', null);
                         } else if (res.status === 200) {
                             re = await res.json();
                             break;
@@ -424,34 +504,35 @@
                     }
                 }
             } catch (err) {
-                console.error('getConfig: err, re', err, re);
+                console.error('postApi: endpoint, err, re', endpoint, err, re);
                 re = null;
             }
 
             return re;
         }
 
-        async function getConfig() {
+        async function getApi(endpoint) {
             let re = null;
             try {
                 for (let i = 1; i <= 2; i++) {
                     const btoken = await getBearerToken();
                     if (btoken) {
-                        const res = await getFetch('config', btoken);
+                        const res = await getFetch(endpoint, btoken);
                         if (res.status === 401) {
                             re = false;
-                            window.localStorage.btoken = null;
+                            window.localStorage.removeItem('btoken');
                         } else if (res.status === 200) {
                             re = await res.json();
                             break;
                         }
                     } else {
+                        $('#spinner').addClass('d-none');
                         re = false;
                         break;
                     }
                 }
             } catch (err) {
-                console.error('getConfig: err, re', err, re);
+                console.error('getApi: endpoint, err, re', endpoint, err, re);
                 re = null;
             }
 
@@ -481,34 +562,26 @@
             });
         }
 
-        function delayedPrompt(q) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    return resolve(prompt(q));
-                }, 1000);
-            });
-        }
-
         async function getBearerToken() {
-            if (window.localStorage.btoken) {
-                const salt = window.localStorage.btoken.slice(0, window.localStorage.btoken.length - 141);
-                const valid = window.localStorage.btoken.slice(-141, -128);
-                const hash = window.localStorage.btoken.slice(-128);
-
+            const bt = window.localStorage.getItem('btoken');
+            if (bt) {
+                const salt = bt.slice(0, bt.length - 141);
+                const valid = bt.slice(-141, -128);
+                const hash = bt.slice(-128);
                 if (salt.length > 24
                     && valid.length === 13
                     && hash.length === 128
                     && /^\d{13}$/.test(valid)
                     && Date.now() <= Number(valid)) {
-                    return window.localStorage.btoken;
+                    return bt;
                 }
             }
 
-            const ans = await delayedPrompt('Admin secret');
-            if (ans) window.localStorage.btoken = await generateBearerToken(ans);
-            else window.localStorage.btoken = null;
+            const ans = await prompt('Admin secret');
+            if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
+            else window.localStorage.removeItem('btoken', null);
 
-            return window.localStorage.btoken;
+            return window.localStorage.getItem('btoken');
         }
 
         async function generateBearerToken(secret) {
@@ -528,13 +601,23 @@
                 'https://i.imgur.com/iKTfM8z.png'
             ];
             const bgImg = new Image();
-            bgImg.onload = () => {
-                document.body.style.backgroundAttachment = 'scroll';
-                document.body.style.backgroundRepeat = 'repeat';
-                document.body.style.backgroundSize = 'auto';
-                document.body.style.backgroundImage = 'url(' + bgImg.src + ')';
-            }
+
+
             bgImg.src = bgs[Math.floor(Math.random() * bgs.length)];
+
+            return new Promise((resolve, reject) => {
+                bgImg.onload = () => {
+                    document.body.style.backgroundAttachment = 'scroll';
+                    document.body.style.backgroundRepeat = 'repeat';
+                    document.body.style.backgroundSize = 'auto';
+                    document.body.style.backgroundImage = 'url(' + bgImg.src + ')';
+                    return resolve(bgImg);
+                };
+
+                bgImg.onerror = () => {
+                    return reject(bgImg);
+                };
+            });
         }
     </script>
 </body>
