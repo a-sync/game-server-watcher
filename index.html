@@ -465,6 +465,9 @@
                             configEditor.setValue(editorCurrVal);
                             unsavedChanges = false;
                             dismissSaveConfig();
+                            if (formCurrVal !== actualFormValues()) {
+                                document.location.href = document.location.pathname;
+                            }
                         });
                     });
                 } else {
