@@ -177,9 +177,9 @@ This project was inpired by (the sudden disappearance of) "_Game Status#5371_" b
 
 IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
 
-GSW Control Panel icon stolen from [imgur](https://imgur.com/gallery/o8ENYHq).  
+GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "The Watcher" by Jeffrey Veregge.  
 
-Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds).  
+Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) and [imgur](https://imgur.com).  
 
 All other libraries and dependencies are listed in the _package.json file (dependencies/devDependencies section)_ and the _index.html file (head section)_.  
 
