@@ -10,7 +10,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link href="https://cdn.jsdelivr.net/npm/@forevolve/bootstrap-dark@latest/dist/css/toggle-bootstrap-dark.min.css" rel="stylesheet"> -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marvel&family=Roboto&display=swap" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
@@ -40,7 +42,6 @@
             background-color: #000;
             background-position: top center;
             transition: background-image 2s ease-in-out 0.5s;
-
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-size: cover;
@@ -53,8 +54,8 @@
             width: 40px;
             height: 40px;
         }
-        body>nav button[data-api] {
-            margin-right: 1rem;
+        .navbar-brand {
+            font-family: 'Marvel', Helvetica, Arial, sans-serif;
         }
         #spinner {
             zoom: 2;
@@ -123,7 +124,7 @@
 <body>
     <nav id="top-menu" class="navbar navbar-expand-lg navbar-dark invisible">
         <span class="navbar-brand mb-0 h1">
-            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle" alt="">
+            <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle mr-sm-1 mr-md-2 mr-lg-3" alt="">
             GSW Control Panel
         </span>
         <ul class="navbar-nav mr-auto">
@@ -257,7 +258,7 @@
                         "disable_array_add": 0,
                         "disable_array_reorder": 1,
                         "disable_array_delete": 0,
-                        "enable_array_copy": 1,
+                        "enable_array_copy": 0,
                         "array_controls_top": 0,
                         "disable_array_delete_all_rows": 1,
                         "disable_array_delete_last_row": 1,
@@ -411,17 +412,15 @@
                     });
 
                     configEditor.on('ready', () => {
+                        addExportButton();
                         $('#config-form').submit(e => {
                             e.preventDefault();
                         });
                         $('#spinner').addClass('d-none');
                         $('#protected-section').removeClass('d-none');
 
-                        addExportButton();
-
                         let editorCurrVal = configEditor.getValue();
                         let formCurrVal = actualFormValues();
-
                         $('#config-form input, #config-form textarea').keyup(() => {
                             unsavedChanges = checkForChanges(formCurrVal);
                         });
@@ -443,7 +442,7 @@
                                 if (res && res.message) {
                                     editorCurrVal = configEditor.getValue();
                                     formCurrVal = actualFormValues();
-                                    $('#save-config').addClass('animate__fadeOutDown');
+                                    dismissSaveConfig();
                                     notif('success', '✔️ Changes saved successfully.', undefined, undefined, 2);
                                 } else {
                                     notif('danger', '⚠️ Error while saving config.', (res ? res.error : undefined), undefined, 3);
@@ -459,7 +458,7 @@
                             if (!configEditor.isEnabled()) return;
                             configEditor.setValue(editorCurrVal);
                             unsavedChanges = false;
-                            $('#save-config').addClass('animate__fadeOutDown');
+                            dismissSaveConfig();
                         });
                     });
                 } else {
@@ -483,6 +482,15 @@
             }
         });
 
+        function dismissSaveConfig() {
+            $('#save-config').addClass('animate__fadeOutDown');
+            setTimeout(() => {
+                if ($('#save-config').hasClass('animate__fadeOutDown')) {
+                    $('#save-config').addClass('d-none');
+                }
+            }, 2000, );
+        }
+
         // NOTE: sadly configEditor.getValue() can not be trusted when the 
         //       change event originates from a keypress event
         function actualFormValues() {
@@ -501,7 +509,7 @@
                 $('#save-config').removeClass('animate__fadeOutDown');
                 return true;
             } else {
-                $('#save-config').addClass('animate__fadeOutDown');
+                dismissSaveConfig();
                 return false;
             }
         };
@@ -538,7 +546,7 @@
 
         function logout() {
             $(window).off('beforeunload');
-            $('#save-config').addClass('animate__fadeOutDown');
+            $('#save-config').addClass('d-none');
             $('#top-menu').addClass('invisible');
             $('#protected-section').addClass('d-none');
             $('#spinner').addClass('d-none');
