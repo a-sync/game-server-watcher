@@ -1,28 +1,5 @@
-# Game Server Watcher
+# <img src="https://i.imgur.com/2Ok3pxv.png" width="40" align="left"> Game Server Watcher
 A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
-
-## Table of Contents
-<details>
-<summary>[SHOW / HIDE]</summary>
-
-1. [About the Project](#about-the-project)
-1. [Getting Started](#getting-started)
-	1. [Requirements](#requirements)
-	1. [Getting the source](#getting-the-source)
-	1. [Installation](#installation)
-	1. [Usage](#usage)
-	1. [Settings](#settings)
-	1. [Managing the service](#managing-the-service)
-1. [Deployment](#deployment)
-1. [How to Get Help](#how-to-get-help)
-1. [Further Reading](#further-reading)
-1. [Contributing](#contributing)
-1. [License](#license)
-1. [Authors](#authors)
-1. [Acknowledgments](#acknowledgments)
-	1. [Similar projects](#similar-projects)
-
-</details>
 	
 # About the Project
 The main goals of this repo:
@@ -45,8 +22,6 @@ The main goals of this repo:
 ### GSW Control Panel
 ![gsw control panel](https://user-images.githubusercontent.com/14183614/167320780-879296ce-6562-4894-a23e-a2b0aa970c47.png)
 
-**[Back to top](#table-of-contents)**
-
 # Project Status
 The code itself is stable and continuously tested/deployed from the cloud branch.  
 
@@ -68,8 +43,6 @@ The project is in a very early stage. More detailed customization options and ad
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (azure, aws, etc.)
-
-**[Back to top](#table-of-contents)**
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.  
@@ -141,8 +114,6 @@ _The bot has no cleanup functionality, left over messages must be removed manual
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
-**[Back to top](#table-of-contents)**
-
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).  
 
@@ -175,14 +146,10 @@ Run the program from the deployment folder:
 node ./dist/server.js
 ```
 
-**[Back to top](#table-of-contents)**
-
 # How to Get Help
 * Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 * Check the [wiki](https://github.com/a-sync/game-server-watcher/wiki)
 * Ask a [question](https://github.com/a-sync/game-server-watcher/discussions/new?category=q-a)
-
-**[Back to top](#table-of-contents)**
 
 # Further Reading
 * [gamedig supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt)
@@ -195,23 +162,15 @@ node ./dist/server.js
 * [bootstrap 4 reference](https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp)
 * [mustache documentation](https://github.com/janl/mustache.js#templates)
 
-**[Back to top](#table-of-contents)**
-
 # Contributing
 Public contributions are welcome!  
 You can create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or feel free to open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes or work-in-progress features.  
 
-**[Back to top](#table-of-contents)**
-
 # License
 This project is licensed under the AGPL License - see [LICENSE](./LICENSE) file for details.
 
-**[Back to top](#table-of-contents)**
-
 # Authors
 Check the list of [contributors](https://github.com/a-sync/game-server-watcher/contributors) who participated in this project.
-
-**[Back to top](#table-of-contents)**
 
 # Acknowledgments
 This project was inpired by (the sudden disappearance of) "_Game Status#5371_" bot and its creator [Ramzi Saheb](https://github.com/Ramzi-Sah) on discord.  
@@ -232,5 +191,3 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/msniveau/discord-statusbotv2
 * https://github.com/kevinkjt2000/bowser
 * https://github.com/dev-this/server-query-bot
-
-**[Back to top](#table-of-contents)**
