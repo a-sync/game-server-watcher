@@ -21,12 +21,12 @@ The main goals of this repo:
 
 ### GSW Control Panel
 ![gsw control panel](https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png)
+</details>
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the cloud branch.  
 
 The project is in a very early stage. More detailed customization options and additional features will be added as requested.  
-</details>
 
 ### Possible features and configuration options to add in the future
  * optional player list
@@ -177,7 +177,7 @@ This project was inpired by (the sudden disappearance of) "_Game Status#5371_" b
 
 IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
 
-GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "The Watcher" by Jeffrey Veregge.  
+GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by Jeffrey Veregge.  
 
 Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) and [imgur](https://imgur.com).  
 
