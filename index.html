@@ -239,11 +239,8 @@
                 const leaving = ev => {
                     if (unsavedChanges) {
                         const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
-                        if (ev) {
-                            return confirmText;
-                        } else {
-                            return confirm(confirmText);
-                        }
+                        if (ev) return confirmText;
+                        else return confirm(confirmText);
                     }
 
                     if (!ev) return true;
@@ -467,7 +464,7 @@
                             e.preventDefault();
                             const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
                             const filename = dt + '-gsw.config.json';
-                            const blob = new Blob([JSON.stringify(editor.getValue(), null, 2)], {
+                            const blob = new Blob([JSON.stringify(configEditor.getValue(), null, 2)], {
                                 type: 'application/json;charset=utf-8'
                             });
 
@@ -502,8 +499,7 @@
 
                         const checkForChanges = () => {
                             if (formCurrVal !== getFormVals()) {
-                                console.log('CHANGED VALS', formCurrVal, getFormVals());
-                                console.log('CHANGED', formCurrVal.length, getFormVals().length);
+                                // console.log('CONFIG FORM CHANGED', formCurrVal, getFormVals());
                                 unsavedChanges = true;
                                 $('#save-config').removeClass('d-none');
                                 $('#save-config').removeClass('animate__fadeOutDown');
