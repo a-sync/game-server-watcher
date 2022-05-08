@@ -598,7 +598,7 @@
             $('#bye').removeClass('d-none');
             $('body > footer').addClass('d-none');
             if (configEditor) configEditor.destroy();
-            localStorage.removeItem('btoken');
+            window.localStorage.removeItem('btoken');
         }
 
         function notif(type, html1, html2, html3, dismissable) {
@@ -711,7 +711,7 @@
 
                         if (res.status === 401) {
                             re = false;
-                            window.localStorage.setItem('btoken', null);
+                            window.localStorage.removeItem('btoken');
                         } else if (res.status === 200) {
                             re = await res.json();
                             break;
@@ -745,18 +745,18 @@
                     && valid.length === 13
                     && hash.length === 128
                     && /^\d{13}$/.test(valid)
-                    && Date.now() <= Number(valid)) {
+                    && Date.now() < Number(valid)) {
                     return bt;
                 }
             }
 
             // TODO: use modalDialog
-            // && typeof window.showModalDialog === 'undefined' 
+            // if (typeof window.showModalDialog === 'function') {} else
             if (typeof HTMLDialogElement === 'function') {
                 const ans = await prompt('Admin secret');
 
                 if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
-                else window.localStorage.removeItem('btoken', null);
+                else window.localStorage.removeItem('btoken');
             } else {
                 const hint = '<br><span class="text-error">API Close the tab to re-enable dialog boxes.</span>';
                 $('#bye > h3').html($('#bye > h3').html() + hint);
