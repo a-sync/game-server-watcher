@@ -11,6 +11,7 @@ const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE || '0', 10);
 const APP_HOST = process.env.app_host || process.env.APP_HOST || '0.0.0.0';
 const APP_PORT = parseInt(process.env.app_port || process.env.APP_PORT || '8080', 10);
 const SECRET = process.env.SECRET || '';
+const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
 const FEET_STEAM = Boolean(process.env.STEAM_WEB_API_KEY);
 const FEET_DISCORD = Boolean(process.env.DISCORD_BOT_TOKEN);
@@ -125,7 +126,7 @@ async function restart(flush?: string) {
     if (flush) {
         if (DBG) console.log('Deleting ' + flush + ' data');
         try {
-            fs.unlinkSync('./data/' + flush + '.json');
+            fs.unlinkSync(DATA_PATH + flush + '.json');
         } catch (e) { }
     }
 
