@@ -67,7 +67,7 @@ export class GameServer {
         if (DBG) console.log('gs.up', this.config.host, this.config.port);
         let info = await this.gamedig();
 
-        if (DBG) console.log('gs.gamedig', info);
+        if (DBG) console.log('gs.gamedig', Object.assign({}, info, { players: undefined }));
         if (!info && STEAM_WEB_API_KEY && this.config.appId) {
             info = await this.steam();
             if (DBG) console.log('gs.steam', info);
