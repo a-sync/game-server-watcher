@@ -103,7 +103,7 @@ _Make sure to configure a proper `SECRET` env var to enable access!_
 ### Configuration
 Updates the configuration file and restarts the service.
 
-### Flush servers data
+### Flush game servers data
 Removes population history data. (configured by _Graph history time span_ server option)
 
 ### Flush discord data

@@ -38,6 +38,7 @@
             padding: 0;
             font-family: 'Roboto', Helvetica, Arial, sans-serif;
         }
+
         body {
             background-color: #000;
             background-position: top center;
@@ -47,48 +48,65 @@
             background-size: cover;
             background-image: url('https://i.imgur.com/lTly23N.png');
         }
+
         body>nav {
             background-color: rgba(0, 0, 0, 0.75);
         }
+
         .navbar-brand img {
             width: 40px;
             height: 40px;
         }
-        .navbar-brand {
+
+        .navbar-brand span {
+            color: #fff;
             font-family: 'Marvel', Helvetica, Arial, sans-serif;
+            text-decoration: none;
+            text-shadow: 0 0 4px #fff;
+            text-decoration: none;
         }
+
         #spinner {
             zoom: 2;
             opacity: 0.7;
         }
+
         #protected-section>div>div {
             background-color: rgba(245, 250, 255, 0.75);
         }
+
         #config-form h3.card_title>label {
             font-weight: 900;
         }
+
         #config-form h3>label {
             margin-right: 1rem;
         }
+
         #config-form div[data-schemaid="root"]>div.card-body>div>div {
             margin-bottom: 3rem;
         }
+
         #config-form div[data-schemaid="root"]>div.card-body>div>div:last-child {
             margin-bottom: inherit;
         }
+
         #config-form button {
             vertical-align: top;
         }
+
         #config-form input[type=checkbox] {
             vertical-align: middle;
             zoom: 2;
             cursor: pointer;
             margin-right: 0.25rem !important;
         }
+
         #config-form .btn-group {
             display: inline-flex !important;
             margin-bottom: 0.25rem;
         }
+
         #config-form .btn-group button {
             margin-left: 1px;
             margin-right: 1px;
@@ -97,33 +115,50 @@
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
         }
+
         #config-form .btn-group.je-object__controls {
             margin: 0 0 0.75rem 0;
         }
+
         #config-form .json-editor-btn-add {
             background-color: darkgreen;
         }
+
         #config-form .json-editor-btn-delete {
             background-color: darkred;
         }
+
         footer>a>svg {
             fill: #c6cbd1;
         }
+
         #save-config {
             background-color: rgba(15, 20, 25, 0.9);
         }
-        #save-config ._load_btn {
+
+        #save-config ._saving_btn {
             display: none;
         }
-        #save-config .loading ._load_btn {
+
+        #save-config ._btn ._saving_btn {
             display: inherit;
         }
-        #save-config .loading ._save_btn {
+
+        #save-config ._btn ._save_btn {
             display: none;
         }
-        #F5-btn {
-            cursor: pointer;
+
+        #bye>h3 {
+            text-shadow: 0 0 6px #fff;
         }
+
+        #bye>div>a:hover {
+            text-decoration: none;
+        }
+        #bye kbd {
+            box-shadow: 0 0.125rem 0.25rem rgb(255, 255, 255, 0.75) !important;
+        }
+
     </style>
 </head>
 
@@ -131,14 +166,14 @@
     <nav id="top-menu" class="navbar navbar-expand-lg navbar-dark invisible">
         <span class="navbar-brand mb-0 h1">
             <img src="https://i.imgur.com/2Ok3pxv.png" width="30" height="30" class="d-inline-block align-middle mr-sm-1 mr-md-2 mr-lg-3" alt="">
-            GSW Control Panel
+            <span>GSW Control Panel</span>
         </span>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a id="top-menu-configuration" class="nav-link active" href="#configuration">Configuration</a>
             </li>
             <li class="nav-item">
-                <a id="top-menu-flush" class="nav-link" href="#flush">Flush data</a>
+                <a id="top-menu-flush" class="nav-link" href="#flush-data">Flush data</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -152,13 +187,13 @@
                 <div id="configuration" class="p-4 m-2 bg-light border border-white rounded-lg shadow-lg">
                     <form method="post" id="config-form"></form>
                 </div>
-                <div id="flush" class="p-4 m-2 bg-light border border-white rounded-lg d-none shadow-lg">
-                    <div id="Flush container">
+                <div id="flush-data" class="p-4 m-2 bg-light border border-white rounded-lg d-none shadow-lg">
+                    <div id="flush-data-container">
                         <h3 class="card-title">Flush data</h3>
                         <div class="card">
                             <div class="card-body">
                                 <button type="button" class="btn btn-lg btn-danger" data-api="flush/servers">Flush
-                                    servers data</button>
+                                    game servers data</button>
                                 <button type="button" class="btn btn-lg btn-primary" data-api="flush/discord">Flush
                                     discord data</button>
                                 <button type="button" class="btn btn-lg btn-info" data-api="flush/telegram">Flush
@@ -178,7 +213,7 @@
                     Refresh the page to login...
                 </h3>
                 <div class="text-center">
-                    <kbd id="F5-btn" onclick="document.location.href=document.location.pathname" class="bg-light text-dark">F5</kbd>
+                    <a href=""><kbd class="bg-light text-dark d-inline-block">F5</kbd></a>
                 </div>
             </div>
         </section>
@@ -195,8 +230,8 @@
                         <button id="save-config-reset" class="btn btn-sm text-light" type="reset">Reset</button>
                         <button id="save-config-submit" class="btn btn-sm btn-success" type="submit">
                             <span class="_save_btn">Save</span>
-                            <span class="spinner-grow spinner-grow-sm _load_btn" role="status" aria-hidden="true"></span>
-                            <span class="_load_btn">Saving...</span>
+                            <span class="spinner-grow spinner-grow-sm _saving_btn" role="status" aria-hidden="true"></span>
+                            <span class="_saving_btn">Saving...</span>
                         </button>
                     </form>
                 </div>
@@ -223,13 +258,14 @@
                 setInterval(setRandomBg, 60000);
 
                 let unsavedChanges = false;
-                const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
+                const confirmText = 'You have unsaved changes! Are you sure you want to ';
                 $(window).on('beforeunload', e => {
-                    if (unsavedChanges) return confirmText;
+                    if (unsavedChanges) return confirmText + 'navigate away?';
                 });
                 $('#logout').click(e => {
                     e.preventDefault();
-                    if(!unsavedChanges || (unsavedChanges && confirm(confirmText))) logout();
+                    if (unsavedChanges && !confirm(confirmText + 'logout?')) return;
+                    logout();
                 });
 
                 activateMenu();
@@ -430,7 +466,7 @@
                         $('#config-form input, #config-form textarea').keyup(() => {
                             unsavedChanges = checkForChanges(formCurrVal);
                         });
-                        configEditor.on('change', () => { 
+                        configEditor.on('change', () => {
                             unsavedChanges = checkForChanges(formCurrVal);
                         });
 
@@ -438,7 +474,7 @@
                             e.preventDefault();
                             if (!configEditor.isEnabled()) return;
                             configEditor.disable();
-                            $(e.currentTarget).addClass('loading');
+                            $(e.currentTarget).addClass('_btn');
 
                             const uerr = configEditor.validate();
                             if (uerr.length) {
@@ -455,7 +491,7 @@
                                 }
                             }
 
-                            $(e.currentTarget).removeClass('loading');
+                            $(e.currentTarget).removeClass('_btn');
                             configEditor.enable();
                         });
 
@@ -640,6 +676,15 @@
 
                     window.history.replaceState(null, null, document.location.pathname + menu);
                     window.localStorage.setItem('active.menu', menu);
+
+                    const titleArr = document.title.split(' #');
+                    if (titleArr.length < 2) {
+                        titleArr.push(menu.slice(1));
+                    } else {
+                        titleArr[titleArr.length - 1] = menu.slice(1);
+                    }
+
+                    document.title = titleArr.join(' #');
                 } else {
                     $(at).addClass('d-none');
                     $(a).removeClass('active');
