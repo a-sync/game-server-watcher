@@ -490,7 +490,8 @@
                         let editorCurrVal = configEditor.getValue();
 
                         const getFormVals = () => {
-                            return JSON.stringify($('#config-form input, #config-form textarea, #config-form select').toArray().map(e => {
+                            const formItems = $('#config-form input, #config-form textarea, #config-form select').toArray();
+                            return JSON.stringify(formItems.map(e => {
                                 if (e.type === 'checkbox') {
                                     return e.checked ? e.value : undefined;
                                 }
@@ -526,6 +527,7 @@
                                 const res = await fetchApi('POST', 'config', configEditor.getValue());
                                 if (res && res.message) {
                                     editorCurrVal = configEditor.getValue();
+                                    formCurrVal = getFormVals();
                                     $('#save-config').addClass('animate__fadeOutDown');
                                     notif('success', '✔️ Changes saved succesfully.', undefined, undefined, 2);
                                 } else {
