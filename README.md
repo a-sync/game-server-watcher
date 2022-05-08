@@ -42,6 +42,9 @@ The main goals of this repo:
 ### Telegram
 ![telegram](https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png)
 
+### GSW Control Panel
+![gsw control panel](https://user-images.githubusercontent.com/14183614/167313342-65c4dc69-ed3d-492a-8773-14b698a3df94.png)
+
 **[Back to top](#table-of-contents)**
 
 # Project Status
