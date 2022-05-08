@@ -134,6 +134,7 @@
         #save-config .loading ._save_btn {
             display: none;
         }
+
     </style>
 </head>
 
@@ -485,7 +486,7 @@
                         }, false);
 
                         const getFormVals = () => {
-                            const formItems = $('#config-form input, #config-form textarea, #config-form select').toArray();
+                            const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input, #config-form .tab-pane:not([style*="display: none"]) textarea, #config-form .tab-pane:not([style*="display: none"]) select').toArray();
                             return JSON.stringify(formItems.map(e => {
                                 if (e.type === 'checkbox') {
                                     return e.checked ? e.value : undefined;
@@ -499,7 +500,6 @@
 
                         const checkForChanges = () => {
                             if (formCurrVal !== getFormVals()) {
-                                // console.log('CONFIG FORM CHANGED', formCurrVal, getFormVals());
                                 unsavedChanges = true;
                                 $('#save-config').removeClass('d-none');
                                 $('#save-config').removeClass('animate__fadeOutDown');
@@ -540,8 +540,8 @@
                         $('#save-config-reset').click(e => {
                             e.preventDefault();
                             if (!configEditor.isEnabled()) return;
-
                             configEditor.setValue(editorCurrVal);
+                            unsavedChanges = false;
                             $('#save-config').addClass('animate__fadeOutDown');
                         });
                     });
