@@ -62,7 +62,7 @@ The project is in a very early stage. More detailed customization options and ad
  * detect when the server goes offline, notify when player number crosses a threshold
  * bot commands (reinit message, cleanup, start/stop, configure)
  * more integrations: slack, ms teams, twillio (email, sms)
- * _web ui to manage & configure the servers and bots_
+ * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (azure, aws, etc.)
 
