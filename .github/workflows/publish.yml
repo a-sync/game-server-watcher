@@ -1,6 +1,7 @@
 name: ☁️ Deploy to the cloud
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - cloud
