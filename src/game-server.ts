@@ -248,7 +248,7 @@ class ServerHistory {
             playersNum: info.playersNum
         });
 
-        d.setHours(d.getHours() - graphHistoryHours);
+        d.setHours(d.getHours() - graphHistoryHours - 1);
         const minDh = this.yyyymmddhh(d);
 
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour >= minDh);
