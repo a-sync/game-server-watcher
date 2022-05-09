@@ -490,7 +490,7 @@
         // NOTE: sadly configEditor.getValue() can not be trusted when the 
         //       change event originates from a keypress event
         function actualFormValues() {
-            const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input, #config-form .tab-pane:not([style*="display: none"]) textarea, #config-form .tab-pane:not([style*="display: none"]) select').toArray();
+            const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input:enabled, #config-form .tab-pane:not([style*="display: none"]) textarea:enabled, #config-form .tab-pane:not([style*="display: none"]) select:enabled').toArray();
             return JSON.stringify(formItems.map(e => {
                 if (e.type === 'checkbox') {
                     return e.checked ? e.value : undefined;

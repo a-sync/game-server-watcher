@@ -43,7 +43,7 @@ The main goals of this repo:
 ![telegram](https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png)
 
 ### GSW Control Panel
-![gsw control panel](https://user-images.githubusercontent.com/14183614/167313342-65c4dc69-ed3d-492a-8773-14b698a3df94.png)
+![gsw control panel](https://user-images.githubusercontent.com/14183614/167320780-879296ce-6562-4894-a23e-a2b0aa970c47.png)
 
 **[Back to top](#table-of-contents)**
 
