@@ -19,13 +19,14 @@ interface TelegramConfig {
 }
 
 export interface GameServerConfig {
+    name: string;
+    type: Type;
     host: string;
     port: number;
-    type: Type;
     appId?: number;//0
     updateIntervalMinutes?: number;//5
     graphHistoryHours?: number;//12
-    serverTimezone?: string;//Europe/London
+    timezoneOffset?: number;//0
     discord?: DiscordConfig[],
     telegram?: TelegramConfig[];
 }

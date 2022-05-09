@@ -36,7 +36,6 @@
             padding: 0;
             font-family: 'Roboto', Helvetica, Arial, sans-serif;
         }
-
         body {
             background-color: #000;
             background-position: top center;
@@ -47,61 +46,48 @@
             background-size: cover;
             background-image: url('https://i.imgur.com/lTly23N.png');
         }
-
         body>nav {
             background-color: rgba(0, 0, 0, 0.75);
         }
-
         .navbar-brand img {
             width: 40px;
             height: 40px;
         }
-
         body>nav button[data-api] {
             margin-right: 1rem;
         }
-
         #spinner {
             zoom: 2;
             opacity: 0.7;
         }
-
         #protected-section>div>div {
             background-color: rgba(245, 250, 255, 0.75);
         }
-
         #config-form h3.card_title>label {
             font-weight: 900;
         }
-
         #config-form h3>label {
             margin-right: 1rem;
         }
-
         #config-form div[data-schemaid="root"]>div.card-body>div>div {
             margin-bottom: 3rem;
         }
-
         #config-form div[data-schemaid="root"]>div.card-body>div>div:last-child {
             margin-bottom: inherit;
         }
-
         #config-form button {
             vertical-align: top;
         }
-
         #config-form input[type=checkbox] {
             vertical-align: middle;
             zoom: 2;
             cursor: pointer;
             margin-right: 0.25rem !important;
         }
-
         #config-form .btn-group {
             display: inline-flex !important;
             margin-bottom: 0.25rem;
         }
-
         #config-form .btn-group button {
             margin-left: 1px;
             margin-right: 1px;
@@ -110,31 +96,27 @@
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
         }
-
         #config-form .btn-group.je-object__controls {
             margin: 0 0 0.75rem 0;
         }
-
         footer>a>svg {
             fill: #c6cbd1;
         }
-
         #save-config {
             background-color: rgba(15, 20, 25, 0.9);
         }
-
         #save-config ._load_btn {
             display: none;
         }
-
         #save-config .loading ._load_btn {
             display: inherit;
         }
-
         #save-config .loading ._save_btn {
             display: none;
         }
-
+        #F5-btn {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -189,7 +171,7 @@
                     Refresh the page to login...
                 </h3>
                 <div class="text-center">
-                    <kbd class="bg-light text-dark">F5</kbd>
+                    <kbd id="F5-btn" onclick="document.location.href=document.location.pathname" class="bg-light text-dark">F5</kbd>
                 </div>
             </div>
         </section>
@@ -233,45 +215,30 @@
                 await setRandomBg().catch(() => { });
                 setInterval(setRandomBg, 60000);
 
+                let unsavedChanges = false;
+                const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
+                $(window).on('beforeunload', e => {
+                    if (unsavedChanges) return confirmText;
+                    else {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+                $('#logout').click(e => {
+                    e.preventDefault();
+                    if(!unsavedChanges || (unsavedChanges && confirm(confirmText))) logout();
+                });
+
+                activateMenu();
+                $('body > nav > ul > li > a').click(e => {
+                    e.preventDefault();
+                    activateMenu(e.currentTarget);
+                });
+
                 $('#top-menu').removeClass('invisible');
                 $('body > footer').removeClass('d-none');
 
-                let unsavedChanges = false;
-                const leaving = ev => {
-                    if (unsavedChanges) {
-                        const confirmText = 'You have unsaved changes! Are you sure you want to navigate away?';
-                        if (ev) return confirmText;
-                        else return confirm(confirmText);
-                    }
-
-                    if (!ev) return true;
-                };
-
-                $(window).on('beforeunload', leaving);
-                $('#logout').click(async e => {
-                    e.preventDefault();
-                    if (await leaving()) logout();
-                });
-
-                let initMenu = id('top-menu-configuration');
-                if (document.location.hash.length > 1) {
-                    const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));
-                    if (hashTargetMenu) {
-                        initMenu = hashTargetMenu;
-                    }
-                } else if (window.localStorage.getItem('active.menu')) {
-                    const stateTargetMenu = id('top-menu-' + window.localStorage.getItem('active.menu').slice(1));
-                    if (stateTargetMenu) {
-                        initMenu = stateTargetMenu;
-                    }
-                }
-                menu(initMenu);
-
-                $('body > nav > ul > li > a').click(e => {
-                    e.preventDefault();
-                    menu(e.currentTarget);
-                });
-
+                // Configuration
                 const gswConfig = await fetchApi('GET', 'config');
                 if (gswConfig && gswConfig.config) {
                     configEditor = new JSONEditor(id('config-form'), {
@@ -299,20 +266,6 @@
                         "disable_array_delete_all_rows": 1,
                         "disable_array_delete_last_row": 1,
                         "prompt_before_delete": 1,
-                        "lib_aceeditor": 0,
-                        "lib_autocomplete": 0,
-                        "lib_sceditor": 0,
-                        "lib_simplemde": 1,
-                        "lib_select2": 1,
-                        "lib_selectize": 0,
-                        "lib_choices": 0,
-                        "lib_flatpickr": 1,
-                        "lib_signaturepad": 0,
-                        "lib_mathjs": 0,
-                        "lib_cleavejs": 0,
-                        "lib_jodit": 0,
-                        "lib_jquery": 0,
-                        "lib_dompurify": 1,
                         "schema": {
                             "title": "Configuration",
                             "type": "array",
@@ -324,11 +277,19 @@
                                 "title": "Game Server",
                                 "type": "object",
                                 "required": [
+                                    "name",
+                                    "type",
                                     "host",
-                                    "port",
-                                    "type"
+                                    "port"
                                 ],
                                 "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string",
+                                        "options": {
+                                            "grid_columns": 12
+                                        }
+                                    },
                                     "type": {
                                         "title": "Gamedig type",
                                         "description": "Look for the <i>GameDig Type ID</i> in the <a target=\"_blank\" href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
@@ -385,10 +346,13 @@
                                             "grid_columns": 12
                                         }
                                     },
-                                    "serverTimezone": {
-                                        "title": "Time zone of the server [NOT IMPLEMENTED]",
+                                    "timezoneOffset": {
+                                        "title": "Time zone offset of the server [NOT IMPLEMENTED]",
                                         "default": "Europe/London",
-                                        "type": "string",
+                                        "type": "number",
+                                        "minimum": -24,
+                                        "maximum": 24,
+                                        "format": "range",
                                         "options": {
                                             "grid_columns": 6,
                                             "grid_break": true
@@ -444,7 +408,7 @@
                                     }
                                 },
                                 "format": "grid",
-                                "headerTemplate": "{{ self.type }}:{{ self.host }}:{{ self.port }}"
+                                "headerTemplate": "{{#self.name}}{{self.name}}{{/self.name}}{{^self.name}}{{self.type}}:{{self.host}}:{{self.port}}{{/self.name}}"
                             }
                         },
                         startval: gswConfig.config
@@ -457,60 +421,17 @@
                         $('#spinner').addClass('d-none');
                         $('#protected-section').removeClass('d-none');
 
-                        const button_holder = configEditor.root.theme.getHeaderButtonHolder();
-                        const exportBtn = configEditor.root.getButton('Export', 'save', 'Export As JSON File');
-                        button_holder.appendChild(exportBtn);
-                        configEditor.root.header.parentNode.insertBefore(button_holder, configEditor.root.header.nextSibling);
-                        exportBtn.addEventListener('click', e => {
-                            e.preventDefault();
-                            const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
-                            const filename = dt + '-gsw.config.json';
-                            const blob = new Blob([JSON.stringify(configEditor.getValue(), null, 2)], {
-                                type: 'application/json;charset=utf-8'
-                            });
+                        addExportButton();
 
-                            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                                window.navigator.msSaveOrOpenBlob(blob, filename);
-                            } else {
-                                const a = document.createElement('a');
-                                a.download = filename;
-                                a.href = URL.createObjectURL(blob);
-                                a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
-
-                                a.dispatchEvent(new MouseEvent('click', {
-                                    'view': window,
-                                    'bubbles': true,
-                                    'cancelable': false
-                                }));
-                            }
-                        }, false);
-
-                        const getFormVals = () => {
-                            const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input, #config-form .tab-pane:not([style*="display: none"]) textarea, #config-form .tab-pane:not([style*="display: none"]) select').toArray();
-                            return JSON.stringify(formItems.map(e => {
-                                if (e.type === 'checkbox') {
-                                    return e.checked ? e.value : undefined;
-                                }
-                                return e.value;
-                            }));
-                        }
-
-                        let formCurrVal = getFormVals();
                         let editorCurrVal = configEditor.getValue();
+                        let formCurrVal = actualFormValues();
 
-                        const checkForChanges = () => {
-                            if (formCurrVal !== getFormVals()) {
-                                unsavedChanges = true;
-                                $('#save-config').removeClass('d-none');
-                                $('#save-config').removeClass('animate__fadeOutDown');
-                            } else {
-                                unsavedChanges = false;
-                                $('#save-config').addClass('animate__fadeOutDown');
-                            }
-                        };
-
-                        $('#config-form input, #config-form textarea').keyup(checkForChanges);
-                        configEditor.on('change', checkForChanges);
+                        $('#config-form input, #config-form textarea').keyup(() => {
+                            unsavedChanges = checkForChanges(formCurrVal);
+                        });
+                        configEditor.on('change', () => { 
+                            unsavedChanges = checkForChanges(formCurrVal);
+                        });
 
                         $('#save-config-submit').click(async e => {
                             e.preventDefault();
@@ -525,7 +446,7 @@
                                 const res = await fetchApi('POST', 'config', configEditor.getValue());
                                 if (res && res.message) {
                                     editorCurrVal = configEditor.getValue();
-                                    formCurrVal = getFormVals();
+                                    formCurrVal = actualFormValues();
                                     $('#save-config').addClass('animate__fadeOutDown');
                                     notif('success', '✔️ Changes saved succesfully.', undefined, undefined, 2);
                                 } else {
@@ -545,25 +466,79 @@
                             $('#save-config').addClass('animate__fadeOutDown');
                         });
                     });
-
-                    $('button[data-api]').click(async e => {
-                        e.preventDefault();
-                        const endpoint = e.currentTarget.dataset.api;
-
-                        if (confirm('Sure you want to call `' + endpoint + '`?')) {
-                            const res = await fetchApi('GET', endpoint);
-                            if (res && res.message) {
-                                notif('success', res.message, undefined, undefined, 3);
-                            } else {
-                                notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
-                            }
-                        }
-                    });
                 } else {
                     notif('danger', '⚠️ Error while loading config.');
                 }
+
+                // Flush data
+                $('button[data-api]').click(async e => {
+                    e.preventDefault();
+                    const endpoint = e.currentTarget.dataset.api;
+
+                    if (confirm('Are you sure you want to call `' + endpoint + '`?')) {
+                        const res = await fetchApi('GET', endpoint);
+                        if (res && res.message) {
+                            notif('success', res.message, undefined, undefined, 3);
+                        } else {
+                            notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
+                        }
+                    }
+                });
             }
         });
+
+        // NOTE: sadly configEditor.getValue() can not be trusted when the 
+        //       change event originates from a keypress event
+        function actualFormValues() {
+            const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input, #config-form .tab-pane:not([style*="display: none"]) textarea, #config-form .tab-pane:not([style*="display: none"]) select').toArray();
+            return JSON.stringify(formItems.map(e => {
+                if (e.type === 'checkbox') {
+                    return e.checked ? e.value : undefined;
+                }
+                return e.value;
+            }));
+        }
+
+        function checkForChanges(formCurrVal) {
+            if (formCurrVal !== actualFormValues()) {
+                $('#save-config').removeClass('d-none');
+                $('#save-config').removeClass('animate__fadeOutDown');
+                return true;
+            } else {
+                $('#save-config').addClass('animate__fadeOutDown');
+                return false;
+            }
+        };
+
+        function addExportButton() {
+            const button_holder = configEditor.root.theme.getHeaderButtonHolder();
+            const exportBtn = configEditor.root.getButton('Export', 'save', 'Export As JSON File');
+            button_holder.appendChild(exportBtn);
+            configEditor.root.header.parentNode.insertBefore(button_holder, configEditor.root.header.nextSibling);
+            exportBtn.addEventListener('click', e => {
+                e.preventDefault();
+                const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
+                const filename = dt + '-gsw.config.json';
+                const blob = new Blob([JSON.stringify(configEditor.getValue(), null, 2)], {
+                    type: 'application/json;charset=utf-8'
+                });
+
+                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveOrOpenBlob(blob, filename);
+                } else {
+                    const a = document.createElement('a');
+                    a.download = filename;
+                    a.href = URL.createObjectURL(blob);
+                    a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+
+                    a.dispatchEvent(new MouseEvent('click', {
+                        'view': window,
+                        'bubbles': true,
+                        'cancelable': false
+                    }));
+                }
+            }, false);
+        }
 
         function logout() {
             $('#save-config').addClass('animate__fadeOutDown');
@@ -625,18 +600,32 @@
             return el;
         }
 
-        function menu(activate) {
-            const target = activate.getAttribute('href');
+        function activateMenu(target) {
+            if (!target) {
+                target = id('top-menu-configuration');
+                if (document.location.hash.length > 1) {
+                    const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));
+                    if (hashTargetMenu) {
+                        target = hashTargetMenu;
+                    }
+                } else if (window.localStorage.getItem('active.menu')) {
+                    const stateTargetMenu = id('top-menu-' + window.localStorage.getItem('active.menu').slice(1));
+                    if (stateTargetMenu) {
+                        target = stateTargetMenu;
+                    }
+                }
+            }
 
+            const menu = target.getAttribute('href');
             const menuItems = q('#top-menu > ul > li > a');
             for (const a of menuItems) {
                 const at = a.getAttribute('href');
-                if (at === target) {
+                if (at === menu) {
                     $(at).removeClass('d-none');
                     $(a).addClass('active');
 
-                    window.history.replaceState(null, null, document.location.pathname + target);
-                    window.localStorage.setItem('active.menu', target);
+                    window.history.replaceState(null, null, document.location.pathname + menu);
+                    window.localStorage.setItem('active.menu', menu);
                 } else {
                     $(at).addClass('d-none');
                     $(a).removeClass('active');
@@ -710,7 +699,8 @@
                 if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
                 else window.localStorage.removeItem('btoken', null);
             } else {
-
+                const hint = '<br><span class="text-error">API Close the tab to re-enable dialog boxes.</span>';
+                $('#bye > h3').html($('#bye > h3').html() + hint);
             }
 
             return window.localStorage.getItem('btoken');
@@ -732,9 +722,8 @@
                 'https://i.imgur.com/gQD3xfo.png',
                 'https://i.imgur.com/iKTfM8z.png'
             ];
+
             const bgImg = new Image();
-
-
             bgImg.src = bgs[Math.floor(Math.random() * bgs.length)];
 
             return new Promise((resolve, reject) => {
