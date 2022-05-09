@@ -131,7 +131,7 @@ _Make sure to configure a proper `SECRET` env var to enable access!_
 Updates the configuration file and restarts the service.
 
 ### Flush servers data
-Removes population history data. (configured by `graphHistoryHours` server option)
+Removes population history data. (configured by _Graph history time span_ server option)
 
 ### Flush discord data
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
