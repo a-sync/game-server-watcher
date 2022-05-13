@@ -484,6 +484,7 @@
                                 if (res && res.message) {
                                     editorCurrVal = configEditor.getValue();
                                     formCurrVal = actualFormValues();
+                                    unsavedChanges = false;
                                     dismissSaveConfig();
                                     notif('success', '✔️ Changes saved successfully.', undefined, undefined, 2);
                                 } else {

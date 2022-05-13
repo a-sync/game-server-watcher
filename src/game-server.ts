@@ -49,7 +49,7 @@ interface qRes extends QueryResult {
 }
 
 export class GameServer {
-    public ip?: string;
+    public ip: string;
     public info?: Info;
     public config: GameServerConfig;
     public history: ServerHistory;
@@ -58,6 +58,7 @@ export class GameServer {
 
     constructor(config: GameServerConfig) {
         console.log('game-server init', config.host, config.port, config.type, config.appId);
+        this.ip = '0.0.0.0';
         this.config = config;
         this.history = new ServerHistory(config.host + ':' + config.port);
         this._niceName = config.host + ':' + config.port;
@@ -67,7 +68,7 @@ export class GameServer {
         if (DBG) console.log('gs.up', this.config.host, this.config.port);
         let info = await this.gamedig();
 
-        if (DBG) console.log('gs.gamedig', Object.assign({}, info, { players: undefined }));
+        if (DBG) console.log('gs.gamedig', Object.assign({}, info, { players: info?.players.length }));
         if (!info && STEAM_WEB_API_KEY && this.config.appId) {
             info = await this.steam();
             if (DBG) console.log('gs.steam', info);
@@ -102,8 +103,17 @@ export class GameServer {
                 return new GsPlayer(p);
             });
 
+            let addr;
+            if (ipRegex.test(res.connect)) {
+                this.ip = res.connect;
+                addr = res.connect;
+            } else {
+                addr = await this.getIp();
+            }
+            addr += ':' + this.config.port;
+
             return {
-                connect: res.connect,
+                connect: addr,
                 name: res.name,
                 game: game,
                 map: res.map || '',
@@ -119,19 +129,8 @@ export class GameServer {
     }
 
     async steam(): Promise<Info | null> {
-        if (!this.ip) {
-            if (ipRegex.test(this.config.host)) {
-                this.ip = this.config.host;
-            } else {
-                this.ip = await getIP(this.config.host);
-
-                if (!this.ip) {
-                    return null;
-                }
-            }
-        }
-
-        const reqUrl = 'https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\' + this.config.appId + '\\addr\\' + this.ip + '&key=' + STEAM_WEB_API_KEY;
+        const ip = await this.getIp();
+        const reqUrl = 'https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\' + this.config.appId + '\\addr\\' + ip + '&key=' + STEAM_WEB_API_KEY;
 
         try {
             const res: any = await got(reqUrl, {
@@ -178,6 +177,18 @@ export class GameServer {
         }
 
         return this._niceName;
+    }
+
+    async getIp() {
+       if (this.ip === '0.0.0.0') {
+            if (ipRegex.test(this.config.host)) {
+                this.ip = this.config.host;
+            } else {
+                this.ip = await getIP(this.config.host) || '0.0.0.0';
+            }
+        }
+
+        return this.ip;
     }
 }
 
