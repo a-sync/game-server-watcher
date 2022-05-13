@@ -76,14 +76,18 @@ class GameServer {
                 return new GsPlayer(p);
             });
             let addr;
-            if (ipregex_1.default.test(res.connect)) {
-                this.ip = res.connect;
-                addr = res.connect;
+            if (res.connect) {
+                const connectArr = res.connect.split(':');
+                if (ipregex_1.default.test(connectArr[0])) {
+                    this.ip = connectArr[0];
+                    if (connectArr[1]) {
+                        addr = connectArr[0] + ':' + connectArr[1];
+                    }
+                }
             }
-            else {
-                addr = await this.getIp();
+            if (!addr) {
+                addr = await this.getIp() + ':' + this.config.port;
             }
-            addr += ':' + this.config.port;
             return {
                 connect: addr,
                 name: res.name,

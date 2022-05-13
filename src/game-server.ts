@@ -104,13 +104,19 @@ export class GameServer {
             });
 
             let addr;
-            if (ipRegex.test(res.connect)) {
-                this.ip = res.connect;
-                addr = res.connect;
-            } else {
-                addr = await this.getIp();
+            if (res.connect) {
+                const connectArr = res.connect.split(':');
+                if (ipRegex.test(connectArr[0])) {
+                    this.ip = connectArr[0];
+                    if (connectArr[1]) {
+                        addr = connectArr[0] + ':' + connectArr[1];
+                    }
+                }
             }
-            addr += ':' + this.config.port;
+
+            if (!addr) {
+                addr = await this.getIp() + ':' + this.config.port;
+            }
 
             return {
                 connect: addr,
@@ -122,7 +128,7 @@ export class GameServer {
                 players
             };
         } catch (e: any) {
-            console.error(['gs.gamedig',this.config.host,this.config.port].join(':'), e.message || e);
+            console.error(['gs.gamedig', this.config.host, this.config.port].join(':'), e.message || e);
         }
 
         return null;
@@ -153,7 +159,7 @@ export class GameServer {
                 }
             }
         } catch (e: any) {
-            console.error(['gs.steam',this.config.host,this.config.port].join(':'), e.message || e);
+            console.error(['gs.steam', this.config.host, this.config.port].join(':'), e.message || e);
         }
 
         return null;
@@ -180,7 +186,7 @@ export class GameServer {
     }
 
     async getIp() {
-       if (this.ip === '0.0.0.0') {
+        if (this.ip === '0.0.0.0') {
             if (ipRegex.test(this.config.host)) {
                 this.ip = this.config.host;
             } else {
@@ -195,11 +201,11 @@ export class GameServer {
 class GsPlayer {
     private _player: Player;
 
-    constructor (p: Player) {
+    constructor(p: Player) {
         this._player = p;
     }
 
-    get (prop: string): string | undefined {
+    get(prop: string): string | undefined {
         const p = this._player as any;
         let re;
 
@@ -319,7 +325,7 @@ class ServerHistory {
                     if (nextH !== h) {
                         avg.push('_');
                         max.push('_');
-                        xlabels.push((nextH > 9 ? ''+nextH : '0'+nextH)+':00');
+                        xlabels.push((nextH > 9 ? '' + nextH : '0' + nextH) + ':00');
                     }
                 } while (nextH !== h);
             }
@@ -337,24 +343,24 @@ class ServerHistory {
         return [
             'https://image-charts.com/chart?cht=lc',
             'chs=600x300', // image size
-            'chf='+e('bg,s,202225'), // background
-            'chma='+e('0,0,10,0'), // margins
-            'chls='+e('2|2'), // line styles
+            'chf=' + e('bg,s,202225'), // background
+            'chma=' + e('0,0,10,0'), // margins
+            'chls=' + e('2|2'), // line styles
             // 'chm='+e('B,011040,0,0,0'), // line fill
-            'chg='+e('1,1,2,2,303030'), // grid lines
+            'chg=' + e('1,1,2,2,303030'), // grid lines
             // 'chm='+e('d,ffffff,0,-1,3|d,ffffff,1,-1,3'), // value markers
-            'chdl='+e('AVG|MAX'), // labels
+            'chdl=' + e('AVG|MAX'), // labels
             'chdlp=t', // label position
-            'chdls='+e('ffffff,8'), // label style
-            'chxt='+e('x,y'), // displayed axis
-            'chxs='+e('0,ffffff,12|1,ffffff,15'), // axis styles
+            'chdls=' + e('ffffff,8'), // label style
+            'chxt=' + e('x,y'), // displayed axis
+            'chxs=' + e('0,ffffff,12|1,ffffff,15'), // axis styles
             'chds=a', // scaling
-            'chd='+e('t:'+avg.join(',')+'|'+max.join(',')), // data
-            'chl='+e(values.join('|')), // data labels
-            'chlps='+e('color,ffffff|anchor,end|font.size,12|align,top'), // data labels position & style
-            'chxl='+e('0:|'+xlabels.join('|')), // x axis labels
+            'chd=' + e('t:' + avg.join(',') + '|' + max.join(',')), // data
+            'chl=' + e(values.join('|')), // data labels
+            'chlps=' + e('color,ffffff|anchor,end|font.size,12|align,top'), // data labels position & style
+            'chxl=' + e('0:|' + xlabels.join('|')), // x axis labels
             // 'chxr='+e('1,0,'+playersMax), // axis range
-            'chco='+e('1234ef,fd7501') // data colors
+            'chco=' + e('1234ef,fd7501') // data colors
         ].join('&');
     }
 }
