@@ -17,5 +17,5 @@ jobs:
 
       - name: 🐙 Add new remote, and push to master
         run: |
-          git remote add cloudnode ${{ secrets.CLOUD_REPO_URL }}
-          git push -f cloudnode cloud:master
+          git remote add cloudrepo ${{ secrets.CLOUD_REPO_URL }}
+          git push -f cloudrepo ${{ github.ref_name }}:master
