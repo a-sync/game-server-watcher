@@ -190,4 +190,4 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/Ramzi-Sah/game-status-discordbot-selfhosted  
 * https://github.com/msniveau/discord-statusbotv2
 * https://github.com/kevinkjt2000/bowser
-* https://github.com/dev-this/server-query-bot
+* https://github.com/negrifelipe/ServerStatusBot
