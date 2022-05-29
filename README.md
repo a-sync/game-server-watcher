@@ -147,9 +147,9 @@ node ./dist/server.js
 ```
 
 # How to Get Help
-* Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 * Check the [wiki](https://github.com/a-sync/game-server-watcher/wiki)
 * Ask a [question](https://github.com/a-sync/game-server-watcher/discussions/new?category=q-a)
+* Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 
 # Further Reading
 * [gamedig supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt)
@@ -177,9 +177,9 @@ This project was inpired by (the sudden disappearance of) "_Game Status#5371_" b
 
 IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
 
-GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by Jeffrey Veregge.  
+GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by [Jeffrey Veregge](https://www.jeffreyveregge.com).  
 
-Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) and [imgur](https://imgur.com).  
+Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) by [Screaming Brain Studios](https://screamingbrainstudios.com) and [imgur](https://imgur.com).  
 
 All other libraries and dependencies are listed in the _package.json file (dependencies/devDependencies section)_ and the _index.html file (head section)_.  
 
