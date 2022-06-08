@@ -168,8 +168,8 @@ class ServerInfoMessage {
             embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor('#000000');
 
-            embed.addField('Game', gs.info.game, true);
-            embed.addField('Map', gs.info.map, true);
+            if (gs.info.game) embed.addField('Game', gs.info.game, true);
+            if (gs.info.map) embed.addField('Map', gs.info.map, true);
             embed.addField('Players', gs.info.playersNum + '/' + gs.info.playersMax, true);
             embed.addField('Connect', 'steam://connect/' + gs.info.connect);
 

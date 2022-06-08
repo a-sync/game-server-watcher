@@ -760,7 +760,7 @@
                 if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
                 else window.localStorage.removeItem('btoken');
             } else {
-                const hint = '<br><span class="text-error">API Close the tab to re-enable dialog boxes.</span>';
+                const hint = '<br><span class="text-error">Close the tab to re-enable dialog boxes.</span>';
                 $('#bye > h3').html($('#bye > h3').html() + hint);
             }
 
