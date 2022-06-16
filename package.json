@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "a-sync@devs.space",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@commonify/lowdb": "^3.0.0",
     "discord.js": "^12.5.3",

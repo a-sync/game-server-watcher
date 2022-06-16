@@ -9,7 +9,7 @@ import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
 
 const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE || '0', 10);
 const APP_HOST = process.env.app_host || process.env.APP_HOST || '0.0.0.0';
-const APP_PORT = parseInt(process.env.app_port || process.env.APP_PORT || '8080', 10);
+const APP_PORT = parseInt(process.env.PORT || process.env.app_port || process.env.APP_PORT || '8080', 10);
 const SECRET = process.env.SECRET || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);

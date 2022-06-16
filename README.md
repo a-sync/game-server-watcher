@@ -117,6 +117,8 @@ _The bot has no cleanup functionality, left over messages must be removed manual
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).  
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)  
+
 ## Hosting
 Make sure all the [requirements](#requirements) are met!  
 _**Protip:** check the node.js version with `node -v`._  
