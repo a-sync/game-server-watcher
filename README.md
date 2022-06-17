@@ -1,13 +1,13 @@
 # <img src="https://i.imgur.com/2Ok3pxv.png" width="40" align="left"> Game Server Watcher
 A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
-	
+
 # About the Project
 The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
  1. should be able to host on a free service (_target atm. is cloudno.de (nodejs 12.20.1)_)
- 1. graciously add more features based on community feedback ([discord](https://discord.gg/4tsbftsGJz) / [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)) 
+ 1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 ## Screenshots
 <details>
@@ -42,7 +42,7 @@ The project is in a very early stage. More detailed customization options and ad
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
- * github action workflows to deploy to other cloud providers (azure, aws, etc.)
+ * github action workflows to deploy to other cloud providers (heroku, azure, gcp, aws etc.)
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.  
@@ -115,13 +115,12 @@ If the original message created by the bot gets deleted, you need to flush the b
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
 # Deployment
-Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).  
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher)  
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json)  
-
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher)  
+Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).
+<p align="center">
+	<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="40" alt="Deploy to Heroku"></a>
+	<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="40" alt="Deploy to Azure"></a>
+	<a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="40" alt="Run on Google Cloud"></a>
+</p>
 
 ## Hosting
 Make sure all the [requirements](#requirements) are met!  
