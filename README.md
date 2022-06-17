@@ -6,7 +6,7 @@ The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
- 1. should be able to host on a free service (_target atm. is cloudno.de (nodejs 12.20.1)_)
+ 1. should be able to host on a free service (_target atm. is cloudno.de (node.js 12.20.1)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 ## Screenshots
@@ -124,7 +124,6 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
 
 ## Hosting
 Make sure all the [requirements](#requirements) are met!  
-_**Protip:** check the node.js version with `node -v`._  
 
 ### Build artifacts (optional)
 ```
