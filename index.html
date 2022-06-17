@@ -769,7 +769,7 @@
 
         async function generateBearerToken(secret) {
             const valid = String(Date.now() + 3600000 * 12); // Note: valid for 12 hours
-            const salt = Array.from({ length: 3 }).map(() => Math.random().toString(36).slice(2)).join('');
+            const salt = String(Math.random().toString(36).slice(2)).repeat(3);
             let hash;
             if (crypto.subtle) {
                 const buff = await crypto.subtle.digest('SHA-512', new TextEncoder('utf-8').encode(salt + valid + secret));
