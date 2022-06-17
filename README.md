@@ -119,6 +119,8 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)  
 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json)  
+
 ## Hosting
 Make sure all the [requirements](#requirements) are met!  
 _**Protip:** check the node.js version with `node -v`._  

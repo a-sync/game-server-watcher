@@ -1,0 +1,155 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "siteName": {
+            "type": "string",
+            "defaultValue": "Game Server Watcher",
+            "metadata": {
+                "description": "The name of the web app that you wish to create."
+            }
+        },
+        "siteLocation": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "The location to use for creating the web app and hosting plan. It must be one of the Azure locations that support web apps."
+            }
+        },
+        "secret": {
+            "type": "string",
+            "metadata": {
+                "description": "Admin secret"
+            }
+        },
+        "refreshTimeMinutes": {
+            "type": "int",
+            "defaultValue": 5,
+            "minValue": 1,
+            "maxValue": 59,
+            "metadata": {
+                "description": "Game server info refresh interval in minutes [DEPRECETED]"
+            }
+        },
+        "discordBotToken": {
+            "type": "string",
+            "metadata": {
+                "description": "Discord bot token"
+            }
+        },
+        "telegramBotToken": {
+            "type": "string",
+            "metadata": {
+                "description": "Telegram bot token"
+            }
+        },
+        "steamWebApiKey": {
+            "type": "string",
+            "metadata": {
+                "description": "Steam web API key"
+            }
+        },
+        "repoUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional source repo URL."
+            }
+        },
+        "branch": {
+            "type": "string",
+            "metadata": {
+                "description": "Optional source repo branch."
+            }
+        }
+    },
+    "variables": {
+        "sku": "Free",
+        "skuCode": "F1",
+        "linuxFxVersion": "NODE|lts",
+        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('webAppName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2021-02-01",
+            "name": "[variables('hostingPlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[parameters('siteLocation')]",
+            "sku": {
+                "name": "[variables('skuCode')]",
+                "tier": "[variables('sku')]"
+            },
+            "kind": "linux",
+            "properties": {
+                "name": "[variables('hostingPlanName')]"
+            }
+        },
+        {
+            "apiVersion": "2021-02-01",
+            "name": "[parameters('siteName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('siteLocation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]"
+            ],
+            "kind": "app,linux",
+            "properties": {
+                "serverFarmId": "[variables('hostingPlanName')]",
+                "siteConfig": {
+                    "linuxFxVersion": "[parameters('linuxFxVersion')]"
+                }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2021-02-01",
+                    "name": "web",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                    ],
+                    "properties": {
+                        "siteProperties": {
+                            "webSocketsEnabled": true
+                        }
+                    }
+                },
+                {
+                    "apiVersion": "2021-02-01",
+                    "name": "appsettings",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                    ],
+                    "properties": {
+                        "SECRET": "[parameters('secret')]",
+                        "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
+                        "DISCORD_BOT_TOKEN": "[parameters('discordBotToken')]",
+                        "TELEGRAM_BOT_TOKEN": "[parameters('telegramBotToken')]",
+                        "STEAM_WEB_API_KEY": "[parameters('steamWebApiKey')]",
+                        "command": "bash scripts/azuredeploy.sh"
+                    }
+                },
+                {
+                    "condition": "[contains(parameters('repoUrl'), 'http')]",
+                    "apiVersion": "2021-02-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
+                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('repoUrl')]",
+                        "branch": "[parameters('branch')]",
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "siteUri": {
+            "type": "string",
+            "value": "[concat('https://',reference(resourceId('Microsoft.Web/sites', parameters('siteName'))).hostNames[0])]"
+        }
+    }
+}
