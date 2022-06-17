@@ -66,7 +66,7 @@
         "sku": "Free",
         "skuCode": "F1",
         "linuxFxVersion": "NODE|lts",
-        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('webAppName'))]"
+        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]"
     },
     "resources": [
         {
@@ -95,7 +95,7 @@
             "properties": {
                 "serverFarmId": "[variables('hostingPlanName')]",
                 "siteConfig": {
-                    "linuxFxVersion": "[parameters('linuxFxVersion')]"
+                    "linuxFxVersion": "[variables('linuxFxVersion')]"
                 }
             },
             "resources": [
