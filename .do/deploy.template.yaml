@@ -1,0 +1,22 @@
+spec:
+  name: game-server-watcher
+  services:
+  - name: web
+    git:
+      branch: master
+      repo_clone_url: https://github.com/a-sync/game-server-watcher.git
+    envs:
+    - key: SECRET
+      scope: RUN_TIME
+    - key: REFRESH_TIME_MINUTES
+      scope: RUN_TIME
+      value: "5"
+    - key: DISCORD_BOT_TOKEN
+      scope: RUN_TIME
+      value: ""
+    - key: TELEGRAM_BOT_TOKEN
+      scope: RUN_TIME
+      value: ""
+    - key: STEAM_WEB_API_KEY
+      scope: RUN_TIME
+      value: ""
