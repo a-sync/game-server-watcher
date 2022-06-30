@@ -16,7 +16,7 @@ pids
 *.seed
 *.pid.lock
 
-node_modules/
+#node_modules/
 jspm_packages/
 *.tsbuildinfo
 .npm
@@ -29,3 +29,11 @@ jspm_packages/
 .cache/
 .serverless/
 .dynamodb/
+
+node_modules/@types/
+node_modules/*/test/
+node_modules/moment/src/
+node_modules/moment/dist/
+node_modules/**/*.ts
+node_modules/**/*.map
+node_modules/**/*.md
