@@ -773,7 +773,7 @@
             let hash;
             if (crypto.subtle) {
                 const buff = await crypto.subtle.digest('SHA-512', new TextEncoder('utf-8').encode(salt + valid + secret));
-                hash = Array.prototype.map.call(new Uint8Array(buff), x => (('00' + x.toString(16)).slice(-2))).join('');
+                hash = Array.from(new Uint8Array(buff)).map(x => ('00' + x.toString(16)).slice(-2)).join('');
             } else {
                 const md = forge.md.sha512.create();
                 md.update(salt + valid + secret);
