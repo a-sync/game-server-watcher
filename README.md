@@ -9,9 +9,8 @@ The main goals of this repo:
  1. should be able to host on a free service (_target atm. is cloudno.de (node.js 12.20.1)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
-## Screenshots
 <details>
-<summary>[SHOW / HIDE]</summary>
+<summary><h1>Screenshots</h1></summary>
 
 ### Discord
 ![discord](https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png)
