@@ -120,6 +120,7 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>
   <a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="32" alt="Run on Google Cloud"></a>
   <a href="https://cloud.digitalocean.com/apps/new?repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher%2Ftree%2Fmaster"><img src="https://www.deploytodo.com/do-btn-blue.svg" height="32" alt="Deploy to DigitalOcean"></a>
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher&env=SECRET,REFRESH_TIME_MINUTES,DISCORD_BOT_TOKEN,TELEGRAM_BOT_TOKEN,STEAM_WEB_API_KEY"><img src="https://vercel.com/button" height="32" alt="Deploy with Vercel"></a>
 </p>
 
 ## Hosting
