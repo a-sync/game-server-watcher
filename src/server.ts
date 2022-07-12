@@ -36,17 +36,19 @@ createServer(async (req, res) => {
     const reqUrl = new URL(req.url || '', 'http://localhost');
     const reqPath = reqUrl.pathname.split('/');
     if (reqUrl.pathname === '/') {
-        res.writeHead(200, {
-            'Content-Type': 'text/html',
-            'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
-        });
-        fs.createReadStream('./index.html').pipe(res);
-    }
-    else if (reqUrl.pathname === '/ping') {
+        if (SECRET !== '') {
+            res.writeHead(200, {
+                'Content-Type': 'text/html',
+                'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
+            });
+            fs.createReadStream('./index.html').pipe(res);
+        } else {
+            res.end('Configure the `SECRET` env var to enable the web UI!');
+        }
+    } else if (reqUrl.pathname === '/ping') {
         if (DBG) console.log('ping');
         res.end('pong');
-    }
-    else if (SECRET !== '' && req.headers['x-btoken']) {
+    } else if (SECRET !== '' && req.headers['x-btoken']) {
         let status = 200;
         let re: ApiResponse = {};
 
@@ -103,8 +105,7 @@ createServer(async (req, res) => {
         });
 
         res.end(JSON.stringify(re, null, DBG ? 2 : 0));
-    }
-    else {
+    } else {
         res.writeHead(404, { 'Content-Type': 'text/html' });
         res.end('<html><head></head><body>404 &#x1F4A2</body></html>');
     }

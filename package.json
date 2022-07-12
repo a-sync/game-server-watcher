@@ -4,11 +4,15 @@
   "description": "A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style 😎",
   "main": "src/server",
   "scripts": {
-    "start": "tsc && node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "nodemon -e ts --exec \"npx tsc --incremental && node ./dist/server.js || exit 1\"",
     "build": "tsc"
   },
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/a-sync/game-server-watcher.git"
+  },
   "author": "a-sync@devs.space",
   "license": "AGPL-3.0-or-later",
   "dependencies": {

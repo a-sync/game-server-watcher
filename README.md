@@ -70,12 +70,12 @@ npm i --only=prod
 ```
 
 ## Usage
-Start the built artifacts directly:
+Build the artifacts from source (optional):
 ```
-node ./dist/server.js
+npm run build
 ```
 
-Build the source and start the service in one command:
+Start the built artifacts:
 ```
 npm start
 ```
@@ -121,6 +121,7 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
   <a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="32" alt="Run on Google Cloud"></a>
   <a href="https://cloud.digitalocean.com/apps/new?repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher%2Ftree%2Fmaster"><img src="https://www.deploytodo.com/do-btn-blue.svg" height="32" alt="Deploy to DigitalOcean"></a>
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher&env=SECRET,REFRESH_TIME_MINUTES,DISCORD_BOT_TOKEN,TELEGRAM_BOT_TOKEN,STEAM_WEB_API_KEY"><img src="https://vercel.com/button" height="32" alt="Deploy with Vercel"></a>
+  <a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>
 </p>
 
 ## Hosting
@@ -200,3 +201,4 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/Unity-Technologies/qstat
 * https://github.com/GiyoMoon/steam-server-query
 * https://github.com/Fabricio-191/valve-server-query
+* https://github.com/sbuggay/srcds-info-proxy
