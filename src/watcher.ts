@@ -1,4 +1,4 @@
-import { Type } from 'gamedig';
+import { Type } from 'node8-gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer, initDb, saveDb } from './game-server';
 import * as discordBot from './discord-bot';

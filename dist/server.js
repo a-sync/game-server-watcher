@@ -25,11 +25,16 @@ let loop;
     const reqUrl = new url_1.URL(req.url || '', 'http://localhost');
     const reqPath = reqUrl.pathname.split('/');
     if (reqUrl.pathname === '/') {
-        res.writeHead(200, {
-            'Content-Type': 'text/html',
-            'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
-        });
-        fs_1.default.createReadStream('./index.html').pipe(res);
+        if (SECRET !== '') {
+            res.writeHead(200, {
+                'Content-Type': 'text/html',
+                'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
+            });
+            fs_1.default.createReadStream('./index.html').pipe(res);
+        }
+        else {
+            res.end('Configure the `SECRET` env var to enable the web UI!');
+        }
     }
     else if (reqUrl.pathname === '/ping') {
         if (DBG)
@@ -129,10 +134,9 @@ function validateBearerToken(btoken) {
     if (DBG)
         console.log('validateBT', valid, salt);
     if (salt.length > 24
-        && valid.length === 13
-        && hash.length === 128
         && /^\d{13}$/.test(valid)
-        && Date.now() <= Number(valid)) {
+        && /^[a-f0-9]{128}$/.test(hash)
+        && Date.now() < Number(valid)) {
         return hash === crypto_1.default.createHash('sha512').update(salt + valid + SECRET).digest('hex');
     }
     return false;

@@ -1,4 +1,3 @@
-
 import dns from 'dns';
 
 export default async function getIP(hostname: string) {
