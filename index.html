@@ -695,11 +695,12 @@
         }
 
         async function fetchApi(method, endpoint, body) {
-            const retries = 2;
             let re = null;
             let errMsg = '';
+            const retries = 2;
             try {
                 for (let i = 1; i <= retries; i++) {
+                    errMsg = '';
                     const btoken = await getBearerToken();
                     if (btoken) {
                         const res = await fetch('/' + endpoint, {
@@ -711,29 +712,30 @@
                                 'content-type': 'application/json'
                             }
                         });
+
                         if (res.status === 401) {
                             re = false;
                             window.localStorage.removeItem('btoken');
-                            if (i >= retries) throw new Error('Invalid token.');
+                            errMsg = 'Invalid token.';
                         } else if (res.status === 200) {
                             re = await res.json();
                             break;
-                        } else throw new Error('Invalid API status.');
+                        } else errMsg = 'Unexpected API status.';
                     } else {
                         re = false;
-                        throw new Error('Authentication error.');
+                        errMsg = 'Authentication error.';
                     }
+                    if (errMsg !== '') console.error(errMsg + ' method, endpoint',  method, endpoint);
                 }
             } catch (err) {
-                errMsg = err.message || 'API error.';
-                console.error('fetchApi: method, endpoint, body.length, err, re', method, endpoint, (body ? body.length : 0), err, re);
                 re = null;
+                errMsg = 'Unexpected error.';
+                console.error('fetchApi: method, endpoint, err, re', method, endpoint, err, re);
             }
 
             if (!re) {
                 logout();
-                if (errMsg !== '') errMsg = '<br><span class="text-error">' + errMsg + '</span>';
-                $('#bye > h3').html($('#bye > h3').html() + errMsg);
+                notif('danger', '⚠️ ' +  errMsg);
             }
 
             return re;
