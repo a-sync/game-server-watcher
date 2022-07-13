@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameServer = exports.saveDb = exports.initDb = void 0;
 const got_1 = __importDefault(require("got"));
-const gamedig_1 = require("gamedig");
+const node8_gamedig_1 = require("node8-gamedig");
 const lowdb_1 = require("@commonify/lowdb");
 const ipregex_1 = __importDefault(require("./lib/ipregex"));
 const getip_1 = __importDefault(require("./lib/getip"));
@@ -66,7 +66,7 @@ class GameServer {
     }
     async gamedig() {
         try {
-            const res = await (0, gamedig_1.query)({
+            const res = await (0, node8_gamedig_1.query)({
                 host: this.config.host,
                 port: this.config.port,
                 type: this.config.type,

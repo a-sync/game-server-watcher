@@ -265,7 +265,7 @@
                 });
                 $('#logout').click(e => {
                     e.preventDefault();
-                    if (unsavedChanges && !confirm(confirmText + 'logout?')) return;
+                    if (unsavedChanges && !confirm(confirmText + 'log out?')) return;
                     logout();
                 });
 
@@ -695,10 +695,11 @@
         }
 
         async function fetchApi(method, endpoint, body) {
+            const retries = 2;
             let re = null;
             let errMsg = '';
             try {
-                for (let i = 1; i <= 2; i++) {
+                for (let i = 1; i <= retries; i++) {
                     const btoken = await getBearerToken();
                     if (btoken) {
                         const res = await fetch('/' + endpoint, {
@@ -710,27 +711,28 @@
                                 'content-type': 'application/json'
                             }
                         });
-
                         if (res.status === 401) {
                             re = false;
                             window.localStorage.removeItem('btoken');
+                            if (i >= retries) throw new Error('Invalid token.');
                         } else if (res.status === 200) {
                             re = await res.json();
                             break;
-                        }
+                        } else throw new Error('Invalid API status.');
                     } else {
                         re = false;
-                        break;
+                        throw new Error('Authentication error.');
                     }
                 }
             } catch (err) {
-                console.error('reqApi: method, endpoint, body.length, err, re', method, endpoint, (body ? body.length : 0), err, re);
+                errMsg = err.message || 'API error.';
+                console.error('fetchApi: method, endpoint, body.length, err, re', method, endpoint, (body ? body.length : 0), err, re);
                 re = null;
             }
 
             if (!re) {
                 logout();
-                if (errMsg !== '') errMsg = '<br><span class="text-error">API ' + errMsg + '</span>';
+                if (errMsg !== '') errMsg = '<br><span class="text-error">' + errMsg + '</span>';
                 $('#bye > h3').html($('#bye > h3').html() + errMsg);
             }
 
@@ -744,9 +746,8 @@
                 const valid = bt.slice(-141, -128);
                 const hash = bt.slice(-128);
                 if (salt.length > 24
-                    && valid.length === 13
-                    && hash.length === 128
                     && /^\d{13}$/.test(valid)
+                    && /^[0-9a-f]{128}$/.test(hash)
                     && Date.now() < Number(valid)) {
                     return bt;
                 }
