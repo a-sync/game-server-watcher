@@ -33,7 +33,7 @@ The project is in a very early stage. More detailed customization options and ad
    * configurable field & order to sort by
    * max length for player names & nr of players
  * custom embed fields for discord
- * _configurable timezone for graph x-axis_
+ * ~~configurable time zone offset for graph x-axis~~
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
  * detect when the server goes offline, notify when player number crosses a threshold
@@ -44,7 +44,7 @@ The project is in a very early stage. More detailed customization options and ad
  * github action workflows to deploy to other cloud providers (heroku, azure, gcp, aws etc.)
 
 # Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.  
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
 
 ## Requirements
 [node.js](https://nodejs.org/) _(version 12.20.0 or later)_  
@@ -56,7 +56,8 @@ This project is [hosted on github](https://github.com/a-sync/game-server-watcher
 git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
-The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).
+The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
+(The [cloud branch](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -102,14 +103,15 @@ _Make sure to configure a proper `SECRET` env var to enable access!_
 ### Configuration
 Updates the configuration file and restarts the service.
 
-### Flush game servers data
+### Flush data
+#### Flush game servers data
 Removes population history data. (configured by _Graph history time span_ server option)
 
-### Flush discord data
+#### Flush discord data
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
-### Flush telegram data
+#### Flush telegram data
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
