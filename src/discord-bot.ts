@@ -200,7 +200,7 @@ class ServerInfoMessage {
                 if (pPings.length) embed.addField('Ping', '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', true);
             }
 
-            embed.setImage(gs.history.statsChart(gs.info.playersMax));
+            embed.setImage(gs.history.statsChart(gs.info.playersMax, gs.config.timezoneOffset));
         }
 
         try {

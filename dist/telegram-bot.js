@@ -114,7 +114,7 @@ class ServerInfoMessage {
                 '`' + gs.info.connect + '`',
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
-            const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax) + ')';
+            const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax, gs.config.timezoneOffset) + ')';
             if (gs.info.players.length > 0) {
                 const pnArr = [];
                 for (const p of gs.info.players) {

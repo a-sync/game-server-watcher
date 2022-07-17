@@ -236,6 +236,12 @@ class ServerHistory {
         return parseInt(d.toISOString().slice(0, 13).replace(/\D/g, ''), 10);
     }
 
+    formatHour(h: number): string {
+        const ampm = (h >= 12) ? 'pm' : 'am';
+        const hours = (h > 12) ? h - 12 : h;
+        return hours + ampm;
+    }
+
     add(info: Info, graphHistoryHours: number = 12): void {
         if (!db.data?.population) return;
 
@@ -289,7 +295,7 @@ class ServerHistory {
         return this._stats;
     }
 
-    statsChart(playersMax: number = -1): string {
+    statsChart(playersMax: number = -1, timezoneOffset: number = 0): string {
         const stats = this.stats();
         const e = encodeURIComponent;
 
@@ -299,7 +305,11 @@ class ServerHistory {
 
         let lastH;
         for (const s of stats) {
-            const h = s.dateHour % 100;
+            const sh = s.dateHour % 100;
+            const d = new Date();
+            d.setHours(sh);
+            d.setTime(d.getTime() + (timezoneOffset * 60 * 60 * 1000));
+            const h = d.getHours();
 
             if (lastH !== undefined) {
                 let nextH: number = lastH;
@@ -311,7 +321,8 @@ class ServerHistory {
                     if (nextH !== h) {
                         avg.push('_');
                         max.push('_');
-                        xlabels.push((nextH > 9 ? '' + nextH : '0' + nextH) + ':00');
+
+                        xlabels.push(this.formatHour(nextH));
                     }
                 } while (nextH !== h);
             }
@@ -319,7 +330,7 @@ class ServerHistory {
             avg.push(String(Math.round(s.avg)));
             max.push(String(s.max));
 
-            xlabels.push(String(s.dateHour).slice(8) + ':00');
+            xlabels.push(this.formatHour(h));
 
             lastH = h;
         }
