@@ -159,10 +159,10 @@ class ServerInfoMessage {
         if (!this.message) return;
 
         const embed = new MessageEmbed();
-        embed.setTitle(gs.niceName + ' offline...');
-        embed.setColor('#ff0000');
         embed.setFooter('Last updated');
         embed.setTimestamp();
+        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
+        embed.setImage(gs.history.statsChart(pmax, gs.config.timezoneOffset));
 
         if (gs.info && gs.online) {
             embed.setTitle(gs.niceName.slice(0, 256));
@@ -199,8 +199,9 @@ class ServerInfoMessage {
                 if (pScores.length) embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
                 if (pPings.length) embed.addField('Ping', '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', true);
             }
-
-            embed.setImage(gs.history.statsChart(gs.info.playersMax, gs.config.timezoneOffset));
+        } else {
+            embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');
+            embed.setColor('#ff0000');
         }
 
         try {
