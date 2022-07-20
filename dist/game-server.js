@@ -274,7 +274,7 @@ class ServerHistory {
             'chdlp=t',
             'chdls=' + e('ffffff,8'),
             'chxt=' + e('x,y'),
-            'chxs=' + e('0,ffffff,12|1,ffffff,15'),
+            'chxs=' + e('0,ffffff,12,s|1,ffffff,15'),
             'chds=a',
             'chd=' + e('t:' + avg.join(',') + '|' + max.join(',')),
             'chl=' + e(values.join('|')),

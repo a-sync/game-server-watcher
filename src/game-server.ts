@@ -350,7 +350,7 @@ class ServerHistory {
             'chdlp=t', // label position
             'chdls=' + e('ffffff,8'), // label style
             'chxt=' + e('x,y'), // displayed axis
-            'chxs=' + e('0,ffffff,12|1,ffffff,15'), // axis styles
+            'chxs=' + e('0,ffffff,12,s|1,ffffff,15'), // axis styles
             'chds=a', // scaling
             'chd=' + e('t:' + avg.join(',') + '|' + max.join(',')), // data
             'chl=' + e(values.join('|')), // data labels

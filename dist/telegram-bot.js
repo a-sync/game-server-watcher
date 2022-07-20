@@ -106,7 +106,9 @@ class ServerInfoMessage {
         }
     }
     async updatePost(gs) {
-        let infoText = gs.niceName + ' offline...';
+        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
+        const chart = '[📊](' + gs.history.statsChart(pmax, gs.config.timezoneOffset) + ')';
+        let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
         if (gs.info && gs.online) {
             infoText = [
                 this.escapeMarkdown(gs.niceName),
@@ -114,7 +116,6 @@ class ServerInfoMessage {
                 '`' + gs.info.connect + '`',
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
-            const chart = '[📊](' + gs.history.statsChart(gs.info.playersMax, gs.config.timezoneOffset) + ')';
             if (gs.info.players.length > 0) {
                 const pnArr = [];
                 for (const p of gs.info.players) {
@@ -134,8 +135,8 @@ class ServerInfoMessage {
                     infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
                 }
             }
-            infoText += chart;
         }
+        infoText += chart;
         try {
             await bot.api.editMessageText(this.chatId, this.messageId, infoText, { parse_mode: 'Markdown' });
         }

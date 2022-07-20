@@ -249,7 +249,6 @@
 
     <script>
         const id = s => document.getElementById(s);
-        const q = qs => document.querySelectorAll(qs);
 
         let configEditor;
         $(async () => {
@@ -487,7 +486,7 @@
                                     formCurrVal = actualFormValues();
                                     unsavedChanges = false;
                                     dismissSaveConfig();
-                                    notif('success', '✔️ Changes saved successfully.', undefined, undefined, 2);
+                                    notif('success', '✔️ Changes saved successfully.', undefined, undefined, 3);
                                 } else {
                                     notif('danger', '⚠️ Error while saving config.', (res ? res.error : undefined), undefined, 3);
                                 }
@@ -669,7 +668,7 @@
             }
 
             const menu = target.getAttribute('href');
-            const menuItems = q('#top-menu > ul > li > a');
+            const menuItems = document.querySelectorAll('#top-menu > ul > li > a');
             for (const a of menuItems) {
                 const at = a.getAttribute('href');
                 if (at === menu) {
@@ -735,7 +734,7 @@
 
             if (!re) {
                 logout();
-                notif('danger', '⚠️ ' +  errMsg);
+                notif('danger', '⚠️ ' +  errMsg, 3);
             }
 
             return re;
@@ -763,8 +762,7 @@
                 if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
                 else window.localStorage.removeItem('btoken');
             } else {
-                const hint = '<br><span class="text-error">Close the tab to re-enable dialog boxes.</span>';
-                $('#bye > h3').html($('#bye > h3').html() + hint);
+                notif('primary', '⚠️ Close the tab to re-enable dialog boxes.');
             }
 
             return window.localStorage.getItem('btoken');
