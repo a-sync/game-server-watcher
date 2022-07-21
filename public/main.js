@@ -486,7 +486,7 @@ async function fetchApi(method, endpoint, body) {
 
     if (!re) {
         logout();
-        notif('danger', '⚠️ ' + errMsg, 3);
+        notif('danger', '⚠️ ' + errMsg, undefined, undefined, 3);
     }
 
     return re;
@@ -501,8 +501,7 @@ async function getBearerToken() {
         if (salt.length > 24
             && /^\d{13}$/.test(valid)
             && /^[0-9a-f]{128}$/.test(hash)
-            && Date.now() < Number(valid)
-            && Number(valid) - Date.now() < 3600000 * 12) {
+            && Date.now() < Number(valid)) {
             return bt;
         }
     }
