@@ -57,7 +57,7 @@ git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
 The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
-(The [cloud branch](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
+(The [cloud branch zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -136,7 +136,7 @@ npm run build
 ```
 
 ### Minimum required files on host
-Copy the `./package.json` and `./index.html` files and the `./dist/` folder to your deployment folder.
+Copy the `./package.json` file and the `./public/` and `./dist/` folders and their contents to your deployment folder.
  
 ### Install production dependencies on host
 Navigate to the deployment folder and execute the following command:
