@@ -148,8 +148,7 @@ function validateBearerToken(btoken: string) {
     if (salt.length > 24
         && /^\d{13}$/.test(valid)
         && /^[a-f0-9]{128}$/.test(hash)
-        && Date.now() < Number(valid)
-        && Number(valid) - Date.now() < 3600000 * 12) {
+        && Date.now() < Number(valid)) {
         return hash === crypto.createHash('sha512').update(salt + valid + SECRET).digest('hex');
     }
 
