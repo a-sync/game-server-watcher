@@ -23,20 +23,25 @@ let loop;
     if (DBG)
         console.log('DBG: %j %j', (new Date()), req.url);
     const reqUrl = new url_1.URL(req.url || '', 'http://localhost');
-    const reqPath = reqUrl.pathname.split('/');
-    if (reqUrl.pathname === '/') {
+    const p = reqUrl.pathname === '/' ? 'index.html' : reqUrl.pathname.slice(1);
+    if (['index.html', 'main.css', 'main.js'].includes(p)) {
         if (SECRET !== '') {
+            let ct = 'text/html';
+            if (p === 'main.css')
+                ct = 'text/css';
+            else if (p === 'main.js')
+                ct = 'text/javascript';
             res.writeHead(200, {
-                'Content-Type': 'text/html',
+                'Content-Type': ct,
                 'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
             });
-            fs_1.default.createReadStream('./index.html').pipe(res);
+            fs_1.default.createReadStream('./public/' + p).pipe(res);
         }
         else {
             res.end('Configure the `SECRET` env var to enable the web UI!');
         }
     }
-    else if (reqUrl.pathname === '/ping') {
+    else if (p === 'ping') {
         if (DBG)
             console.log('ping');
         res.end('pong');
@@ -45,15 +50,16 @@ let loop;
         let status = 200;
         let re = {};
         if (validateBearerToken(String(req.headers['x-btoken']))) {
+            const reqPath = p.split('/');
             try {
-                if (reqPath[1] === 'features') {
+                if (reqPath[0] === 'features') {
                     re.features = {
                         steam: FEET_STEAM,
                         discord: FEET_DISCORD,
                         telegram: FEET_TELEGRAM
                     };
                 }
-                else if (reqPath[1] === 'config') {
+                else if (reqPath[0] === 'config') {
                     if (req.method === 'GET') {
                         re.config = await (0, watcher_1.readConfig)();
                     }
@@ -77,9 +83,9 @@ let loop;
                         re.error = 'Invalid Request';
                     }
                 }
-                else if (reqPath[1] === 'flush' && ['servers', 'discord', 'telegram'].includes(reqPath[2])) {
-                    await restart(reqPath[2]);
-                    re.message = '🗑️ ' + reqPath[2].slice(0, 1).toUpperCase() + reqPath[2].slice(1) + ' data flushed.';
+                else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram'].includes(reqPath[1])) {
+                    await restart(reqPath[1]);
+                    re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
                 }
                 else {
                     status = 400;
@@ -105,8 +111,9 @@ let loop;
         res.writeHead(404, { 'Content-Type': 'text/html' });
         res.end('<html><head></head><body>404 &#x1F4A2</body></html>');
     }
-}).listen(APP_PORT);
-console.log('Web service started %s:%s', APP_HOST, APP_PORT);
+}).listen(APP_PORT, APP_HOST, () => {
+    console.log('Web service started %s:%s', APP_HOST, APP_PORT);
+});
 (0, watcher_1.main)().then(l => {
     loop = l;
 });
@@ -136,7 +143,8 @@ function validateBearerToken(btoken) {
     if (salt.length > 24
         && /^\d{13}$/.test(valid)
         && /^[a-f0-9]{128}$/.test(hash)
-        && Date.now() < Number(valid)) {
+        && Date.now() < Number(valid)
+        && Number(valid) - Date.now() < 3600000 * 12) {
         return hash === crypto_1.default.createHash('sha512').update(salt + valid + SECRET).digest('hex');
     }
     return false;
