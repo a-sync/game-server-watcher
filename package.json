@@ -22,7 +22,7 @@
     "got": "^11.8.5",
     "grammy": "^1.9.0",
     "mustache": "^4.2.0",
-    "node8-gamedig": "^4.0.4"
+    "node8-gamedig": "^4.0.5"
   },
   "devDependencies": {
     "@types/gamedig": "^3.0.2",
