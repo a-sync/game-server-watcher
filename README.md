@@ -41,7 +41,7 @@ The project is in a very early stage. More detailed customization options and ad
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
- * github action workflows to deploy to other cloud providers (heroku, azure, gcp, aws etc.)
+ * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
  * run as stateless serverless function (aws lambda, azure function, vercel etc.)
 
@@ -174,7 +174,7 @@ node ./dist/server.js
 
 # Contributing
 Public contributions are welcome!  
-You can create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or feel free to open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes or work-in-progress features.  
+You can create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or feel free to open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes or work-in-progress features.
 
 # License
 This project is licensed under the AGPL License - see [LICENSE](./LICENSE) file for details.
@@ -187,7 +187,7 @@ This project was inpired by (the sudden disappearance of) "_Game Status#5371_" b
 
 IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
 
-GSW icon stolen from  _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by [Jeffrey Veregge](https://www.jeffreyveregge.com).  
+GSW icon stolen from _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by [Jeffrey Veregge](https://www.jeffreyveregge.com).  
 
 Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) by [Screaming Brain Studios](https://screamingbrainstudios.com) and [imgur](https://imgur.com).  
 
