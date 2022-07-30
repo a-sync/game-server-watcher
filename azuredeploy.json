@@ -106,8 +106,7 @@
                     ],
                     "properties": {
                         "SECRET": "[parameters('secret')]",
-                        "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
-                        "command": "bash scripts/azuredeploy.sh"
+                        "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]"
                     }
                 },
                 {
