@@ -125,7 +125,7 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
   <a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="32" alt="Run on Google Cloud"></a>
   <a href="https://cloud.digitalocean.com/apps/new?repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher%2Ftree%2Fmaster"><img src="https://www.deploytodo.com/do-btn-blue.svg" height="32" alt="Deploy to DigitalOcean"></a>
   <!--<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher&env=SECRET"><img src="https://vercel.com/button" height="32" alt="Deploy with Vercel"></a>//TODO: support runnig as serverless function-->
-  <a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>
+  <!--<a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>-->
 </p>
 
 ## Hosting

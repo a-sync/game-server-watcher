@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "siteName": {
@@ -31,25 +31,18 @@
                 "description": "Game server info refresh interval in minutes [DEPRECETED]"
             }
         },
-        "discordBotToken": {
+        "repoUrl": {
             "type": "string",
-            "defaultValue": "-",
+            "defaultValue": "https://github.com/a-sync/game-server-watcher.git",
             "metadata": {
-                "description": "Discord bot token"
+                "description": "Source repo URL."
             }
         },
-        "telegramBotToken": {
+        "branch": {
             "type": "string",
-            "defaultValue": "-",
+            "defaultValue": "master",
             "metadata": {
-                "description": "Telegram bot token"
-            }
-        },
-        "steamWebApiKey": {
-            "type": "string",
-            "defaultValue": "-",
-            "metadata": {
-                "description": "Steam web API key"
+                "description": "Source repo branch."
             }
         }
     },
@@ -71,7 +64,8 @@
             },
             "kind": "linux",
             "properties": {
-                "name": "[variables('hostingPlanName')]"
+                "name": "[variables('hostingPlanName')]",
+                "reserved": true
             }
         },
         {
@@ -117,42 +111,18 @@
                     }
                 },
                 {
-                    "condition": "[not(equals(parameters('discordBotToken'), '-'))]",
+                    "condition": "[contains(parameters('repoUrl'), 'http')]",
                     "apiVersion": "2021-02-01",
-                    "name": "appsettings",
-                    "type": "config",
+                    "name": "web",
+                    "type": "sourcecontrols",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
+                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
                     ],
                     "properties": {
-                        "DISCORD_BOT_TOKEN": "[parameters('discordBotToken')]",
-                        "command": "bash scripts/azuredeploy.sh"
-                    }
-                },
-                {
-                    "condition": "[not(equals(parameters('telegramBotToken'), '-'))]",
-                    "apiVersion": "2021-02-01",
-                    "name": "appsettings",
-                    "type": "config",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
-                    ],
-                    "properties": {
-                        "TELEGRAM_BOT_TOKEN": "[parameters('telegramBotToken')]",
-                        "command": "bash scripts/azuredeploy.sh"
-                    }
-                },
-                {
-                    "condition": "[not(equals(parameters('steamWebApiKey'), '-'))]",
-                    "apiVersion": "2021-02-01",
-                    "name": "appsettings",
-                    "type": "config",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
-                    ],
-                    "properties": {
-                        "STEAM_WEB_API_KEY": "[parameters('steamWebApiKey')]",
-                        "command": "bash scripts/azuredeploy.sh"
+                        "RepoUrl": "[parameters('repoUrl')]",
+                        "branch": "[parameters('branch')]",
+                        "IsManualIntegration": true
                     }
                 }
             ]
