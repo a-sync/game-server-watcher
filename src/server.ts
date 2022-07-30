@@ -71,7 +71,7 @@ createServer(async (req, res) => {
                     } else if (req.method === 'POST') {
                         const body = await new Promise(resolve => {
                             let body = '';
-                            req.on('data', chunk => {
+                            req.on('data', (chunk: string) => {
                                 body += chunk;
                             });
                             req.on('end', () => {

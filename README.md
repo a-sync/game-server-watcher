@@ -42,6 +42,8 @@ The project is in a very early stage. More detailed customization options and ad
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (heroku, azure, gcp, aws etc.)
+ * SQL, JSON or object store database support (postgres, redis etc.)
+ * run as stateless serverless function (aws lambda, azure function, vercel etc.)
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
@@ -57,7 +59,7 @@ git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
 The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
-(The [cloud branch](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
+(The [cloud branch zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -118,11 +120,11 @@ _The bot has no cleanup functionality, left over messages must be removed manual
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).
 <p align="center">
-  <a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>
+  <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>
   <a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="32" alt="Run on Google Cloud"></a>
   <a href="https://cloud.digitalocean.com/apps/new?repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher%2Ftree%2Fmaster"><img src="https://www.deploytodo.com/do-btn-blue.svg" height="32" alt="Deploy to DigitalOcean"></a>
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher&env=SECRET,REFRESH_TIME_MINUTES,DISCORD_BOT_TOKEN,TELEGRAM_BOT_TOKEN,STEAM_WEB_API_KEY"><img src="https://vercel.com/button" height="32" alt="Deploy with Vercel"></a>
+  <!--<a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher&env=SECRET"><img src="https://vercel.com/button" height="32" alt="Deploy with Vercel"></a>//TODO: support runnig as serverless function-->
   <a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>
 </p>
 
@@ -136,7 +138,7 @@ npm run build
 ```
 
 ### Minimum required files on host
-Copy the `./package.json` and `./index.html` files and the `./dist/` folder to your deployment folder.
+Copy the `./package.json` file and the `./public/` and `./dist/` folders and their contents to your deployment folder.
  
 ### Install production dependencies on host
 Navigate to the deployment folder and execute the following command:

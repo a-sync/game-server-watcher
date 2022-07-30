@@ -7,8 +7,7 @@
     "env": {
         "SECRET": {
             "description": "Admin secret",
-            "required": true,
-            "generator": "secret"
+            "required": true
         },
         "REFRESH_TIME_MINUTES": {
             "description": "Game server info refresh interval in minutes [DEPRECETED]",

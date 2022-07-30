@@ -33,32 +33,23 @@
         },
         "discordBotToken": {
             "type": "string",
+            "defaultValue": "-",
             "metadata": {
                 "description": "Discord bot token"
             }
         },
         "telegramBotToken": {
             "type": "string",
+            "defaultValue": "-",
             "metadata": {
                 "description": "Telegram bot token"
             }
         },
         "steamWebApiKey": {
             "type": "string",
+            "defaultValue": "-",
             "metadata": {
                 "description": "Steam web API key"
-            }
-        },
-        "repoUrl": {
-            "type": "string",
-            "metadata": {
-                "description": "Optional source repo URL."
-            }
-        },
-        "branch": {
-            "type": "string",
-            "metadata": {
-                "description": "Optional source repo branch."
             }
         }
     },
@@ -122,25 +113,46 @@
                     "properties": {
                         "SECRET": "[parameters('secret')]",
                         "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
-                        "DISCORD_BOT_TOKEN": "[parameters('discordBotToken')]",
-                        "TELEGRAM_BOT_TOKEN": "[parameters('telegramBotToken')]",
-                        "STEAM_WEB_API_KEY": "[parameters('steamWebApiKey')]",
                         "command": "bash scripts/azuredeploy.sh"
                     }
                 },
                 {
-                    "condition": "[contains(parameters('repoUrl'), 'http')]",
+                    "condition": "[not(equals(parameters('discordBotToken'), '-'))]",
                     "apiVersion": "2021-02-01",
-                    "name": "web",
-                    "type": "sourcecontrols",
+                    "name": "appsettings",
+                    "type": "config",
                     "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
-                        "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
                     ],
                     "properties": {
-                        "RepoUrl": "[parameters('repoUrl')]",
-                        "branch": "[parameters('branch')]",
-                        "IsManualIntegration": true
+                        "DISCORD_BOT_TOKEN": "[parameters('discordBotToken')]",
+                        "command": "bash scripts/azuredeploy.sh"
+                    }
+                },
+                {
+                    "condition": "[not(equals(parameters('telegramBotToken'), '-'))]",
+                    "apiVersion": "2021-02-01",
+                    "name": "appsettings",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                    ],
+                    "properties": {
+                        "TELEGRAM_BOT_TOKEN": "[parameters('telegramBotToken')]",
+                        "command": "bash scripts/azuredeploy.sh"
+                    }
+                },
+                {
+                    "condition": "[not(equals(parameters('steamWebApiKey'), '-'))]",
+                    "apiVersion": "2021-02-01",
+                    "name": "appsettings",
+                    "type": "config",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+                    ],
+                    "properties": {
+                        "STEAM_WEB_API_KEY": "[parameters('steamWebApiKey')]",
+                        "command": "bash scripts/azuredeploy.sh"
                     }
                 }
             ]
