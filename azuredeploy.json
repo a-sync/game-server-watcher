@@ -4,9 +4,9 @@
     "parameters": {
         "siteName": {
             "type": "string",
-            "defaultValue": "Game Server Watcher",
+            "defaultValue": "GameServerWatcher",
             "metadata": {
-                "description": "The name of the web app that you wish to create."
+                "description": "The name of the web app that you wish to create. (alphanumeric only!)"
             }
         },
         "siteLocation": {
@@ -29,6 +29,27 @@
             "maxValue": 59,
             "metadata": {
                 "description": "Game server info refresh interval in minutes [DEPRECETED]"
+            }
+        },
+        "discordBotToken": {
+            "type": "string",
+            "defaultValue": "-",
+            "metadata": {
+                "description": "Discord bot token"
+            }
+        },
+        "telegramBotToken": {
+            "type": "string",
+            "defaultValue": "-",
+            "metadata": {
+                "description": "Telegram bot token"
+            }
+        },
+        "steamWebApiKey": {
+            "type": "string",
+            "defaultValue": "-",
+            "metadata": {
+                "description": "Steam web API key"
             }
         },
         "repoUrl": {
@@ -106,7 +127,12 @@
                     ],
                     "properties": {
                         "SECRET": "[parameters('secret')]",
-                        "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]"
+                        "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
+                        "DISCORD_BOT_TOKEN": "[if(equals('-', parameters('discordBotToken')), '', parameters('discordBotToken'))]",
+                        "TELEGRAM_BOT_TOKEN": "[if(equals('-', parameters('telegramBotToken')), '', parameters('telegramBotToken'))]",
+                        "STEAM_WEB_API_KEY": "[if(equals('-', parameters('steamWebApiKey')), '', parameters('steamWebApiKey'))]",
+                        "DATA_PATH": "./data/",
+                        "DBG": ""
                     }
                 },
                 {
