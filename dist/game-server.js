@@ -212,11 +212,13 @@ class ServerHistory {
             return [];
         if (this._stats.length === 0) {
             const grouped = {};
-            for (const d of db.data.population[this.id]) {
-                if (!grouped[d.dateHour]) {
-                    grouped[d.dateHour] = [];
+            if (this.id in db.data.population) {
+                for (const d of db.data.population[this.id]) {
+                    if (!grouped[d.dateHour]) {
+                        grouped[d.dateHour] = [];
+                    }
+                    grouped[d.dateHour].push(d);
                 }
-                grouped[d.dateHour].push(d);
             }
             const stats = [];
             for (const dh in grouped) {
