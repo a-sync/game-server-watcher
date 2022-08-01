@@ -68,8 +68,8 @@
         }
     },
     "variables": {
-        "sku": "Free",
-        "skuCode": "F1",
+        "sku": "Basic",
+        "skuCode": "B1",
         "linuxFxVersion": "NODE|lts",
         "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]"
     },
@@ -101,7 +101,8 @@
             "properties": {
                 "serverFarmId": "[variables('hostingPlanName')]",
                 "siteConfig": {
-                    "linuxFxVersion": "[variables('linuxFxVersion')]"
+                    "linuxFxVersion": "[variables('linuxFxVersion')]",
+                    "AlwaysOn": true
                 }
             },
             "resources": [
