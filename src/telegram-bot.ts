@@ -31,10 +31,10 @@ export async function init(token: string) {
         const me = await bot.api.getMe();
         console.log('telegram-bot ready', me);
 
-        if(DBG) {
+        if (DBG) {
             bot.on('message:text', ctx => {
                 if (ctx.message.text === 'ping')
-                ctx.reply('pong');
+                    ctx.reply('pong');
             });
             // bot.command('ping', ctx => ctx.reply('/pong'));
             bot.start();
@@ -81,7 +81,7 @@ export async function serverUpdate(gs: GameServer) {
                 let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
                 await m.updatePost(gs);
             } catch (e: any) {
-                console.error(['telegram-bot.sup',ch.chatId,gs.config.host,gs.config.port].join(':'), e.message || e);
+                console.error(['telegram-bot.sup', ch.chatId, gs.config.host, gs.config.port].join(':'), e.message || e);
             }
         }
     }
@@ -126,14 +126,13 @@ class ServerInfoMessage {
             try {
                 await db.write();
             } catch (e: any) {
-                console.error(['telegram.init.db',this.chatId,this.host,this.port].join(':'), e.message || e);
+                console.error(['telegram.init.db', this.chatId, this.host, this.port].join(':'), e.message || e);
             }
         }
     }
 
     async updatePost(gs: GameServer) {
-        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
-        const chart = '[📊](' + gs.history.statsChart(pmax, gs.config.timezoneOffset) + ')';
+        const chart = '[📊](' + gs.history.statsChart() + ')';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
         if (gs.info && gs.online) {
             infoText = [
@@ -145,7 +144,7 @@ class ServerInfoMessage {
 
             if (gs.info.players.length > 0) {
                 const pnArr: string[] = [];
-                for(const p of gs.info.players) {
+                for (const p of gs.info.players) {
                     let playerLine = '';
                     if (p.get('time') !== undefined) {
                         playerLine += hhmmss(p.get('time') || '0') + ' ';
@@ -166,9 +165,9 @@ class ServerInfoMessage {
         infoText += chart;
 
         try {
-            await bot.api.editMessageText(this.chatId, this.messageId, infoText, {parse_mode: 'Markdown'});
+            await bot.api.editMessageText(this.chatId, this.messageId, infoText, { parse_mode: 'Markdown' });
         } catch (e: any) {
-            console.error(['telegram.up',this.chatId,this.host,this.port].join(':'), e.message || e);
+            console.error(['telegram.up', this.chatId, this.host, this.port].join(':'), e.message || e);
         }
     }
 

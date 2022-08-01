@@ -136,8 +136,7 @@ class ServerInfoMessage {
         const embed = new discord_js_1.MessageEmbed();
         embed.setFooter('Last updated');
         embed.setTimestamp();
-        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
-        embed.setImage(gs.history.statsChart(pmax, gs.config.timezoneOffset));
+        embed.setImage(gs.history.statsChart());
         if (gs.info && gs.online) {
             embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor('#000000');

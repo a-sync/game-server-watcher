@@ -36,7 +36,7 @@ class GameServer {
         console.log('game-server init', config.host, config.port, config.type, config.appId);
         this.ip = '0.0.0.0';
         this.config = config;
-        this.history = new ServerHistory(config.host + ':' + config.port);
+        this.history = new ServerHistory(config.host + ':' + config.port, config.graphHistoryHours, config.timezoneOffset);
         this._niceName = config.host + ':' + config.port;
     }
     async update() {
@@ -57,11 +57,12 @@ class GameServer {
             }
             this.online = true;
             this.info = info;
-            this.history.add(info, this.config.graphHistoryHours);
+            this.history.add(info.playersNum);
         }
         else {
             this.online = false;
             console.error('game-server not available', this.config.host, this.config.port);
+            // this.history.add(0);
         }
     }
     async gamedig() {
@@ -173,9 +174,11 @@ class GsPlayer {
     }
 }
 class ServerHistory {
-    constructor(id) {
+    constructor(id, graphHistoryHours = 12, timezoneOffset = 0) {
         this._stats = [];
         this.id = id;
+        this.graphHistoryHours = graphHistoryHours;
+        this.timezoneOffset = timezoneOffset;
     }
     yyyymmddhh(d) {
         return parseInt(d.toISOString().slice(0, 13).replace(/\D/g, ''), 10);
@@ -185,7 +188,7 @@ class ServerHistory {
         const hours = (h > 12) ? h - 12 : h;
         return hours + ampm;
     }
-    add(info, graphHistoryHours = 12) {
+    add(playersNum) {
         var _a;
         if (!((_a = db.data) === null || _a === void 0 ? void 0 : _a.population))
             return;
@@ -196,9 +199,9 @@ class ServerHistory {
         }
         db.data.population[this.id].push({
             dateHour: dh,
-            playersNum: info.playersNum
+            playersNum
         });
-        d.setHours(d.getHours() - graphHistoryHours - 1);
+        d.setHours(d.getHours() - this.graphHistoryHours - 1);
         const minDh = this.yyyymmddhh(d);
         db.data.population[this.id] = db.data.population[this.id].filter(i => i.dateHour > minDh);
         this._stats = [];
@@ -226,10 +229,18 @@ class ServerHistory {
                 });
             }
             this._stats = stats.sort((a, b) => a.dateHour - b.dateHour);
+            const dh = this.yyyymmddhh(new Date());
+            if (this._stats.length === 0 || this._stats[this._stats.length - 1].dateHour < dh) {
+                this._stats.push({
+                    dateHour: dh,
+                    avg: -1,
+                    max: -1
+                });
+            }
         }
         return this._stats;
     }
-    statsChart(playersMax = -1, timezoneOffset = 0) {
+    statsChart() {
         const stats = this.stats();
         const e = encodeURIComponent;
         const avg = [];
@@ -240,7 +251,7 @@ class ServerHistory {
             const sh = s.dateHour % 100;
             const d = new Date();
             d.setHours(sh);
-            d.setTime(d.getTime() + (timezoneOffset * 60 * 60 * 1000));
+            d.setTime(d.getTime() + (this.timezoneOffset * 60 * 60 * 1000));
             const h = d.getHours();
             if (lastH !== undefined) {
                 let nextH = lastH;
@@ -255,8 +266,8 @@ class ServerHistory {
                     }
                 } while (nextH !== h);
             }
-            avg.push(String(Math.round(s.avg)));
-            max.push(String(s.max));
+            avg.push(s.avg > -1 ? String(Math.round(s.avg)) : '_');
+            max.push(s.max > -1 ? String(s.max) : '_');
             xlabels.push(this.formatHour(h));
             lastH = h;
         }

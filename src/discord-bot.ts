@@ -68,7 +68,7 @@ export async function serverUpdate(gs: GameServer) {
                 let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
                 await m.updatePost(gs);
             } catch (e: any) {
-                console.error(['discord-bot.sup',ch.channelId,gs.config.host,gs.config.port].join(':'), e.message || e);
+                console.error(['discord-bot.sup', ch.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
             }
         }
     }
@@ -122,7 +122,7 @@ class ServerInfoMessage {
             try {
                 this.message = await this.channel.messages.fetch(msgId);
             } catch (e: any) {
-                console.error(['discord.init.msg',this.channelId,this.host,this.port].join(':'), e.message || e);
+                console.error(['discord.init.msg', this.channelId, this.host, this.port].join(':'), e.message || e);
             }
         }
 
@@ -154,7 +154,7 @@ class ServerInfoMessage {
             try {
                 await db.write();
             } catch (e: any) {
-                console.error(['discord.init.db',this.channelId,this.host,this.port].join(':'), e.message || e);
+                console.error(['discord.init.db', this.channelId, this.host, this.port].join(':'), e.message || e);
             }
         }
     }
@@ -165,8 +165,7 @@ class ServerInfoMessage {
         const embed = new MessageEmbed();
         embed.setFooter('Last updated');
         embed.setTimestamp();
-        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
-        embed.setImage(gs.history.statsChart(pmax, gs.config.timezoneOffset));
+        embed.setImage(gs.history.statsChart());
 
         if (gs.info && gs.online) {
             embed.setTitle(gs.niceName.slice(0, 256));
@@ -211,7 +210,7 @@ class ServerInfoMessage {
         try {
             await this.message.edit(null, { embed });
         } catch (e: any) {
-            console.error(['discord.up',this.channelId,this.host,this.port].join(':'), e.message || e);
+            console.error(['discord.up', this.channelId, this.host, this.port].join(':'), e.message || e);
         }
     }
 }

@@ -111,8 +111,7 @@ class ServerInfoMessage {
         }
     }
     async updatePost(gs) {
-        const pmax = gs.info && gs.info.playersMax ? gs.info.playersMax : -1;
-        const chart = '[📊](' + gs.history.statsChart(pmax, gs.config.timezoneOffset) + ')';
+        const chart = '[📊](' + gs.history.statsChart() + ')';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
         if (gs.info && gs.online) {
             infoText = [
