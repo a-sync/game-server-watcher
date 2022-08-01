@@ -50,8 +50,13 @@ async function serverUpdate(gs) {
         console.log('discord.serverUpdate', gs.config.host, gs.config.port, gs.config.discord);
     if (gs.config.discord) {
         for (const ch of gs.config.discord) {
-            let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
-            await m.updatePost(gs);
+            try {
+                let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
+                await m.updatePost(gs);
+            }
+            catch (e) {
+                console.error(['discord-bot.sup', ch.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
             "type": "string",
             "defaultValue": "GameServerWatcher",
             "metadata": {
-                "description": "The name of the web app that you wish to create. (alphanumeric only!)"
+                "description": "The name / subdomain of the web app that you wish to create. (alphanumeric only!)"
             }
         },
         "siteLocation": {
@@ -26,7 +26,7 @@
             "type": "int",
             "defaultValue": 5,
             "minValue": 1,
-            "maxValue": 59,
+            "maxValue": 60,
             "metadata": {
                 "description": "Game server info refresh interval in minutes [DEPRECETED]"
             }
@@ -70,8 +70,10 @@
     "variables": {
         "sku": "Basic",
         "skuCode": "B1",
-        "linuxFxVersion": "NODE|lts",
-        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]"
+        "linuxFxVersion": "NODE|16-lts",
+        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]",
+        "dataPath": "./data/",
+        "dbg": "",
     },
     "resources": [
         {
@@ -132,8 +134,8 @@
                         "DISCORD_BOT_TOKEN": "[if(equals('-', parameters('discordBotToken')), '', parameters('discordBotToken'))]",
                         "TELEGRAM_BOT_TOKEN": "[if(equals('-', parameters('telegramBotToken')), '', parameters('telegramBotToken'))]",
                         "STEAM_WEB_API_KEY": "[if(equals('-', parameters('steamWebApiKey')), '', parameters('steamWebApiKey'))]",
-                        "DATA_PATH": "./data/",
-                        "DBG": ""
+                        "DATA_PATH": "[variables('dataPath')]",
+                        "DBG": "[variables('dbg')]"
                     }
                 },
                 {

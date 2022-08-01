@@ -61,8 +61,13 @@ async function serverUpdate(gs) {
         console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
     if (gs.config.telegram) {
         for (const ch of gs.config.telegram) {
-            let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
-            await m.updatePost(gs);
+            try {
+                let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
+                await m.updatePost(gs);
+            }
+            catch (e) {
+                console.error(['telegram-bot.sup', ch.chatId, gs.config.host, gs.config.port].join(':'), e.message || e);
+            }
         }
     }
 }

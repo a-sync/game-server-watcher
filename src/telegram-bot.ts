@@ -77,8 +77,12 @@ export async function serverUpdate(gs: GameServer) {
 
     if (gs.config.telegram) {
         for (const ch of gs.config.telegram) {
-            let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
-            await m.updatePost(gs);
+            try {
+                let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
+                await m.updatePost(gs);
+            } catch (e: any) {
+                console.error(['telegram-bot.sup',ch.chatId,gs.config.host,gs.config.port].join(':'), e.message || e);
+            }
         }
     }
 }

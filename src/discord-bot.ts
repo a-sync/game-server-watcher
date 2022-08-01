@@ -64,8 +64,12 @@ export async function serverUpdate(gs: GameServer) {
 
     if (gs.config.discord) {
         for (const ch of gs.config.discord) {
-            let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
-            await m.updatePost(gs);
+            try {
+                let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
+                await m.updatePost(gs);
+            } catch (e: any) {
+                console.error(['discord-bot.sup',ch.channelId,gs.config.host,gs.config.port].join(':'), e.message || e);
+            }
         }
     }
 }
