@@ -54,13 +54,8 @@ class Watcher {
     async init(config: GameServerConfig[]) {
         console.log('watcher starting...');
 
-        if (DISCORD_BOT_TOKEN) {
-            await discordBot.init(DISCORD_BOT_TOKEN);
-        }
-
-        if (TELEGRAM_BOT_TOKEN) {
-            await telegramBot.init(TELEGRAM_BOT_TOKEN);
-        }
+        if (DISCORD_BOT_TOKEN) await discordBot.init(DISCORD_BOT_TOKEN);
+        if (TELEGRAM_BOT_TOKEN) await telegramBot.init(TELEGRAM_BOT_TOKEN);
 
         await initDb();
 
@@ -94,7 +89,9 @@ export async function main() {
     await watcher.init(db.data);
 
     console.log('starting loop...');
-    const loop = setInterval(async () => { await watcher.check() }, 1000 * 60 * REFRESH_TIME_MINUTES);
+    const loop = setInterval(async () => {
+        await watcher.check();
+    }, 1000 * 60 * REFRESH_TIME_MINUTES);
     await watcher.check();
 
     return loop;

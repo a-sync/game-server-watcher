@@ -237,9 +237,7 @@ $(async () => {
                             unsavedChanges = false;
                             dismissSaveConfig();
                             notif('success', '✔️ Changes saved successfully.', undefined, undefined, 3);
-                        } else {
-                            notif('danger', '⚠️ Error while saving config.', (res ? res.error : undefined), undefined, 3);
-                        }
+                        } else notif('danger', '⚠️ Error while saving config.', (res ? res.error : undefined), undefined, 3);
                     }
 
                     $(e.currentTarget).removeClass('_btn');
@@ -252,14 +250,10 @@ $(async () => {
                     configEditor.setValue(editorCurrVal, true);
                     unsavedChanges = false;
                     dismissSaveConfig();
-                    if (formCurrVal !== actualFormValues()) {
-                        document.location.reload();
-                    }
+                    if (formCurrVal !== actualFormValues()) document.location.reload();
                 });
             });
-        } else {
-            notif('danger', '⚠️ Error while loading config.');
-        }
+        } else notif('danger', '⚠️ Error while loading config.');
 
         // Flush data
         $('button[data-api]').click(async e => {
@@ -268,11 +262,8 @@ $(async () => {
 
             if (confirm('Are you sure you want to call `' + endpoint + '`?')) {
                 const res = await fetchApi('GET', endpoint);
-                if (res && res.message) {
-                    notif('success', res.message, undefined, undefined, 3);
-                } else {
-                    notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
-                }
+                if (res && res.message) notif('success', res.message, undefined, undefined, 3);
+                else notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
             }
         });
     }
@@ -281,9 +272,7 @@ $(async () => {
 function dismissSaveConfig() {
     $('#save-config').addClass('animate__fadeOutDown');
     setTimeout(() => {
-        if ($('#save-config').hasClass('animate__fadeOutDown')) {
-            $('#save-config').addClass('d-none');
-        }
+        if ($('#save-config').hasClass('animate__fadeOutDown')) $('#save-config').addClass('d-none');
     }, 500);
 }
 
@@ -292,9 +281,7 @@ function dismissSaveConfig() {
 function actualFormValues() {
     const formItems = $('#config-form .tab-pane:not([style*="display: none"]) input:enabled, #config-form .tab-pane:not([style*="display: none"]) textarea:enabled, #config-form .tab-pane:not([style*="display: none"]) select:enabled').toArray();
     return JSON.stringify(formItems.map(e => {
-        if (e.type === 'checkbox') {
-            return e.checked ? e.value : undefined;
-        }
+        if (e.type === 'checkbox') return e.checked ? e.value : undefined;
         return e.value;
     }));
 }
@@ -324,9 +311,8 @@ function addExportButton() {
             type: 'application/json;charset=utf-8'
         });
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob, filename);
-        } else {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(blob, filename);
+        else {
             const a = document.createElement('a');
             a.download = filename;
             a.href = URL.createObjectURL(blob);
@@ -373,9 +359,7 @@ function notif(type, html1, html2, html3, dismissable) {
             const p2 = $('<p/>', { class: 'mb-0', html: html3 });
             el.append(p2);
         }
-    } else {
-        el.html(html1);
-    }
+    } else el.html(html1);
 
     if (dismissable !== false) {
         const button = $('<button/>', { class: 'close', type: 'button', 'data-dismiss': 'alert', 'aria-label': 'Close' });
@@ -392,9 +376,9 @@ function notif(type, html1, html2, html3, dismissable) {
         const timer = setTimeout(a => {
             a.alert('close');
         }, 1000 * closeTimeout, a);
-        a.on('close.bs.alert', function () {
+        a.on('close.bs.alert', () => {
             clearTimeout(timer);
-        })
+        });
     }
 
     $('#notif-container').append(el);
@@ -407,14 +391,10 @@ function activateMenu(target) {
         target = id('top-menu-configuration');
         if (document.location.hash.length > 1) {
             const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));
-            if (hashTargetMenu) {
-                target = hashTargetMenu;
-            }
+            if (hashTargetMenu) target = hashTargetMenu;
         } else if (window.localStorage.getItem('active.menu')) {
             const stateTargetMenu = id('top-menu-' + window.localStorage.getItem('active.menu').slice(1));
-            if (stateTargetMenu) {
-                target = stateTargetMenu;
-            }
+            if (stateTargetMenu) target = stateTargetMenu;
         }
     }
 
@@ -430,11 +410,8 @@ function activateMenu(target) {
             window.localStorage.setItem('active.menu', menu);
 
             const titleArr = document.title.split(' #');
-            if (titleArr.length < 2) {
-                titleArr.push(menu.slice(1));
-            } else {
-                titleArr[titleArr.length - 1] = menu.slice(1);
-            }
+            if (titleArr.length < 2) titleArr.push(menu.slice(1));
+            else titleArr[titleArr.length - 1] = menu.slice(1);
 
             document.title = titleArr.join(' #');
         } else {
@@ -513,9 +490,7 @@ async function getBearerToken() {
 
         if (ans) window.localStorage.setItem('btoken', await generateBearerToken(ans));
         else window.localStorage.removeItem('btoken');
-    } else {
-        notif('primary', '⚠️ Close the tab to re-enable dialog boxes.');
-    }
+    } else notif('primary', '⚠️ Close the tab to re-enable dialog boxes.');
 
     return window.localStorage.getItem('btoken');
 }
