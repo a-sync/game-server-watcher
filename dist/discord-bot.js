@@ -72,9 +72,8 @@ async function getServerInfoMessage(cid, host, port) {
             const md = db.data.find(d => {
                 return d.channelId === cid && d.host === host && d.port === port;
             });
-            if (md) {
+            if (md)
                 msgId = md.messageId;
-            }
         }
         await m.init(msgId);
         serverInfoMessages.push(m);
@@ -118,9 +117,8 @@ class ServerInfoMessage {
                     messageId: this.messageId
                 });
             }
-            else {
+            else
                 db.data[mi].messageId = this.messageId;
-            }
             try {
                 await db.write();
             }

@@ -194,9 +194,8 @@ class ServerHistory {
             return;
         const d = new Date();
         const dh = this.yyyymmddhh(d);
-        if (!db.data.population[this.id]) {
+        if (!db.data.population[this.id])
             db.data.population[this.id] = [];
-        }
         db.data.population[this.id].push({
             dateHour: dh,
             playersNum
@@ -214,9 +213,8 @@ class ServerHistory {
             const grouped = {};
             if (this.id in db.data.population) {
                 for (const d of db.data.population[this.id]) {
-                    if (!grouped[d.dateHour]) {
+                    if (!grouped[d.dateHour])
                         grouped[d.dateHour] = [];
-                    }
                     grouped[d.dateHour].push(d);
                 }
             }
@@ -231,14 +229,6 @@ class ServerHistory {
                 });
             }
             this._stats = stats.sort((a, b) => a.dateHour - b.dateHour);
-            const dh = this.yyyymmddhh(new Date());
-            if (this._stats.length === 0 || this._stats[this._stats.length - 1].dateHour < dh) {
-                this._stats.push({
-                    dateHour: dh,
-                    avg: -1,
-                    max: -1
-                });
-            }
         }
         return this._stats;
     }
@@ -248,6 +238,24 @@ class ServerHistory {
         const avg = [];
         const max = [];
         const xlabels = [];
+        const dh = this.yyyymmddhh(new Date());
+        if (stats.length === 0 || stats[stats.length - 1].dateHour < dh) {
+            stats.push({
+                dateHour: dh,
+                avg: -1,
+                max: -1
+            });
+        }
+        const firstDateHour = new Date();
+        firstDateHour.setHours(firstDateHour.getHours() - this.graphHistoryHours);
+        const fdh = this.yyyymmddhh(firstDateHour);
+        if (stats[0].dateHour > fdh) {
+            stats.unshift({
+                dateHour: fdh,
+                avg: -1,
+                max: -1
+            });
+        }
         let lastH;
         for (const s of stats) {
             const sh = s.dateHour % 100;

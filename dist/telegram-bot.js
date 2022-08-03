@@ -47,9 +47,8 @@ async function getServerInfoMessage(cid, host, port) {
             const md = db.data.find(d => {
                 return d.chatId === cid && d.host === host && d.port === port;
             });
-            if (md) {
+            if (md)
                 msgId = md.messageId;
-            }
         }
         await m.init(msgId);
         serverInfoMessages.push(m);
@@ -80,9 +79,8 @@ class ServerInfoMessage {
         this.port = port;
     }
     async init(msgId) {
-        if (msgId) {
+        if (msgId)
             this.messageId = msgId;
-        }
         else {
             const msg = await bot.api.sendMessage(this.chatId, 'Initializing server info...');
             this.messageId = msg.message_id;
@@ -99,9 +97,8 @@ class ServerInfoMessage {
                     messageId: this.messageId
                 });
             }
-            else {
+            else
                 db.data[mi].messageId = this.messageId;
-            }
             try {
                 await db.write();
             }
@@ -124,20 +121,16 @@ class ServerInfoMessage {
                 const pnArr = [];
                 for (const p of gs.info.players) {
                     let playerLine = '';
-                    if (p.get('time') !== undefined) {
+                    if (p.get('time') !== undefined)
                         playerLine += (0, hhmmss_1.default)(p.get('time') || '0') + ' ';
-                    }
-                    if (p.get('name') !== undefined) {
+                    if (p.get('name') !== undefined)
                         playerLine += p.get('name') || 'n/a';
-                    }
-                    if (p.get('score') !== undefined) {
+                    if (p.get('score') !== undefined)
                         playerLine += ' (' + (p.get('score') || 0) + ')';
-                    }
                     pnArr.push(playerLine);
                 }
-                if (pnArr.length > 0) {
+                if (pnArr.length > 0)
                     infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
-                }
             }
         }
         infoText += chart;

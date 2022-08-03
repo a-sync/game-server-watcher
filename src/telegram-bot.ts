@@ -59,9 +59,7 @@ async function getServerInfoMessage(cid: string, host: string, port: number) {
             const md = db.data.find(d => {
                 return d.chatId === cid && d.host === host && d.port === port;
             });
-            if (md) {
-                msgId = md.messageId;
-            }
+            if (md) msgId = md.messageId;
         }
 
         await m.init(msgId);
@@ -100,9 +98,8 @@ class ServerInfoMessage {
     }
 
     async init(msgId?: number) {
-        if (msgId) {
-            this.messageId = msgId;
-        } else {
+        if (msgId) this.messageId = msgId;
+        else {
             const msg = await bot.api.sendMessage(this.chatId, 'Initializing server info...');
             this.messageId = msg.message_id;
         }
@@ -119,9 +116,7 @@ class ServerInfoMessage {
                     port: this.port,
                     messageId: this.messageId
                 });
-            } else {
-                db.data[mi].messageId = this.messageId;
-            }
+            } else db.data[mi].messageId = this.messageId;
 
             try {
                 await db.write();
@@ -134,6 +129,7 @@ class ServerInfoMessage {
     async updatePost(gs: GameServer) {
         const chart = '[📊](' + gs.history.statsChart() + ')';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
+
         if (gs.info && gs.online) {
             infoText = [
                 this.escapeMarkdown(gs.niceName),
@@ -146,20 +142,12 @@ class ServerInfoMessage {
                 const pnArr: string[] = [];
                 for (const p of gs.info.players) {
                     let playerLine = '';
-                    if (p.get('time') !== undefined) {
-                        playerLine += hhmmss(p.get('time') || '0') + ' ';
-                    }
-                    if (p.get('name') !== undefined) {
-                        playerLine += p.get('name') || 'n/a';
-                    }
-                    if (p.get('score') !== undefined) {
-                        playerLine += ' (' + (p.get('score') || 0) + ')';
-                    }
+                    if (p.get('time') !== undefined) playerLine += hhmmss(p.get('time') || '0') + ' ';
+                    if (p.get('name') !== undefined) playerLine += p.get('name') || 'n/a';
+                    if (p.get('score') !== undefined) playerLine += ' (' + (p.get('score') || 0) + ')';
                     pnArr.push(playerLine);
                 }
-                if (pnArr.length > 0) {
-                    infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
-                }
+                if (pnArr.length > 0) infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
             }
         }
         infoText += chart;
