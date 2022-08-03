@@ -87,7 +87,7 @@ export class GameServer {
         } else {
             this.online = false;
             console.error('game-server not available', this.config.host, this.config.port);
-            // this.history.add(0);
+            this.history.cleanStats();
         }
     }
 
@@ -249,17 +249,22 @@ class ServerHistory {
 
     add(playersNum: number): void {
         if (!db.data?.population) return;
-
-        const d = new Date();
-        const dh = this.yyyymmddhh(d);
-
         if (!db.data.population[this.id]) db.data.population[this.id] = [];
 
+        const dh = this.yyyymmddhh(new Date());
         db.data.population[this.id].push({
             dateHour: dh,
             playersNum
         });
 
+        this.cleanStats();
+    }
+
+    cleanStats(): void {
+        if (!db.data?.population) return;
+        if (!db.data.population[this.id]) db.data.population[this.id] = [];
+
+        const d = new Date();
         d.setHours(d.getHours() - this.graphHistoryHours - 1);
         const minDh = this.yyyymmddhh(d);
 
