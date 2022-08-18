@@ -1,5 +1,3 @@
-const id = s => document.getElementById(s);
-
 let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
@@ -30,7 +28,7 @@ $(async () => {
         // Configuration
         const gswConfig = await fetchApi('GET', 'config');
         if (gswConfig && gswConfig.config) {
-            configEditor = new JSONEditor(id('config-form'), {
+            configEditor = new JSONEditor(document.getElementById('config-form'), {
                 "theme": "bootstrap4",
                 "iconlib": "fontawesome5",
                 "object_layout": "normal",
@@ -388,6 +386,7 @@ function notif(type, html1, html2, html3, dismissable) {
 
 function activateMenu(target) {
     if (!target) {
+        const id = s => document.getElementById(s);
         target = id('top-menu-configuration');
         if (document.location.hash.length > 1) {
             const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));

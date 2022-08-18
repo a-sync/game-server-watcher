@@ -6,7 +6,7 @@ The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
- 1. should be able to host on a free service (_target atm. is cloudno.de (node.js 12.20.1)_)
+ 1. should be able to host on a free service (_target atm. is fly.io (node.js 16)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 <details>
@@ -23,7 +23,7 @@ The main goals of this repo:
 </details>
 
 # Project Status
-The code itself is stable and continuously tested/deployed from the cloud branch.  
+The code itself is stable and continuously tested/deployed from the master branch.  
 
 The project is in a very early stage. More detailed customization options and features will be added as requested.  
 
@@ -49,7 +49,7 @@ The project is in a very early stage. More detailed customization options and fe
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
 
 ## Requirements
-[node.js](https://nodejs.org/) _(version 12.20.0 or later)_  
+[node.js](https://nodejs.org/) _(version 16.9.0 or later)_  
 
 ## Getting the source
 This project is [hosted on github](https://github.com/a-sync/game-server-watcher). You can clone this project directly using this command:
@@ -59,7 +59,6 @@ git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
 The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
-(The [cloud branch zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -119,7 +118,7 @@ If the original message created by the bot gets deleted, you need to flush the b
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
 # Deployment
-Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).
+Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).
 <p align="center">
   <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>
@@ -209,3 +208,4 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/GiyoMoon/steam-server-query
 * https://github.com/Fabricio-191/valve-server-query
 * https://github.com/sbuggay/srcds-info-proxy
+* https://github.com/DiscordGSM/DiscordGSM
