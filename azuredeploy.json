@@ -24,11 +24,11 @@
         },
         "refreshTimeMinutes": {
             "type": "int",
-            "defaultValue": 5,
+            "defaultValue": 2,
             "minValue": 1,
             "maxValue": 60,
             "metadata": {
-                "description": "Game server info refresh interval in minutes [DEPRECETED]"
+                "description": "Game server info refresh interval in minutes"
             }
         },
         "discordBotToken": {
@@ -71,9 +71,7 @@
         "sku": "Basic",
         "skuCode": "B1",
         "linuxFxVersion": "NODE|16-lts",
-        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]",
-        "dataPath": "./data/",
-        "dbg": "",
+        "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]"
     },
     "resources": [
         {
@@ -133,9 +131,7 @@
                         "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
                         "DISCORD_BOT_TOKEN": "[if(equals('-', parameters('discordBotToken')), '', parameters('discordBotToken'))]",
                         "TELEGRAM_BOT_TOKEN": "[if(equals('-', parameters('telegramBotToken')), '', parameters('telegramBotToken'))]",
-                        "STEAM_WEB_API_KEY": "[if(equals('-', parameters('steamWebApiKey')), '', parameters('steamWebApiKey'))]",
-                        "DATA_PATH": "[variables('dataPath')]",
-                        "DBG": "[variables('dbg')]"
+                        "STEAM_WEB_API_KEY": "[if(equals('-', parameters('steamWebApiKey')), '', parameters('steamWebApiKey'))]"
                     }
                 },
                 {

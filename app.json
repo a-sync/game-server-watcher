@@ -10,9 +10,9 @@
             "required": true
         },
         "REFRESH_TIME_MINUTES": {
-            "description": "Game server info refresh interval in minutes [DEPRECETED]",
+            "description": "Game server info refresh interval in minutes",
             "required": true,
-            "value": "5"
+            "value": "2"
         },
         "DISCORD_BOT_TOKEN": {
             "description": "Discord bot token",

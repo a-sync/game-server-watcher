@@ -25,7 +25,7 @@ The main goals of this repo:
 # Project Status
 The code itself is stable and continuously tested/deployed from the cloud branch.  
 
-The project is in a very early stage. More detailed customization options and additional features will be added as requested.  
+The project is in a very early stage. More detailed customization options and features will be added as requested.  
 
 ### Possible features and configuration options to add in the future
  * optional player list
@@ -90,9 +90,10 @@ npm run dev
 
 ## Settings
 The behaviour of the watcher service can be configured via environmental variables (env vars).  
-`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [default.env](./default.env) file.  
+`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [.env.example](./.env.example) file.  
+To get started, you can simply rename the `.env.example` file to `.env`.  
 
-Refer to the wiki on how to get tokens for:
+Refer to the wiki on how to acquire tokens for:
  * [steam](https://github.com/a-sync/game-server-watcher/wiki/Steam-Web-API-key)
  * [discord](https://github.com/a-sync/game-server-watcher/wiki/Discord-bot-token)
  * [telegram](https://github.com/a-sync/game-server-watcher/wiki/Telegram-bot-token)
@@ -147,8 +148,10 @@ npm i --only=prod
 ```
 _If you can not install dependencies on the host, do a local install and copy the `./node_modules/` folder to the host._
 
-### Configuration
-Create a writeable folder for the data storage. (configured by `DATA_PATH` env var, default: `./data/`)  
+### Service configuration
+Create environmental variables to enable the required features and to customize the service.  
+1. Make sure the service can write to the data storage path. (configured by `DATA_PATH` env var, default: `./data/`)  
+2. Make sure you create a unique admin secret. (configured by `SECRET` env var, default: `secret`)
 
 ### Running
 Run the program from the deployment folder:
