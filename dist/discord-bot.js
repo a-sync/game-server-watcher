@@ -50,9 +50,13 @@ async function serverUpdate(gs) {
         console.log('discord.serverUpdate', gs.config.host, gs.config.port, gs.config.discord);
     if (gs.config.discord) {
         for (const ch of gs.config.discord) {
+            console.log('!!! try channel', ch.channelId);
             try {
+                console.log('!!! get message');
                 let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
+                console.log('!!! update message');
                 await m.updatePost(gs);
+                console.log('!!! updated');
             }
             catch (e) {
                 console.error(['discord-bot.sup', ch.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
@@ -92,7 +96,9 @@ class ServerInfoMessage {
         if (msgId) {
             this.messageId = msgId;
             try {
+                console.log('!!! fetch message');
                 this.message = await this.channel.messages.fetch(msgId);
+                console.log('!!! fetched', this.message.id);
             }
             catch (e) {
                 console.error(['discord.init.msg', this.channelId, this.host, this.port].join(':'), e.message || e);
@@ -102,7 +108,9 @@ class ServerInfoMessage {
             let embed = new discord_js_1.MessageEmbed();
             embed.setTitle('Initializing server info... ' + (new Date()).toISOString());
             embed.setColor('#00ff00');
+            console.log('!!! send message');
             this.message = await this.channel.send({ embed });
+            console.log('!!! sent', this.message.id);
             this.messageId = this.message.id;
         }
         if (db.data) {
@@ -185,7 +193,9 @@ class ServerInfoMessage {
             embed.setColor('#ff0000');
         }
         try {
+            console.log('!!! edit message');
             await this.message.edit(null, { embed });
+            console.log('!!! edited');
         }
         catch (e) {
             console.error(['discord.up', this.channelId, this.host, this.port].join(':'), e.message || e);
