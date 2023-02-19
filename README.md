@@ -41,9 +41,10 @@ The project is in a very early stage. More detailed customization options and fe
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
- * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr etc.)
+ * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
- * run as stateless serverless function (aws lambda, azure function, vercel etc.)
+ * run as stateless serverless function (aws lambda, azure function, heroku, vercel etc.)
+ * [pterodactyl](https://pterodactyl.io) egg release
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
@@ -209,3 +210,4 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/Fabricio-191/valve-server-query
 * https://github.com/sbuggay/srcds-info-proxy
 * https://github.com/DiscordGSM/DiscordGSM
+* https://github.com/EndBug/game-tracker
