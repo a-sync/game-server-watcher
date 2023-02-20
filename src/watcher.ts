@@ -1,10 +1,10 @@
-import { Type } from 'node8-gamedig';
+import { Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer, initDb, saveDb } from './game-server';
 import * as discordBot from './discord-bot';
 import * as telegramBot from './telegram-bot';
 
-const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '5', 10);//DEPRECETED
+const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '2', 10);
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';

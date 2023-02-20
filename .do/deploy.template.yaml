@@ -10,7 +10,7 @@ spec:
       scope: RUN_TIME
     - key: REFRESH_TIME_MINUTES
       scope: RUN_TIME
-      value: "5"
+      value: "2"
     - key: DISCORD_BOT_TOKEN
       scope: RUN_TIME
       value: ""

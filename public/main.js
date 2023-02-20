@@ -1,10 +1,8 @@
-const id = s => document.getElementById(s);
-
 let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
-        await setRandomBg().catch(() => { });
+        await setRandomBg().catch(() => {});
         setInterval(setRandomBg, 60000);
 
         let unsavedChanges = false;
@@ -30,7 +28,7 @@ $(async () => {
         // Configuration
         const gswConfig = await fetchApi('GET', 'config');
         if (gswConfig && gswConfig.config) {
-            configEditor = new JSONEditor(id('config-form'), {
+            configEditor = new JSONEditor(document.getElementById('config-form'), {
                 "theme": "bootstrap4",
                 "iconlib": "fontawesome5",
                 "object_layout": "normal",
@@ -81,7 +79,7 @@ $(async () => {
                             },
                             "type": {
                                 "title": "Gamedig type",
-                                "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
+                                "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig#games-list\">games list</a>.",
                                 "type": "string",
                                 "options": {
                                     "grid_columns": 6
@@ -388,6 +386,7 @@ function notif(type, html1, html2, html3, dismissable) {
 
 function activateMenu(target) {
     if (!target) {
+        const id = s => document.getElementById(s);
         target = id('top-menu-configuration');
         if (document.location.hash.length > 1) {
             const hashTargetMenu = id('top-menu-' + document.location.hash.slice(1));

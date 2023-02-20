@@ -2,9 +2,9 @@ name: ☁️ Deploy to the cloud
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - cloud
+  # push:
+  #   branches:
+  #     - master
 
 jobs:
   push:

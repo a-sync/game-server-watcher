@@ -1,9 +1,6 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "paths": {
-            "node8-gamedig": ["node_modules/@types/gamedig"]
-        },
         "rootDir": "./src",
         "outDir": "./dist",
         "lib": [

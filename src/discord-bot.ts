@@ -1,5 +1,4 @@
-
-import { Client, MessageEmbed, TextChannel, Message } from 'discord.js';
+import { Client, GatewayIntentBits, TextChannel, Message, EmbedBuilder, APIEmbedField } from 'discord.js';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
@@ -24,8 +23,7 @@ export async function init(token: string) {
     if (!bot) {
         console.log('discord-bot starting...');
         bot = new Client({
-            messageEditHistoryMaxSize: 0,
-            ws: { intents: ['GUILDS', 'GUILD_MESSAGES'] }
+            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
         });
 
         bot.on('error', e => {
@@ -43,7 +41,7 @@ export async function init(token: string) {
             bot.once('error', reject);
 
             if (DBG) {
-                bot.on('message', msg => {
+                bot.on('messageCreate', msg => {
                     if (msg.content === 'ping') {
                         msg.reply('pong');
                     }
@@ -118,18 +116,18 @@ class ServerInfoMessage {
         if (msgId) {
             this.messageId = msgId;
             try {
-                this.message = await this.channel.messages.fetch(msgId);
+                this.message = await this.channel.messages.fetch({ message: msgId });
             } catch (e: any) {
                 console.error(['discord.init.msg', this.channelId, this.host, this.port].join(':'), e.message || e);
             }
         }
 
         if (!msgId || !this.message) {
-            let embed = new MessageEmbed();
+            let embed = new EmbedBuilder();
             embed.setTitle('Initializing server info... ' + (new Date()).toISOString());
             embed.setColor('#00ff00');
 
-            this.message = await this.channel.send({ embed });
+            this.message = await this.channel.send({ embeds: [embed] });
             this.messageId = this.message.id;
         }
 
@@ -158,8 +156,9 @@ class ServerInfoMessage {
     async updatePost(gs: GameServer) {
         if (!this.message) return;
 
-        const embed = new MessageEmbed();
-        embed.setFooter('Last updated');
+        const embed = new EmbedBuilder();
+        const fields: APIEmbedField[] = [];
+        embed.setFooter({ text: 'Last updated' });
         embed.setTimestamp();
         embed.setImage(gs.history.statsChart());
 
@@ -167,10 +166,10 @@ class ServerInfoMessage {
             embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor('#000000');
 
-            if (gs.info.game) embed.addField('Game', gs.info.game, true);
-            if (gs.info.map) embed.addField('Map', gs.info.map, true);
-            embed.addField('Players', gs.info.playersNum + '/' + gs.info.playersMax, true);
-            embed.addField('Connect', 'steam://connect/' + gs.info.connect);
+            if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true});
+            if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true});
+            fields.push({ name: 'Players', value: gs.info.playersNum + '/' + gs.info.playersMax, inline: true});
+            fields.push({ name: 'Connect', value: 'steam://connect/' + gs.info.connect});
 
             if (gs.info?.players.length > 0) {
                 const pNames: string[] = [];
@@ -179,7 +178,10 @@ class ServerInfoMessage {
                 const pPings: string[] = [];
 
                 for (const p of gs.info?.players) {
-                    if (pNames.join('\n').length > 1016 || pTimes.join('\n').length > 1016 || pScores.join('\n').length > 1016 || pPings.join('\n').length > 1016) {
+                    if (pNames.join('\n').length > 1016 
+                    || pTimes.join('\n').length > 1016 
+                    || pScores.join('\n').length > 1016 
+                    || pPings.join('\n').length > 1016) {
                         if (pNames.length) pNames.pop();
                         if (pTimes.length) pTimes.pop();
                         if (pScores.length) pScores.pop();
@@ -193,18 +195,20 @@ class ServerInfoMessage {
                     if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
 
-                if (pNames.length) embed.addField('Name', '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', true);
-                if (pTimes.length) embed.addField('Time', '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', true);
-                if (pScores.length) embed.addField('Score', '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', true);
-                if (pPings.length) embed.addField('Ping', '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', true);
+                if (pNames.length) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pTimes.length) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true});
             }
         } else {
             embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');
             embed.setColor('#ff0000');
         }
 
+        embed.setFields(fields);
+
         try {
-            await this.message.edit(null, { embed });
+            await this.message.edit({ embeds: [embed] });
         } catch (e: any) {
             console.error(['discord.up', this.channelId, this.host, this.port].join(':'), e.message || e);
         }

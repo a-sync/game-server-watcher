@@ -8,9 +8,9 @@ import 'dotenv/config';
 import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
 
 const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE || '0', 10);
-const APP_HOST = process.env.app_host || process.env.APP_HOST || '0.0.0.0';
-const APP_PORT = parseInt(process.env.PORT || process.env.app_port || process.env.APP_PORT || '8080', 10);
-const SECRET = process.env.SECRET || '';
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = parseInt(process.env.PORT || '8080', 10);
+const SECRET = process.env.SECRET || 'secret';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
 const FEET_STEAM = Boolean(process.env.STEAM_WEB_API_KEY);
@@ -114,8 +114,8 @@ createServer(async (req, res) => {
         res.writeHead(404, { 'Content-Type': 'text/html' });
         res.end('<html><head></head><body>404 &#x1F4A2</body></html>');
     }
-}).listen(APP_PORT, APP_HOST, () => {
-    console.log('Web service started %s:%s', APP_HOST, APP_PORT);
+}).listen(PORT, HOST, () => {
+    console.log('Web service started %s:%s', HOST, PORT);
 });
 
 main().then(l => {

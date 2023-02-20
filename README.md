@@ -6,7 +6,7 @@ The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
- 1. should be able to host on a free service (_target atm. is cloudno.de (node.js 12.20.1)_)
+ 1. should be able to host on a free service (_target atm. is fly.io (node.js 16)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 <details>
@@ -23,9 +23,9 @@ The main goals of this repo:
 </details>
 
 # Project Status
-The code itself is stable and continuously tested/deployed from the cloud branch.  
+The code itself is stable and continuously tested/deployed from the master branch.  
 
-The project is in a very early stage. More detailed customization options and additional features will be added as requested.  
+The project is in a very early stage. More detailed customization options and features will be added as requested.  
 
 ### Possible features and configuration options to add in the future
  * optional player list
@@ -41,15 +41,16 @@ The project is in a very early stage. More detailed customization options and ad
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
- * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr etc.)
+ * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
- * run as stateless serverless function (aws lambda, azure function, vercel etc.)
+ * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
+ * [pterodactyl](https://pterodactyl.io) egg release
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
 
 ## Requirements
-[node.js](https://nodejs.org/) _(version 12.20.0 or later)_  
+[node.js](https://nodejs.org/) _(version 16.9.0 or later)_  
 
 ## Getting the source
 This project is [hosted on github](https://github.com/a-sync/game-server-watcher). You can clone this project directly using this command:
@@ -59,7 +60,6 @@ git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
 The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
-(The [cloud branch zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/cloud.zip) also includes all the required dependencies.)
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -90,9 +90,10 @@ npm run dev
 
 ## Settings
 The behaviour of the watcher service can be configured via environmental variables (env vars).  
-`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [default.env](./default.env) file.  
+`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [.env.example](./.env.example) file.  
+To get started, you can simply rename the `.env.example` file to `.env`.  
 
-Refer to the wiki on how to get tokens for:
+Refer to the wiki on how to acquire tokens for:
  * [steam](https://github.com/a-sync/game-server-watcher/wiki/Steam-Web-API-key)
  * [discord](https://github.com/a-sync/game-server-watcher/wiki/Discord-bot-token)
  * [telegram](https://github.com/a-sync/game-server-watcher/wiki/Telegram-bot-token)
@@ -118,7 +119,7 @@ If the original message created by the bot gets deleted, you need to flush the b
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
 # Deployment
-Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at cloudno.de](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-cloudno.de).
+Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).
 <p align="center">
   <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>
@@ -147,8 +148,10 @@ npm i --only=prod
 ```
 _If you can not install dependencies on the host, do a local install and copy the `./node_modules/` folder to the host._
 
-### Configuration
-Create a writeable folder for the data storage. (configured by `DATA_PATH` env var, default: `./data/`)  
+### Service configuration
+Create environmental variables to enable the required features and to customize the service.  
+1. Make sure the service can write to the data storage path. (configured by `DATA_PATH` env var, default: `./data/`)  
+2. Make sure you create a unique admin secret. (configured by `SECRET` env var, default: `secret`)
 
 ### Running
 Run the program from the deployment folder:
@@ -162,10 +165,10 @@ node ./dist/server.js
 * Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 
 # Further Reading
-* [gamedig supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt)
+* [gamedig supported games list](https://raw.githubusercontent.com/gamedig/node-gamedig/master/games.txt)
 * [steamDB](https://steamdb.info/apps/)
 * [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
-* [discord API v8 documentation](https://discord.js.org/#/docs/discord.js/v12/class/MessageEmbed)
+* [discord API v10 documentation](https://discord.js.org/#/docs/discord.js/14.7.1/class/EmbedBuilder)
 * [telegram API documentation](https://core.telegram.org/bots/api#editmessagetext)
 * [json-editor documentation](https://github.com/json-editor/json-editor#json-schema-support)
     * [json-editor demos](https://pmk65.github.io/jedemov2/dist/demo.html)
@@ -206,3 +209,5 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/GiyoMoon/steam-server-query
 * https://github.com/Fabricio-191/valve-server-query
 * https://github.com/sbuggay/srcds-info-proxy
+* https://github.com/DiscordGSM/DiscordGSM
+* https://github.com/EndBug/game-tracker
