@@ -2,7 +2,7 @@ let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
-        await setRandomBg().catch(() => { });
+        await setRandomBg().catch(() => {});
         setInterval(setRandomBg, 60000);
 
         let unsavedChanges = false;
