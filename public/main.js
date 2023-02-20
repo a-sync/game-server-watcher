@@ -79,7 +79,7 @@ $(async () => {
                             },
                             "type": {
                                 "title": "Gamedig type",
-                                "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/a-sync/node8-gamedig#games-list\">games list</a>.",
+                                "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig#games-list\">games list</a>.",
                                 "type": "string",
                                 "options": {
                                     "grid_columns": 6

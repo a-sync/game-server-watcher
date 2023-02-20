@@ -165,10 +165,10 @@ node ./dist/server.js
 * Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 
 # Further Reading
-* [gamedig supported games list](https://raw.githubusercontent.com/a-sync/node8-gamedig/master/games.txt)
+* [gamedig supported games list](https://raw.githubusercontent.com/gamedig/node-gamedig/master/games.txt)
 * [steamDB](https://steamdb.info/apps/)
 * [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
-* [discord API v8 documentation](https://discord.js.org/#/docs/discord.js/v12/class/MessageEmbed)
+* [discord API v10 documentation](https://discord.js.org/#/docs/discord.js/14.7.1/class/EmbedBuilder)
 * [telegram API documentation](https://core.telegram.org/bots/api#editmessagetext)
 * [json-editor documentation](https://github.com/json-editor/json-editor#json-schema-support)
     * [json-editor demos](https://pmk65.github.io/jedemov2/dist/demo.html)

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Player, query, QueryResult } from 'node8-gamedig';
+import { Player, query, QueryResult } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
