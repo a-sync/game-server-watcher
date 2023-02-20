@@ -1,4 +1,4 @@
-import got from 'got';
+import axios from 'axios';
 import { Player, query, QueryResult } from 'node8-gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
@@ -126,13 +126,12 @@ export class GameServer {
         const reqUrl = 'https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\' + this.config.appId + '\\addr\\' + this.ip + '&key=' + STEAM_WEB_API_KEY;
 
         try {
-            const res: any = await got(reqUrl, {
-                responseType: 'json',
+            const { data } = await axios.get(reqUrl, {
                 headers: { 'user-agent': 'game-server-watcher/1.0' }
-            }).json();
+            });
 
-            if (Array.isArray(res.response.servers)) {
-                const matching = res.response.servers.find((s: any) => s.gameport === this.config.port);
+            if (Array.isArray(data.response.servers)) {
+                const matching = data.response.servers.find((s: any) => s.gameport === this.config.port);
                 if (matching) {
                     return {
                         connect: matching.addr,

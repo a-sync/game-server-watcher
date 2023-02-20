@@ -43,7 +43,7 @@ The project is in a very early stage. More detailed customization options and fe
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
- * run as stateless serverless function (aws lambda, azure function, heroku, vercel etc.)
+ * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
  * [pterodactyl](https://pterodactyl.io) egg release
 
 # Getting Started
