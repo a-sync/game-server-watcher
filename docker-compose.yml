@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  gsw:
+    build: .
+    container_name: gsw
+    volumes:
+      - .:/usr/app/gsw
+    restart: unless-stopped
+    ports:
+      - 8080:$PORT
+      # if you want to proxy it with nginx / apache2
+      # - localhost:3000:$PORT
