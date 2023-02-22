@@ -129,6 +129,15 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
   <!--<a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>-->
 </p>
 
+## Docker Compose
+Make sure to configure `.env` file, after that run:
+```
+docker-compose up -d --build
+```
+To shutdown the container run:
+```
+docker-compose down
+```
 ## Hosting
 Make sure all the [requirements](#requirements) are met!  
 
