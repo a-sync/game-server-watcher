@@ -1,15 +1,13 @@
-FROM node:16
+FROM node:16.9.0
 
 WORKDIR /usr/app/gsw
 
-COPY package.json .
-COPY tsconfig.json .
+COPY . .
 
 RUN npm install \
- && npm install -g typescript \
- && npm install -g ts-node
-
-COPY . .
+ && npm install -g typescript
+ 
+RUN npm run build
 RUN chmod 644 ./data
 
-CMD ["ts-node", "./src/server.ts"]
+CMD ["npm", "start"]
