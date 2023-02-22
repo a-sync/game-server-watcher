@@ -10,4 +10,4 @@ services:
     ports:
       - 8080:$PORT
       # if you want to proxy it with nginx / apache2
-      # - localhost:3000:$PORT
+      # - 127.0.0.1:8080:$PORT
