@@ -1,0 +1,38 @@
+name: ⚙ Configure cloud app
+
+on:
+  workflow_dispatch:
+    inputs:
+      secret:
+        description: 'Admin secret'
+        type: string
+        default: ''
+        required: true
+      discord_bot_token:
+        description: 'Discord bot token'
+        type: string
+        default: ''
+      telegram_bot_token:
+        description: 'Telegram bot token'
+        type: string
+        default: ''
+      steam_web_api_key:
+        description: 'Steam web API key'
+        type: string
+        default: ''
+
+jobs:
+  configure:
+    name: 🛬 Create/update the secrets and env vars
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: 🛩 Update on fly.io
+        run: |
+          flyctl secrets set SECRET=${{ secrets.SECRET }} --app ${{ github.repository_owner }}-gsw
+          flyctl secrets set DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} --app ${{ github.repository_owner }}-gsw
+          flyctl secrets set TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} --app ${{ github.repository_owner }}-gsw
+          flyctl secrets set STEAM_WEB_API_KEY=${{ secrets.STEAM_WEB_API_KEY }} --app ${{ github.repository_owner }}-gsw
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

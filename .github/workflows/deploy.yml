@@ -2,20 +2,23 @@ name: ☁️ Deploy to the cloud
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - master
 
 jobs:
-  push:
+  deploy:
+    name: 🚀 Deploy app
     runs-on: ubuntu-latest
+
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        name: 🚚 Get latest code
         with:
           fetch-depth: 0
 
-      - name: 🐙 Add new remote, and push to master
-        run: |
-          git remote add cloudrepo ${{ secrets.CLOUD_REPO_URL }}
-          git push -f cloudrepo ${{ github.ref_name }}:master
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: 🛩 Deploy to fly.io
+        run: flyctl deploy --remote-only --auto-confirm --region ${{ secrets.FLY_REGION }} --app ${{ github.repository_owner }}-gsw --env 
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

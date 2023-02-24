@@ -1,0 +1,16 @@
+fly.toml
+Dockerfile
+.dockerignore
+node_modules
+.git
+*.tsbuildinfo
+app.json
+azuredeploy.json
+Procfile
+.nvmrc
+.env.example
+.env
+.do
+.github
+.vscode
+data/*.json
