@@ -14,5 +14,6 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: 🧱 Create fly.io app
         run: flyctl apps create ${{ github.repository_owner }}-gsw
+
       - name: 💽 Create fly.io volume
         run: flyctl volumes create gsw_data --region ${{ secrets.FLY_REGION }} --size 1

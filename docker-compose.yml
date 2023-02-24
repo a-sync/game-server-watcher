@@ -1,0 +1,19 @@
+version: "3"
+services:
+    gsw:
+        build: ./
+        ports:
+            - 8080:8080
+        environment:
+            DBG: 0
+            REFRESH_TIME_MINUTES: 2
+            DATA_PATH: "/data/"
+            SECRET: "secret"
+            DISCORD_BOT_TOKEN: ""
+            TELEGRAM_BOT_TOKEN: ""
+            STEAM_WEB_API_KEY: ""
+        volumes:
+            - gsw_data:/data
+
+volumes:
+    gsw_data: {}

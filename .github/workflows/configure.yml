@@ -33,12 +33,15 @@ jobs:
       - name: 💼 Update `SECRET` on fly.io
         if: inputs.secret != ''
         run: flyctl secrets set SECRET=${{ inputs.secret }} --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `DISCORD_BOT_TOKEN` on fly.io
         if: inputs.discord_bot_token != ''
         run: flyctl secrets set DISCORD_BOT_TOKEN=${{ inputs.discord_bot_token }} --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `TELEGRAM_BOT_TOKEN` on fly.io
         if: inputs.telegram_bot_token != ''
         run: flyctl secrets set TELEGRAM_BOT_TOKEN=${{ inputs.telegram_bot_token }} --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `STEAM_WEB_API_KEY` on fly.io
         if: inputs.steam_web_api_key != ''
         run: flyctl secrets set STEAM_WEB_API_KEY=${{ inputs.steam_web_api_key }} --app ${{ github.repository_owner }}-gsw
