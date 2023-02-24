@@ -25,14 +25,20 @@ jobs:
   configure:
     name: 🛬 Create/update the secrets and env vars
     runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
     steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: 🛩 Update on fly.io
-        run: |
-          flyctl secrets set SECRET=${{ secrets.SECRET }} --app ${{ github.repository_owner }}-gsw
-          flyctl secrets set DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }} --app ${{ github.repository_owner }}-gsw
-          flyctl secrets set TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }} --app ${{ github.repository_owner }}-gsw
-          flyctl secrets set STEAM_WEB_API_KEY=${{ secrets.STEAM_WEB_API_KEY }} --app ${{ github.repository_owner }}-gsw
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: 💼 Update `SECRET` on fly.io
+        if: inputs.secret != ''
+        run: flyctl secrets set SECRET=${{ inputs.secret }} --app ${{ github.repository_owner }}-gsw
+      - name: 💼 Update `DISCORD_BOT_TOKEN` on fly.io
+        if: inputs.discord_bot_token != ''
+        run: flyctl secrets set DISCORD_BOT_TOKEN=${{ inputs.discord_bot_token }} --app ${{ github.repository_owner }}-gsw
+      - name: 💼 Update `TELEGRAM_BOT_TOKEN` on fly.io
+        if: inputs.telegram_bot_token != ''
+        run: flyctl secrets set TELEGRAM_BOT_TOKEN=${{ inputs.telegram_bot_token }} --app ${{ github.repository_owner }}-gsw
+      - name: 💼 Update `STEAM_WEB_API_KEY` on fly.io
+        if: inputs.steam_web_api_key != ''
+        run: flyctl secrets set STEAM_WEB_API_KEY=${{ inputs.steam_web_api_key }} --app ${{ github.repository_owner }}-gsw
