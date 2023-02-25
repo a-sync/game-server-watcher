@@ -70,14 +70,10 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
         if: env.SET_ARGS != '' || env.UNSET_ARGS != ''
 
-      - run: |
-          echo ${{ env.SET_ARGS }}
-          echo ${{ env.UNSET_ARGS }}
+      - name: 💼 Set secrets on fly.io
+        if: env.SET_ARGS != ''
+        run: flyctl secrets set${{ env.SET_ARGS }} --app ${{ github.repository_owner }}-gsw
 
-      # - name: 💼 Set secrets on fly.io
-      #   if: env.SET_ARGS != ''
-      #   run: flyctl secrets set${{ env.SET_ARGS }} --app ${{ github.repository_owner }}-gsw
-
-      # - name: 🗑 Unset secrets on fly.io
-      #   if: env.UNSET_ARGS != ''
-      #   run: flyctl secrets unset${{ env.UNSET_ARGS }} --app ${{ github.repository_owner }}-gsw
+      - name: 🗑 Unset secrets on fly.io
+        if: env.UNSET_ARGS != ''
+        run: flyctl secrets unset${{ env.UNSET_ARGS }} --app ${{ github.repository_owner }}-gsw
