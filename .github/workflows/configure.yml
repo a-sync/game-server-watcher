@@ -29,35 +29,55 @@ jobs:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
     steps:
+      - name: Mask inputs
+        id: masked_inputs
+        run: |
+          INP_SECRET=$(jq -r '.inputs.secret' $GITHUB_EVENT_PATH)
+          INP_DISCORD_BOT_TOKEN=$(jq -r '.inputs.discord_bot_token' $GITHUB_EVENT_PATH)
+          INP_TELEGRAM_BOT_TOKEN=$(jq -r '.inputs.telegram_bot_token' $GITHUB_EVENT_PATH)
+          INP_STEAM_WEB_API_KEY=$(jq -r '.inputs.steam_web_api_key' $GITHUB_EVENT_PATH)
+          echo ::add-mask::$INP_SECRET
+          echo ::add-mask::$INP_DISCORD_BOT_TOKEN
+          echo ::add-mask::$INP_TELEGRAM_BOT_TOKEN
+          echo ::add-mask::$INP_STEAM_WEB_API_KEY
+          echo ::set-output name=secret::$INP_SECRET
+          echo ::set-output name=discord_bot_token::$INP_DISCORD_BOT_TOKEN
+          echo ::set-output name=telegram_bot_token::$INP_TELEGRAM_BOT_TOKEN
+          echo ::set-output name=steam_web_api_key::$INP_STEAM_WEB_API_KEY
+          echo SET_ARGS='' >> $GIHUB_ENV
+          echo UNSET_ARGS='' >> $GIHUB_ENV
+
+      - if: inputs.secret != '' && inputs.secret != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} SECRET="${{ steps.masked_inputs.outputs.secret }}"' >> $GITHUB_ENV
+      - if: inputs.secret == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} SECRET' >> $GITHUB_ENV
+
+      - if: inputs.discord_bot_token != '' && inputs.discord_bot_token != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} DISCORD_BOT_TOKEN="${{ steps.masked_inputs.outputs.discord_bot_token }}"' >> $GITHUB_ENV
+      - if: inputs.discord_bot_token == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} DISCORD_BOT_TOKEN' >> $GITHUB_ENV
+
+      - if: inputs.telegram_bot_token != '' && inputs.telegram_bot_token != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} TELEGRAM_BOT_TOKEN="${{ steps.masked_inputs.outputs.telegram_bot_token }}"' >> $GITHUB_ENV
+      - if: inputs.telegram_bot_token == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} TELEGRAM_BOT_TOKEN' >> $GITHUB_ENV
+
+      - if: inputs.steam_web_api_key != '' && inputs.steam_web_api_key != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} STEAM_WEB_API_KEY="${{ steps.masked_inputs.outputs.steam_web_api_key }}"' >> $GITHUB_ENV
+      - if: inputs.steam_web_api_key == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} STEAM_WEB_API_KEY' >> $GITHUB_ENV
+
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: 💼 Update `SECRET` on fly.io
-        if: inputs.secret != '' && inputs.secret != '-'
-        run: flyctl secrets set SECRET=${{ inputs.secret }} --app ${{ github.repository_owner }}-gsw
+        if: env.SET_ARGS != '' || env.UNSET_ARGS != ''
 
-      - name: 🗑 Unset `SECRET` on fly.io
-        if: inputs.secret == '-'
-        run: flyctl secrets unset SECRET --app ${{ github.repository_owner }}-gsw
+      - run: |
+          echo ${{ env.SET_ARGS }}
+          echo ${{ env.UNSET_ARGS }}
 
-      - name: 💼 Update `DISCORD_BOT_TOKEN` on fly.io
-        if: inputs.discord_bot_token != '' && inputs.secret != '-'
-        run: flyctl secrets set DISCORD_BOT_TOKEN=${{ inputs.discord_bot_token }} --app ${{ github.repository_owner }}-gsw
+      # - name: 💼 Set secrets on fly.io
+      #   if: env.SET_ARGS != ''
+      #   run: flyctl secrets set${{ env.SET_ARGS }} --app ${{ github.repository_owner }}-gsw
 
-      - name: 🗑 Unset `DISCORD_BOT_TOKEN` on fly.io
-        if: inputs.discord_bot_token == '-'
-        run: flyctl secrets unset DISCORD_BOT_TOKEN --app ${{ github.repository_owner }}-gsw
-
-      - name: 💼 Update `TELEGRAM_BOT_TOKEN` on fly.io
-        if: inputs.telegram_bot_token != '' && inputs.secret != '-'
-        run: flyctl secrets set TELEGRAM_BOT_TOKEN=${{ inputs.telegram_bot_token }} --app ${{ github.repository_owner }}-gsw
-
-      - name: 🗑 Unset `TELEGRAM_BOT_TOKEN` on fly.io
-        if: inputs.telegram_bot_token == '-'
-        run: flyctl secrets unset TELEGRAM_BOT_TOKEN --app ${{ github.repository_owner }}-gsw
-
-      - name: 💼 Update `STEAM_WEB_API_KEY` on fly.io
-        if: inputs.steam_web_api_key != '' && inputs.secret != '-'
-        run: flyctl secrets set STEAM_WEB_API_KEY=${{ inputs.steam_web_api_key }} --app ${{ github.repository_owner }}-gsw
-
-      - name: 🗑 Unset `STEAM_WEB_API_KEY` on fly.io
-        if: inputs.steam_web_api_key == '-'
-        run: flyctl secrets unset STEAM_WEB_API_KEY --app ${{ github.repository_owner }}-gsw
+      # - name: 🗑 Unset secrets on fly.io
+      #   if: env.UNSET_ARGS != ''
+      #   run: flyctl secrets unset${{ env.UNSET_ARGS }} --app ${{ github.repository_owner }}-gsw
