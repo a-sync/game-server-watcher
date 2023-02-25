@@ -23,7 +23,7 @@ on:
 
 jobs:
   configure:
-    name: 🛬 Create/update the secrets and env vars
+    name: 🛬 Create/update or delete secrets
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
@@ -31,17 +31,33 @@ jobs:
     steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: 💼 Update `SECRET` on fly.io
-        if: inputs.secret != ''
+        if: inputs.secret != '' && inputs.secret != '-'
         run: flyctl secrets set SECRET=${{ inputs.secret }} --app ${{ github.repository_owner }}-gsw
 
+      - name: 🗑 Unset `SECRET` on fly.io
+        if: inputs.secret == '-'
+        run: flyctl secrets unset SECRET --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `DISCORD_BOT_TOKEN` on fly.io
-        if: inputs.discord_bot_token != ''
+        if: inputs.discord_bot_token != '' && inputs.secret != '-'
         run: flyctl secrets set DISCORD_BOT_TOKEN=${{ inputs.discord_bot_token }} --app ${{ github.repository_owner }}-gsw
 
+      - name: 🗑 Unset `DISCORD_BOT_TOKEN` on fly.io
+        if: inputs.discord_bot_token == '-'
+        run: flyctl secrets unset DISCORD_BOT_TOKEN --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `TELEGRAM_BOT_TOKEN` on fly.io
-        if: inputs.telegram_bot_token != ''
+        if: inputs.telegram_bot_token != '' && inputs.secret != '-'
         run: flyctl secrets set TELEGRAM_BOT_TOKEN=${{ inputs.telegram_bot_token }} --app ${{ github.repository_owner }}-gsw
 
+      - name: 🗑 Unset `TELEGRAM_BOT_TOKEN` on fly.io
+        if: inputs.telegram_bot_token == '-'
+        run: flyctl secrets unset TELEGRAM_BOT_TOKEN --app ${{ github.repository_owner }}-gsw
+
       - name: 💼 Update `STEAM_WEB_API_KEY` on fly.io
-        if: inputs.steam_web_api_key != ''
+        if: inputs.steam_web_api_key != '' && inputs.secret != '-'
         run: flyctl secrets set STEAM_WEB_API_KEY=${{ inputs.steam_web_api_key }} --app ${{ github.repository_owner }}-gsw
+
+      - name: 🗑 Unset `STEAM_WEB_API_KEY` on fly.io
+        if: inputs.steam_web_api_key == '-'
+        run: flyctl secrets unset STEAM_WEB_API_KEY --app ${{ github.repository_owner }}-gsw
