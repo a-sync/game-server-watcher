@@ -6,20 +6,15 @@ on:
       secret:
         description: 'Admin secret'
         type: string
-        default: ''
-        required: true
       discord_bot_token:
         description: 'Discord bot token'
         type: string
-        default: ''
       telegram_bot_token:
         description: 'Telegram bot token'
         type: string
-        default: ''
       steam_web_api_key:
         description: 'Steam web API key'
         type: string
-        default: ''
 
 jobs:
   configure:
