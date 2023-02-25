@@ -1,19 +1,25 @@
 version: "3"
 services:
+
     gsw:
-        build: ./
+        build: .
+        container_name: gsw
         ports:
-            - 8080:8080
+            - "8080:8080"
         environment:
-            DBG: 0
-            REFRESH_TIME_MINUTES: 2
-            DATA_PATH: "/data/"
-            SECRET: "secret"
-            DISCORD_BOT_TOKEN: ""
-            TELEGRAM_BOT_TOKEN: ""
-            STEAM_WEB_API_KEY: ""
+            - DBG=0
+            - REFRESH_TIME_MINUTES=2
+            - DATA_PATH=/data/
+            - SECRET=secret
+            - DISCORD_BOT_TOKEN=
+            - TELEGRAM_BOT_TOKEN=
+            - STEAM_WEB_API_KEY=
+        # env_file:
+        #     - .env.example
+        #     - .env
+        restart: unless-stopped
         volumes:
-            - gsw_data:/data
+            - "gsw_data:/data"
 
 volumes:
     gsw_data: {}

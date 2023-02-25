@@ -7,7 +7,7 @@ processes = []
 [env]
   DBG=0
   REFRESH_TIME_MINUTES=2
-  DATA_PATH = /data/
+  DATA_PATH="/data/"
 
 [mounts]
   source="gsw_data"
