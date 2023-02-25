@@ -40,12 +40,12 @@ jobs:
           echo ::add-mask::$INP_DISCORD_BOT_TOKEN
           echo ::add-mask::$INP_TELEGRAM_BOT_TOKEN
           echo ::add-mask::$INP_STEAM_WEB_API_KEY
-          echo ::set-output name=secret::$INP_SECRET
-          echo ::set-output name=discord_bot_token::$INP_DISCORD_BOT_TOKEN
-          echo ::set-output name=telegram_bot_token::$INP_TELEGRAM_BOT_TOKEN
-          echo ::set-output name=steam_web_api_key::$INP_STEAM_WEB_API_KEY
-          echo SET_ARGS='' >> $GIHUB_ENV
-          echo UNSET_ARGS='' >> $GIHUB_ENV
+          echo secret=$INP_SECRET >> $GITHUB_OUTPUT
+          echo discord_bot_token=$INP_DISCORD_BOT_TOKEN >> $GITHUB_OUTPUT
+          echo telegram_bot_token=$INP_TELEGRAM_BOT_TOKEN >> $GITHUB_OUTPUT
+          echo steam_web_api_key=$INP_STEAM_WEB_API_KEY >> $GITHUB_OUTPUT
+          echo SET_ARGS='' >> $GITHUB_ENV
+          echo UNSET_ARGS='' >> $GITHUB_ENV
 
       - if: inputs.secret != '' && inputs.secret != '-'
         run: echo SET_ARGS='${{ env.SET_ARGS }} SECRET="${{ steps.masked_inputs.outputs.secret }}"' >> $GITHUB_ENV
