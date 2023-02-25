@@ -129,13 +129,13 @@ Check the wiki page for detailed instructions on [how to setup a self deploying 
   <!--<a href="https://stackblitz.com/fork/github/a-sync/game-server-watcher"><img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" height="32" alt="Open in StackBlitz"></a>-->
 </p>
 
-## Docker Compose
-Make sure to configure the environment variables in [docker-compose.yml](./docker-compose.yml#L13).
+## Hosting via Docker Compose
+Make sure to configure the environment variables in [docker-compose.yml](./docker-compose.yml#L13).  
 ```
 docker-compose up
 ```
 
-## Hosting
+## Hosting on bare metal
 Make sure all the [requirements](#requirements) are met!  
 
 ### Build artifacts (optional)
