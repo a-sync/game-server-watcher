@@ -59,7 +59,7 @@ This project is [hosted on github](https://github.com/a-sync/game-server-watcher
 git clone git@github.com:a-sync/game-server-watcher.git
 ```
 
-The latest source and build can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
+The latest source can also be downloaded as a [zip archive](https://github.com/a-sync/game-server-watcher/archive/refs/heads/master.zip).  
 
 ## Installation
 Use npm or yarn to install/update all the dependencies:
@@ -101,7 +101,7 @@ Refer to the wiki on how to acquire tokens for:
 ## Managing the service
 **GSW Control Panel** is a web based UI that let's you configure and control the Game Server Watcher instance.  
 The web app is served at `http://localhost:8080` by default.  
-_Make sure to configure a proper `SECRET` env var to enable access!_  
+_Make sure to configure the `SECRET` env var!_  
 
 ### Configuration
 Updates the configuration file and restarts the service.
@@ -135,7 +135,7 @@ Make sure to configure the environment variables in [docker-compose.yml](./docke
 docker-compose up
 ```
 
-## Hosting on bare metal
+## Hosting via NodeJS runtime
 Make sure all the [requirements](#requirements) are met!  
 
 ### Build artifacts (optional)
