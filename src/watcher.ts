@@ -27,8 +27,9 @@ export interface GameServerConfig {
     updateIntervalMinutes?: number;//5
     graphHistoryHours?: number;//12
     timezoneOffset?: number;//0
-    discord?: DiscordConfig[],
+    discord?: DiscordConfig[];
     telegram?: TelegramConfig[];
+    token?: string;
 }
 
 const adapter = new JSONFile<GameServerConfig[]>(DATA_PATH + 'default.config.json');

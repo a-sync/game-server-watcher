@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Player, query, QueryResult } from 'gamedig';
+import { Player, query, QueryResult, Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
@@ -46,6 +46,20 @@ export interface Info {
 interface qRes extends QueryResult {
     game: string;
     numplayers: number;
+}
+
+interface QueryOptions {
+    type: Type;
+    host: string;
+    port?: number;
+    ipfamily?: number;
+    maxAttempts?: number;
+    socketTimeout?: number;
+    attemptTimeout?: number;
+    givenPortOnly?: boolean;
+    debug?: boolean;
+    requestRules?: boolean;
+    token?: string;
 }
 
 export class GameServer {
@@ -97,7 +111,9 @@ export class GameServer {
                 host: this.config.host,
                 port: this.config.port,
                 type: this.config.type,
-            }) as qRes;
+                requestRules: false,
+                token: this.config.token
+            } as QueryOptions) as qRes;
 
             const raw = res.raw as { game: string; folder: string; };
             const game = raw.game || raw.folder || this.config.type;

@@ -111,6 +111,13 @@ $(async () => {
                                     "grid_columns": 6
                                 }
                             },
+                            "token": {
+                                "title": "Terraria tshock REST user token",
+                                "type": "string",
+                                "options": {
+                                    "grid_columns": 12
+                                }
+                            },
                             "updateIntervalMinutes": {
                                 "title": "Update interval (minutes) [NOT IMPLEMENTED]",
                                 "type": "integer",
