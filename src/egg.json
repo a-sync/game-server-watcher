@@ -1,0 +1,104 @@
+{
+    "name": "Node.js TypeScript App",
+    "description": "A custom egg for running a Node.js TypeScript app from https://github.com/a-sync/testapp",
+    "docker_image": "node:16",
+    "startup": "node dist/server.js",
+    "config": {
+        "files": "{\n}",
+        "startup": "{\n    \"done\": \"listening on\"\n}",
+        "stop": "^C"
+    },
+    "scripts": {
+      "installation": {
+        "script": "#!/bin/bash\n# Clone the repository\n\ngit clone https://github.com/a-sync/testapp.git\n\ncd testapp\n\n# Install dependencies\n\nnpm install\n\n# Build the TypeScript code\n\nnpm run build\n\n# Remove development dependencies (optional)\n\nnpm prune --production",
+        "container": "ubuntu:18.04",
+        "entrypoint": "bash"
+      }
+    },
+    "variables": [
+      {
+        "name": "SRV1_API_KEY",
+        "description": "API key for SRV1",
+        "env_variable": "SRV1_API_KEY",
+        "default_value": "",
+        "user_viewable": false,
+        "user_editable": true,
+        "rules": "required|string|max:255"
+      },
+      {
+        "name": "SRV2_TOKEN",
+        "description": "Token for SRV2",
+        "env_variable": "SRV2_TOKEN",
+        "default_value": "",
+        "user_viewable": false,
+        "user_editable": true,
+        "rules": "required|string|max:255"
+      },
+      {
+        "name": "SRV3_TOKEN",
+        "description": "Token for SRV3",
+        "env_variable": "SRV3_TOKEN",
+        "default_value": "",
+        "user_viewable": false,
+        "user_editable": true,
+        "rules": "required|string|max:255"
+      },
+      {
+        "name": "SECRET",
+        "description": "App secret",
+        "env_variable": "SECRET",
+        "default_value": "",
+        "user_viewable": false,
+        "user_editable": true,
+        "rules": "required|string|max:255"
+      },
+      {
+        "name": "OPT1_VALUE",
+        "description": "Configuration option 1",
+        "env_variable": "OPT1_VALUE",
+        "default_value": "",
+        "user_viewable": true,
+        "user_editable": true,
+        "rules": "string|max:255"
+      },
+      {
+        "name": "OPT2_VALUE",
+        "description": "Configuration option 2",
+        "env_variable": "OPT2_VALUE",
+        "default_value": "",
+        "user_viewable": true,
+        "user_editable": true,
+        "rules": "string|max:255"
+      },
+      {
+        "name": "APP_PORT",
+        "description": "Port on which the app listens",
+        "env_variable": "APP_PORT",
+        "default_value": "8080",
+        "user_viewable": true,
+        "user_editable": true,
+        "rules": "required|numeric|digits_between:1,5"
+      },
+
+    {
+        "name": "PORT",
+        "description": "The port on which the GSW control panel will listen",
+        "env_variable": "PORT",
+        "default_value": "{{server.build.default.port}}",
+        "user_viewable": true,
+        "user_editable": true,
+        "rules": "required|numeric|min:1|max:65535"
+    }
+
+    ]
+  }
+/*
+
+  “done”: This option represents a successful startup. The panel will look for the specified text or regex pattern in the server’s output to determine if the server has started successfully.
+  “error”: This option represents an error during the server startup. If the specified text or regex pattern is found in the server’s output, the panel will consider the server startup as unsuccessful due to an error.
+    
+
+  https://github.com/parkervcp/eggs/tree/master/generic/nodejs
+https://pterodactyl.io/community/config/eggs/creating_a_custom_egg.html
+  https://github.com/pterodactyl/panel/tree/develop/database/Seeds
+*/
