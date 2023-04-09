@@ -9,18 +9,8 @@ The main goals of this repo:
  1. should be able to host on a free service (_target atm. is fly.io (node.js 16)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
-<details>
-<summary><h1>Screenshots</h1></summary>
-
-### Discord
-![discord](https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png)
-
-### Telegram
-![telegram](https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png)
-
-### GSW Control Panel
-![gsw control panel](https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png)
-</details>
+# Screenshots
+<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="360"> 
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the master branch.  
