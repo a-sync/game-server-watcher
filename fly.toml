@@ -1,46 +1,31 @@
 app = "game-server-watcher"
-
-kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
+primary_region = "ams"
 
 [env]
-  DBG=0
-  REFRESH_TIME_MINUTES=2
-  DATA_PATH="/data/"
+  PRIMARY_REGION = "ams"
+  DBG = "0"
+  DATA_PATH = "/data/"
+  REFRESH_TIME_MINUTES = "2"
 
 [mounts]
-  source="gsw_data"
-  destination="/data"
+  source = "gsw_data"
+  destination = "/data"
 
-[experimental]
-  auto_rollback = true
-  allowed_public_ports = []
-  # cmd = ["node", "--max-old-space-size=180", "server.js"]
-
-[[services]]
-  http_checks = []
+[http_service]
   internal_port = 8080
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
 
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 50
+    hard_limit = 60
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/"
