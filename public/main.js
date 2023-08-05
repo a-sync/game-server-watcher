@@ -2,7 +2,7 @@ let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
-        await setRandomBg().catch(() => {});
+        await setRandomBg().catch(() => { });
         setInterval(setRandomBg, 60000);
 
         let unsavedChanges = false;
@@ -33,21 +33,22 @@ $(async () => {
                 "iconlib": "fontawesome5",
                 "object_layout": "normal",
                 "template": "mustache",
+                "compact": 0,
                 "show_errors": "always",
                 "required_by_default": 0,
                 "no_additional_properties": 1,
-                "display_required_only": 0,
-                "remove_empty_properties": 1,
-                "keep_oneof_values": 0,
-                "ajax": 0,
+                "display_required_only": 1,
+                "show_opt_in": 0,
+                "remove_empty_properties": 0,
+                "use_default_values": 1,
+                "ajax": 1,
                 "ajaxCredentials": 0,
-                "show_opt_in": 1,
                 "disable_edit_json": 0,
                 "disable_collapse": 1,
-                "disable_properties": 1,
+                "disable_properties": 0,
                 "disable_array_add": 0,
-                "disable_array_reorder": 1,
                 "disable_array_delete": 0,
+                "disable_array_reorder": 1,
                 "enable_array_copy": 1,
                 "array_controls_top": 0,
                 "disable_array_delete_all_rows": 1,
@@ -61,148 +62,15 @@ $(async () => {
                     "uniqueItems": true,
                     "format": "tabs-top",
                     "items": {
-                        "title": "Game Server",
-                        "type": "object",
-                        "required": [
-                            "name",
-                            "type",
-                            "host",
-                            "port"
-                        ],
-                        "properties": {
-                            "name": {
-                                "title": "Name",
-                                "type": "string",
-                                "options": {
-                                    "grid_columns": 12
-                                }
-                            },
-                            "type": {
-                                "title": "Gamedig type",
-                                "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig#games-list\">games list</a>.",
-                                "type": "string",
-                                "options": {
-                                    "grid_columns": 6
-                                }
-                            },
-                            "appId": {
-                                "title": "Steam App ID",
-                                "description": "Look for the <i>AppID</i> in the <a href=\"https://steamdb.info/apps/\">apps list</a>.",
-                                "type": "integer",
-                                "format": "number",
-                                "options": {
-                                    "grid_columns": 6
-                                }
-                            },
-                            "host": {
-                                "title": "Host name or IP",
-                                "type": "string",
-                                "options": {
-                                    "grid_columns": 6
-                                }
-                            },
-                            "port": {
-                                "title": "Port number",
-                                "type": "integer",
-                                "minimum": 1,
-                                "maximum": 65535,
-                                "format": "number",
-                                "options": {
-                                    "grid_columns": 6
-                                }
-                            },
-                            "updateIntervalMinutes": {
-                                "title": "Update interval (minutes) [NOT IMPLEMENTED]",
-                                "type": "integer",
-                                "default": 5,
-                                "minimum": 1,
-                                "maximum": 60,
-                                "format": "range",
-                                "options": {
-                                    "grid_columns": 12
-                                }
-                            },
-                            "graphHistoryHours": {
-                                "title": "Graph history time span (hours)",
-                                "type": "integer",
-                                "default": 12,
-                                "minimum": 1,
-                                "maximum": 24,
-                                "format": "range",
-                                "options": {
-                                    "grid_columns": 12
-                                }
-                            },
-                            "timezoneOffset": {
-                                "title": "Time zone offset of the server",
-                                "default": 0,
-                                "type": "number",
-                                "minimum": -12,
-                                "maximum": 14,
-                                "format": "range",
-                                "options": {
-                                    "grid_columns": 6,
-                                    "grid_break": true
-                                }
-                            },
-                            "discord": {
-                                "type": "array",
-                                "title": "Discord channels",
-                                "description": "The simplest way to get a discord channel ID is to enable developer mode in settings, then right clicking on the channel name will give you the <b>Copy ID</b> option.",
-                                "minItems": 0,
-                                "uniqueItems": true,
-                                "items": {
-                                    "type": "object",
-                                    "title": "Channel",
-                                    "required": [
-                                        "channelId"
-                                    ],
-                                    "properties": {
-                                        "channelId": {
-                                            "title": "Channel ID",
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                "format": "table",
-                                "options": {
-                                    "grid_columns": 12
-                                }
-                            },
-                            "telegram": {
-                                "type": "array",
-                                "title": "Telegram chats",
-                                "description": "The simplest way to get a telegram chat ID is to invite <a target=\"_blank\" href=\"https://telegram.me/getidsbot\">@getidsbot</a> and use <code>/start</code> to make it post (among other data) the chat ID.",
-                                "minItems": 0,
-                                "uniqueItems": true,
-                                "items": {
-                                    "type": "object",
-                                    "title": "Chat",
-                                    "required": [
-                                        "chatId"
-                                    ],
-                                    "properties": {
-                                        "chatId": {
-                                            "type": "string",
-                                            "title": "Chat ID"
-                                        }
-                                    }
-                                },
-                                "format": "table",
-                                "options": {
-                                    "grid_columns": 12
-                                }
-                            }
-                        },
-                        "format": "grid",
-                        "headerTemplate": "{{#self.name}}{{self.name}}{{/self.name}}{{^self.name}}{{self.type}}:{{self.host}}:{{self.port}}{{/self.name}}"
+                        "$ref": "game-server-config.schema.json"
                     }
                 },
                 startval: gswConfig.config
             });
 
             configEditor.on('ready', () => {
-                addExportButton();
+                addExportImportButtons();
+
                 $('#config-form').submit(e => {
                     e.preventDefault();
                 });
@@ -295,13 +163,15 @@ function checkForChanges(formCurrVal) {
     }
 };
 
-function addExportButton() {
+function addExportImportButtons() {
     const button_holder = configEditor.root.theme.getHeaderButtonHolder();
-    const exportBtn = configEditor.root.getButton('Export', 'save', 'Export As JSON File');
+    const exportBtn = configEditor.root.getButton('Export', 'file-export', 'Export as JSON file');
+    const importBtn = configEditor.root.getButton('Import', 'file-import', 'Import from JSON file');
     button_holder.appendChild(exportBtn);
+    button_holder.appendChild(importBtn);
     configEditor.root.header.parentNode.insertBefore(button_holder, configEditor.root.header.nextSibling);
 
-    exportBtn.addEventListener('click', e => {
+    exportBtn.onclick = e => {
         e.preventDefault();
         const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
         const filename = dt + '-gsw.config.json';
@@ -322,7 +192,28 @@ function addExportButton() {
                 'cancelable': false
             }));
         }
-    }, false);
+    };
+
+    const fileSelector = document.createElement('input');
+    fileSelector.type = 'file';
+    fileSelector.accept = 'application/json';
+
+    fileSelector.onchange = e => {
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+
+        reader.onload = readerEvent => {
+            const content = JSON.parse(readerEvent.target.result);
+            configEditor.setValue(content);
+        };
+    };
+
+    importBtn.onclick = e => {
+        e.preventDefault();
+        fileSelector.click();
+    };
 }
 
 function logout() {
@@ -513,11 +404,11 @@ async function generateBearerToken(secret) {
 
 function setRandomBg() {
     const bgs = [
-        'https://i.imgur.com/bDzhwG5.png',
-        'https://i.imgur.com/rA8JXuI.png',
-        'https://i.imgur.com/pstAPIw.png',
-        'https://i.imgur.com/gQD3xfo.png',
-        'https://i.imgur.com/iKTfM8z.png'
+        'bg1.png',
+        'bg2.png',
+        'bg3.png',
+        'bg4.png',
+        'bg5.png'
     ];
 
     const bgImg = new Image();

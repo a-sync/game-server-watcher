@@ -16,4 +16,4 @@ jobs:
         run: flyctl apps create ${{ github.repository_owner }}-gsw --org personal
 
       - name: 💽 Create fly.io volume
-        run: flyctl volumes create gsw_data --size 1 --region ${{ secrets.FLY_REGION }} --app ${{ github.repository_owner }}-gsw
+        run: flyctl volumes create gsw_data --size 1 --region ${{ secrets.FLY_REGION }} --app ${{ github.repository_owner }}-gsw --yes

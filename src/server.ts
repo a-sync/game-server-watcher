@@ -1,7 +1,8 @@
-import fs from 'fs';
-import crypto from 'crypto';
-import { createServer } from 'http';
-import { URL } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { createServer } from 'node:http';
+import { URL } from 'node:url';
 
 import 'dotenv/config';
 
@@ -30,22 +31,28 @@ interface ApiResponse {
     }
 }
 
+const EXT_MIME: Record<string, string> = {
+    'html': 'text/html',
+    'css': 'text/css',
+    'js': 'application/javascript',
+    'json': 'application/json',
+    'png': 'image/png'
+};
+
 createServer(async (req, res) => {
     if (DBG) console.log('DBG: %j %j', (new Date()), req.url);
+
     const reqUrl = new URL(req.url || '', 'http://localhost');
-    const p = reqUrl.pathname === '/' ? 'index.html' : reqUrl.pathname.slice(1);
+    const p = reqUrl.pathname === '/' ? 'index.html' : path.normalize(reqUrl.pathname).slice(1);
+    const ext = path.extname(p).slice(1);
 
-    if (['index.html', 'main.css', 'main.js'].includes(p)) {
+    if (ext in EXT_MIME && !p.includes('/') && !p.includes('\\')) {
         if (SECRET !== '') {
-            let ct = 'text/html';
-            if (p === 'main.css') ct = 'text/css';
-            else if (p === 'main.js') ct = 'text/javascript';
-
             res.writeHead(200, {
-                'Content-Type': ct,
+                'Content-Type': EXT_MIME[ext] || 'plain/text',
                 'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
             });
-            fs.createReadStream('./public/' + p).pipe(res);
+            fs.createReadStream(path.resolve('./public/', p)).pipe(res);
         } else {
             res.end('Configure the `SECRET` env var to enable the web UI!');
         }

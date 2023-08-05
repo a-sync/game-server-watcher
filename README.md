@@ -1,4 +1,4 @@
-# <img src="https://i.imgur.com/2Ok3pxv.png" width="40" align="left"> Game Server Watcher
+# <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20" width="40" align="left"> Game Server Watcher
 A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
 # About the Project
@@ -9,18 +9,8 @@ The main goals of this repo:
  1. should be able to host on a free service (_target atm. is fly.io (node.js 16)_)
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
-<details>
-<summary><h1>Screenshots</h1></summary>
-
-### Discord
-![discord](https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png)
-
-### Telegram
-![telegram](https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png)
-
-### GSW Control Panel
-![gsw control panel](https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png)
-</details>
+# Screenshots
+<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="360"> 
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the master branch.  
@@ -37,14 +27,14 @@ The project is in a very early stage. More detailed customization options and fe
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
  * detect when the server goes offline, notify when player number crosses a threshold
- * bot commands (reinit message, cleanup, start/stop, configure)
+ * bot commands (reinit message, cleanup, start/stop, post server status, configure)
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
  * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
- * [pterodactyl](https://pterodactyl.io) egg release
+ * pterodactyl egg release
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
