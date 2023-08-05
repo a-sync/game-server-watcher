@@ -22,17 +22,7 @@
             "type": "string",
             "minLength": 1,
             "options": {
-                "grid_columns": 6
-            }
-        },
-        "appId": {
-            "title": "Steam App ID",
-            "description": "Look for the <i>AppID</i> in the <a href=\"https://steamdb.info/apps/\">apps list</a>.",
-            "type": "integer",
-            "minimum": 1,
-            "format": "number",
-            "options": {
-                "grid_columns": 6
+                "grid_columns": 3
             }
         },
         "host": {
@@ -40,7 +30,7 @@
             "type": "string",
             "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)+([A-Za-z]|[A-Za-z][A-Za-z0-9\\-]*[A-Za-z0-9])$",
             "options": {
-                "grid_columns": 6,
+                "grid_columns": 3,
                 "error_messages": {
                     "en": {
                       "error_pattern": "Value must be a valid host name or IP"
@@ -51,12 +41,75 @@
         "port": {
             "title": "Port number",
             "type": "integer",
-            "default": 1,
             "minimum": 1,
             "maximum": 65535,
             "format": "number",
             "options": {
-                "grid_columns": 6
+                "grid_columns": 3
+            }
+        },
+        "appId": {
+            "title": "Steam App ID",
+            "description": "Look for the <i>AppID</i> in the <a href=\"https://steamdb.info/apps/\">apps list</a>.",
+            "type": "integer",
+            "minimum": 1,
+            "format": "number",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "givenPortOnly": {
+            "title": "givenPortOnly",
+            "description": "Only attempt to query server on given port.",
+            "type": "boolean",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "requestRules": {
+            "title": "requestRules (Valve)",
+            "description": "Additional server info may be fetched into the <code>raw</code> field.",
+            "type": "boolean",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "teamspeakQueryPort": {
+            "title": "teamspeakQueryPort (TeamSpeak 3)",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "format": "number",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "guildId": {
+            "title": "guildId (Discord)",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "login": {
+            "title": "login (Nadeo)",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "password": {
+            "title": "password (Nadeo)",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "token": {
+            "title": "token (Terraria)",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
             }
         },
         "discord": {
@@ -126,64 +179,10 @@
             "maximum": 14,
             "format": "range",
             "options": {
-                "grid_columns": 6
-            }
-        },
-        "givenPortOnly": {
-            "title": "givenPortOnly",
-            "description": "Only attempt to query server on given port.",
-            "type": "boolean",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "requestRules": {
-            "title": "requestRules (Valve)",
-            "description": "Additional server info may be fetched into the <code>raw</code> field.",
-            "type": "boolean",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "teamspeakQueryPort": {
-            "title": "teamspeakQueryPort (TeamSpeak 3)",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 65535,
-            "format": "number",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "guildId": {
-            "title": "guildId (Discord)",
-            "type": "string",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "login": {
-            "title": "login (Nadeo)",
-            "type": "string",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "password": {
-            "title": "password (Nadeo)",
-            "type": "string",
-            "options": {
-                "grid_columns": 6
-            }
-        },
-        "token": {
-            "title": "token (Terraria)",
-            "type": "string",
-            "options": {
-                "grid_columns": 6
+                "grid_columns": 12
             }
         }
     },
-    "format": "grid",
+    "format": "grid-strict",
     "headerTemplate": "{{#self.name}}{{self.name}}{{/self.name}}{{^self.name}}{{self.type}}:{{self.host}}:{{self.port}}{{/self.name}}"
 }
