@@ -3,7 +3,7 @@
     "description": "A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
     "website": "https://github.com/a-sync/game-server-watcher",
     "repository": "https://github.com/a-sync/game-server-watcher",
-    "logo": "https://user-images.githubusercontent.com/14183614/182869472-643f4028-8143-429b-80c2-86c62d9c2de2.png",
+    "logo": "https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20",
     "env": {
         "SECRET": {
             "description": "Admin secret",
