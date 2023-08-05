@@ -1,7 +1,8 @@
-import fs from 'fs';
-import crypto from 'crypto';
-import { createServer } from 'http';
-import { URL } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { createServer } from 'node:http';
+import { URL } from 'node:url';
 
 import 'dotenv/config';
 
@@ -30,21 +31,24 @@ interface ApiResponse {
     }
 }
 
+const EXT_MIME: Record<string, string> = {
+    'html': 'text/html',
+    'css': 'text/css',
+    'js': 'application/javascript',
+    'json': 'application/json',
+    'png': 'image/png'
+};
+
 createServer(async (req, res) => {
     if (DBG) console.log('DBG: %j %j', (new Date()), req.url);
     const reqUrl = new URL(req.url || '', 'http://localhost');
-    const p = reqUrl.pathname === '/' ? 'index.html' : reqUrl.pathname.slice(1);
+    const p = reqUrl.pathname === '/' ? 'index.html' : path.normalize(reqUrl.pathname).slice(1);
 
-    if (['index.html', 'main.css', 'main.js', 'game-server-config.schema.json'].includes(p)) {
+    const ext = path.extname(p);
+    if (ext in EXT_MIME && !p.includes('/') && !p.includes('\\')) {
         if (SECRET !== '') {
-            let ct = 'text/plain';
-            if (p === 'index.html') ct = 'text/html';
-            else if (p === 'main.css') ct = 'text/css';
-            else if (p === 'main.js') ct = 'text/javascript';
-            else if (p === 'game-server-config.schema.json') ct = 'application/json';
-
             res.writeHead(200, {
-                'Content-Type': ct,
+                'Content-Type': EXT_MIME[ext] || 'plain/text',
                 'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
             });
             fs.createReadStream('./public/' + p).pipe(res);
