@@ -27,7 +27,7 @@ The project is in a very early stage. More detailed customization options and fe
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
  * detect when the server goes offline, notify when player number crosses a threshold
- * bot commands (reinit message, cleanup, start/stop, configure)
+ * bot commands (reinit message, cleanup, start/stop, post server status, configure)
  * more integrations: slack, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)

@@ -2,7 +2,7 @@ let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
-        await setRandomBg().catch(() => {});
+        await setRandomBg().catch(() => { });
         setInterval(setRandomBg, 60000);
 
         let unsavedChanges = false;
@@ -69,7 +69,8 @@ $(async () => {
             });
 
             configEditor.on('ready', () => {
-                addExportButton();
+                addExportImportButtons();
+
                 $('#config-form').submit(e => {
                     e.preventDefault();
                 });
@@ -162,13 +163,15 @@ function checkForChanges(formCurrVal) {
     }
 };
 
-function addExportButton() {
+function addExportImportButtons() {
     const button_holder = configEditor.root.theme.getHeaderButtonHolder();
-    const exportBtn = configEditor.root.getButton('Export', 'save', 'Export As JSON File');
+    const exportBtn = configEditor.root.getButton('Export', 'file-export', 'Export as JSON file');
+    const importBtn = configEditor.root.getButton('Import', 'file-import', 'Import from JSON file');
     button_holder.appendChild(exportBtn);
+    button_holder.appendChild(importBtn);
     configEditor.root.header.parentNode.insertBefore(button_holder, configEditor.root.header.nextSibling);
 
-    exportBtn.addEventListener('click', e => {
+    exportBtn.onclick = e => {
         e.preventDefault();
         const dt = (new Date()).toISOString().slice(0, 19).replace(/\D/g, '');
         const filename = dt + '-gsw.config.json';
@@ -189,7 +192,28 @@ function addExportButton() {
                 'cancelable': false
             }));
         }
-    }, false);
+    };
+
+    const fileSelector = document.createElement('input');
+    fileSelector.type = 'file';
+    fileSelector.accept = 'application/json';
+
+    fileSelector.onchange = e => {
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+
+        reader.onload = readerEvent => {
+            const content = JSON.parse(readerEvent.target.result);
+            configEditor.setValue(content);
+        };
+    };
+
+    importBtn.onclick = e => {
+        e.preventDefault();
+        fileSelector.click();
+    };
 }
 
 function logout() {

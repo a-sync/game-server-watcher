@@ -80,7 +80,8 @@ body>nav {
 }
 
 #config-form .json-editor-btn-add,
-#config-form .json-editor-btn-save {
+#config-form .json-editor-btn-save,
+#config-form .json-editor-btn-file-import {
     background-color: darkgreen;
 }
 #config-form .json-editor-btn-add span {
@@ -97,7 +98,8 @@ body>nav {
     display: none;
 }
 
-#config-form .json-editor-btn-copy {
+#config-form .json-editor-btn-copy,
+#config-form .json-editor-btn-file-export {
     background-color: darkblue;
 }
 
