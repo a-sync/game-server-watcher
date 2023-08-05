@@ -89,9 +89,24 @@ body>nav {
 #config-form .json-editor-btn-add {
     background-color: darkgreen;
 }
+#config-form .json-editor-btn-add span {
+    display: none;
+}
 
 #config-form .json-editor-btn-delete {
     background-color: darkred;
+}
+
+#config-form .json-editor-btn-delete span {
+    display: none;
+}
+
+#config-form .json-editor-btn-copy {
+    background-color: darkblue;
+}
+
+#config-form .json-editor-btn-copy span {
+    display: none;
 }
 
 footer>a>svg {
