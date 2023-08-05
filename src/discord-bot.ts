@@ -9,7 +9,7 @@ const DBG = Boolean(process.env.DBG || false);
 interface DiscordData {
     channelId: string;
     host: string;
-    port: number;
+    port?: number;
     messageId: string;
 }
 
@@ -72,7 +72,7 @@ export async function serverUpdate(gs: GameServer) {
     }
 }
 
-async function getServerInfoMessage(cid: string, host: string, port: number) {
+async function getServerInfoMessage(cid: string, host: string, port?: number) {
     let m = serverInfoMessages.find(n => {
         return n.channelId === cid && n.host === host && n.port === port;
     });
@@ -99,12 +99,12 @@ async function getServerInfoMessage(cid: string, host: string, port: number) {
 class ServerInfoMessage {
     public channelId: string;
     public host: string;
-    public port: number;
+    public port?: number;
     public messageId: string = '0';
     private channel?: TextChannel;
     private message?: Message;
 
-    constructor(channelId: string, host: string, port: number) {
+    constructor(channelId: string, host: string, port?: number) {
         this.channelId = channelId;
         this.host = host;
         this.port = port;

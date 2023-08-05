@@ -20,15 +20,28 @@ interface TelegramConfig {
 
 export interface GameServerConfig {
     name: string;
-    type: Type;
-    host: string;
-    port: number;
     appId?: number;//0
     updateIntervalMinutes?: number;//5
     graphHistoryHours?: number;//12
     timezoneOffset?: number;//0
-    discord?: DiscordConfig[],
+    discord?: DiscordConfig[];
     telegram?: TelegramConfig[];
+
+    // node-gamedig stuff
+    type: Type;
+    host: string;
+    port?: number;
+    givenPortOnly?: boolean;
+    requestRules?: boolean;
+    // * Discord
+    guildId?: string;
+    // * Nadeo
+    login?: string;
+    password?: string;
+    // * Teamspeak 3
+    teamspeakQueryPort?: number;
+    // * Terraria
+    token?: string;
 }
 
 const adapter = new JSONFile<GameServerConfig[]>(DATA_PATH + 'default.config.json');

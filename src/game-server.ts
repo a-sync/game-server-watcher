@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Player, query, QueryResult } from 'gamedig';
+import { Player, query, QueryResult, Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex';
 import getIP from './lib/getip';
@@ -48,6 +48,28 @@ interface qRes extends QueryResult {
     numplayers: number;
 }
 
+export interface QueryOptions {
+    type: Type;
+    host: string;
+    port?: number;
+    maxAttempts?: number;
+    socketTimeout?: number;
+    attemptTimeout?: number;
+    givenPortOnly?: boolean;
+    ipfamily?: 0 | 4 | 6 | undefined;
+    debug?: boolean;
+    requestRules?: boolean;
+    // Discord
+    guildId?: string;
+    // Nadeo
+    login?: string;
+    password?: string;
+    // Teamspeak 3
+    teamspeakQueryPort?: number;
+    // Terraria
+    token?: string;
+}
+
 export class GameServer {
     public ip: string;
     public info?: Info;
@@ -94,10 +116,17 @@ export class GameServer {
     async gamedig(): Promise<Info | null> {
         try {
             const res = await query({
+                type: this.config.type,
                 host: this.config.host,
                 port: this.config.port,
-                type: this.config.type,
-            }) as qRes;
+                givenPortOnly: this.config.givenPortOnly,
+                requestRules: this.config.requestRules,
+                guildId: this.config.guildId,
+                login: this.config.login,
+                password: this.config.password,
+                teamspeakQueryPort: this.config.teamspeakQueryPort,
+                token: this.config.token
+            } as QueryOptions) as qRes;
 
             const raw = res.raw as { game: string; folder: string; };
             const game = raw.game || raw.folder || this.config.type;
