@@ -36,13 +36,12 @@ $(async () => {
                 "show_errors": "always",
                 "required_by_default": 0,
                 "no_additional_properties": 1,
-                "display_required_only": 0,//debug
-                "show_opt_in": 1,//debug
-                "remove_empty_properties": 1,
+                "display_required_only": 1,//debug
+                "show_opt_in": 0,//debug
+                "remove_empty_properties": 0,//DEBUG2
                 "keep_oneof_values": 0,
                 "ajax": 1,//debug
                 "ajaxCredentials": 0,
-                "show_opt_in": 1,
                 "disable_edit_json": 0,
                 "disable_collapse": 1,
                 "disable_properties": 0,//debug

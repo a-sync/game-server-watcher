@@ -4,3 +4,7 @@
 // print server info on demand / command
 // response normalization: https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/functions/query_gamedig.sh
 // support gamedig udpListenPort config
+
+//v3
+// refactor config structure
+// introduce storage layer and add free postgresql support

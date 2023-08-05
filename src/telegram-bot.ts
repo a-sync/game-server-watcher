@@ -9,7 +9,7 @@ const DBG = Boolean(process.env.DBG || false);
 interface TelegramData {
     chatId: string;
     host: string;
-    port?: number;
+    port: number;
     messageId: number;
 }
 
@@ -46,7 +46,7 @@ export async function init(token: string) {
     db.data = db.data || [];
 }
 
-async function getServerInfoMessage(cid: string, host: string, port?: number) {
+async function getServerInfoMessage(cid: string, host: string, port: number) {
     let m = serverInfoMessages.find(n => {
         return n.chatId === cid && n.host === host && n.port === port;
     });
@@ -88,10 +88,10 @@ export async function serverUpdate(gs: GameServer) {
 class ServerInfoMessage {
     public chatId: string;
     public host: string;
-    public port?: number;
+    public port: number;
     public messageId: number = 0;
 
-    constructor(chatId: string, host: string, port?: number) {
+    constructor(chatId: string, host: string, port: number) {
         this.chatId = chatId;
         this.host = host;
         this.port = port;

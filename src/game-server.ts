@@ -51,7 +51,7 @@ interface qRes extends QueryResult {
 export interface QueryOptions {
     type: Type;
     host: string;
-    port?: number;
+    port: number;
     maxAttempts?: number;
     socketTimeout?: number;
     attemptTimeout?: number;

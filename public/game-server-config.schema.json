@@ -4,7 +4,8 @@
     "required": [
         "name",
         "type",
-        "host"
+        "host",
+        "port"
     ],
     "properties": {
         "name": {
@@ -48,70 +49,57 @@
                 "grid_columns": 6
             }
         },
-
-
         "givenPortOnly": {
             "title": "givenPortOnly",
+            "description": "Only attempt to query server on given port.",
             "type": "boolean",
             "format": "checkbox",
             "options": {
-                "grid_columns": 3
+                "grid_columns": 6
             }
         },
         "requestRules": {
-            "title": "requestRules",
+            "title": "requestRules (Valve)",
+            "description": "Additional 'rules' may be fetched into the <code>raw</code> field.",
             "type": "boolean",
             "format": "checkbox",
             "options": {
-                "grid_columns": 3
+                "grid_columns": 6
             }
         },
         "teamspeakQueryPort": {
-            "title": "teamspeakQueryPort",
+            "title": "teamspeakQueryPort (TeamSpeak 3)",
             "type": "integer",
             "options": {
-                "grid_columns": 3
+                "grid_columns": 6
             }
         },
         "guildId": {
-            "title": "guildId",
+            "title": "guildId (Discord)",
             "type": "string",
             "options": {
-                "grid_columns": 3
+                "grid_columns": 6
             }
         },
         "login": {
-            "title": "login",
+            "title": "login (Nadeo)",
             "type": "string",
             "options": {
                 "grid_columns": 6
             }
         },
         "password": {
-            "title": "password",
+            "title": "password (Nadeo)",
             "type": "string",
             "options": {
                 "grid_columns": 6
             }
         },
         "token": {
-            "title": "Terraria tshock REST user token",
+            "title": "token (Terraria)",
             "type": "string",
             "options": {
-                "grid_columns": 12
-            }
-        },
-        
-
-        "updateIntervalMinutes": {
-            "title": "Update interval (minutes) [NOT IMPLEMENTED]",
-            "type": "integer",
-            "default": 5,
-            "minimum": 1,
-            "maximum": 60,
-            "format": "range",
-            "options": {
-                "grid_columns": 12
+                "grid_columns": 6
             }
         },
         "graphHistoryHours": {
@@ -133,8 +121,7 @@
             "maximum": 14,
             "format": "range",
             "options": {
-                "grid_columns": 6,
-                "grid_break": true
+                "grid_columns": 6
             }
         },
         "discord": {

@@ -30,7 +30,7 @@ export interface GameServerConfig {
     // node-gamedig stuff
     type: Type;
     host: string;
-    port?: number;
+    port: number;
     givenPortOnly?: boolean;
     requestRules?: boolean;
     // * Discord
