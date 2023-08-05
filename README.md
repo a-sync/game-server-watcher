@@ -1,4 +1,4 @@
-# <img src="https://i.imgur.com/2Ok3pxv.png" width="40" align="left"> Game Server Watcher
+# <img src="https://user-images.githubusercontent.com/14183614/182869472-643f4028-8143-429b-80c2-86c62d9c2de2.png" width="40" align="left"> Game Server Watcher
 A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
 # About the Project
@@ -34,7 +34,7 @@ The project is in a very early stage. More detailed customization options and fe
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
  * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
- * [pterodactyl](https://pterodactyl.io) egg release
+ * pterodactyl egg release
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  

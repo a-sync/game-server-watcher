@@ -92,7 +92,7 @@ export class GameServer {
         if (DBG) console.log('gs.up', this.config.host, this.config.port);
         let info = await this.gamedig();
 
-        if (DBG) console.log('gs.gamedig', Object.assign({}, info, { players: info?.players.length }));
+        if (DBG) console.log('gs.gamedig %j', Object.assign({}, info, { players: info?.players.length }));
         if (!info && STEAM_WEB_API_KEY && this.config.appId) {
             info = await this.steam();
             if (DBG) console.log('gs.steam', info);
@@ -100,7 +100,7 @@ export class GameServer {
 
         if (info) {
             if (info.players.length > 0 && DBG) {
-                console.log('gs.players.0', info.players[0]);
+                console.log('gs.players.0 %j', info.players[0]);
             }
 
             this.online = true;

@@ -41,17 +41,18 @@ const EXT_MIME: Record<string, string> = {
 
 createServer(async (req, res) => {
     if (DBG) console.log('DBG: %j %j', (new Date()), req.url);
+
     const reqUrl = new URL(req.url || '', 'http://localhost');
     const p = reqUrl.pathname === '/' ? 'index.html' : path.normalize(reqUrl.pathname).slice(1);
+    const ext = path.extname(p).slice(1);
 
-    const ext = path.extname(p);
     if (ext in EXT_MIME && !p.includes('/') && !p.includes('\\')) {
         if (SECRET !== '') {
             res.writeHead(200, {
                 'Content-Type': EXT_MIME[ext] || 'plain/text',
                 'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
             });
-            fs.createReadStream('./public/' + p).pipe(res);
+            fs.createReadStream(path.resolve('./public/', p)).pipe(res);
         } else {
             res.end('Configure the `SECRET` env var to enable the web UI!');
         }

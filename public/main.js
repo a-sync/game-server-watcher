@@ -380,11 +380,11 @@ async function generateBearerToken(secret) {
 
 function setRandomBg() {
     const bgs = [
-        'https://i.imgur.com/bDzhwG5.png',
-        'https://i.imgur.com/rA8JXuI.png',
-        'https://i.imgur.com/pstAPIw.png',
-        'https://i.imgur.com/gQD3xfo.png',
-        'https://i.imgur.com/iKTfM8z.png'
+        'bg1.png',
+        'bg2.png',
+        'bg3.png',
+        'bg4.png',
+        'bg5.png'
     ];
 
     const bgImg = new Image();
