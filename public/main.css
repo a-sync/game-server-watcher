@@ -61,13 +61,6 @@ body>nav {
     vertical-align: top;
 }
 
-#config-form input[type=checkbox] {
-    vertical-align: middle;
-    zoom: 2;
-    cursor: pointer;
-    margin-right: 0.25rem !important;
-}
-
 #config-form .btn-group {
     display: inline-flex !important;
     margin-bottom: 0.25rem;
@@ -86,18 +79,21 @@ body>nav {
     margin: 0 0 0.75rem 0;
 }
 
-#config-form .json-editor-btn-add {
+#config-form .json-editor-btn-add,
+#config-form .json-editor-btn-save {
     background-color: darkgreen;
 }
 #config-form .json-editor-btn-add span {
     display: none;
 }
 
-#config-form .json-editor-btn-delete {
+#config-form .json-editor-btn-delete,
+#config-form .json-editor-btn-cancel {
     background-color: darkred;
 }
 
-#config-form .json-editor-btn-delete span {
+#config-form .json-editor-btn-delete span,
+#config-form .json-editor-btn-cancel span {
     display: none;
 }
 
@@ -107,6 +103,34 @@ body>nav {
 
 #config-form .json-editor-btn-copy span {
     display: none;
+}
+
+#config-form .je-edit-json--textarea {
+    width: auto !important;
+    height: auto !important;
+    min-width: 300px;
+    min-height: 300px;
+}
+
+#config-form .je-modal {
+    box-shadow: rgba(0,0,0,0.5) 3px 3px 6px 2px !important;
+    border: 1px solid rgba(0,0,0,0.25) !important;
+}
+
+#config-form .property-selector {
+    min-width: max-content;
+    max-height: none !important;
+    padding: 5px !important;
+}
+
+#config-form .property-selector .form-check-input {
+    cursor: pointer;
+    margin-left: -0.85rem !important;
+}
+
+#config-form .property-selector .form-check-label {
+    cursor: pointer;
+    padding-left: 5px !important;
 }
 
 footer>a>svg {
