@@ -35,11 +35,13 @@ createServer(async (req, res) => {
     const reqUrl = new URL(req.url || '', 'http://localhost');
     const p = reqUrl.pathname === '/' ? 'index.html' : reqUrl.pathname.slice(1);
 
-    if (['index.html', 'main.css', 'main.js'].includes(p)) {
+    if (['index.html', 'main.css', 'main.js', 'game-server-config.schema.json'].includes(p)) {
         if (SECRET !== '') {
-            let ct = 'text/html';
-            if (p === 'main.css') ct = 'text/css';
+            let ct = 'text/plain';
+            if (p === 'index.html') ct = 'text/html';
+            else if (p === 'main.css') ct = 'text/css';
             else if (p === 'main.js') ct = 'text/javascript';
+            else if (p === 'game-server-config.schema.json') ct = 'application/json';
 
             res.writeHead(200, {
                 'Content-Type': ct,

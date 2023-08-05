@@ -1,0 +1,191 @@
+{
+    "title": "Game Server",
+    "type": "object",
+    "required": [
+        "name",
+        "type",
+        "host"
+    ],
+    "properties": {
+        "name": {
+            "title": "Name",
+            "type": "string",
+            "options": {
+                "grid_columns": 12
+            }
+        },
+        "type": {
+            "title": "Gamedig type",
+            "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig#games-list\">games list</a>.",
+            "type": "string",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+        "appId": {
+            "title": "Steam App ID",
+            "description": "Look for the <i>AppID</i> in the <a href=\"https://steamdb.info/apps/\">apps list</a>.",
+            "type": "integer",
+            "format": "number",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+        "host": {
+            "title": "Host name or IP",
+            "type": "string",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+        "port": {
+            "title": "Port number",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535,
+            "format": "number",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+
+
+        "givenPortOnly": {
+            "title": "givenPortOnly",
+            "type": "boolean",
+            "format": "checkbox",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "requestRules": {
+            "title": "requestRules",
+            "type": "boolean",
+            "format": "checkbox",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "teamspeakQueryPort": {
+            "title": "teamspeakQueryPort",
+            "type": "integer",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "guildId": {
+            "title": "guildId",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "login": {
+            "title": "login",
+            "type": "string",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+        "password": {
+            "title": "password",
+            "type": "string",
+            "options": {
+                "grid_columns": 6
+            }
+        },
+        "token": {
+            "title": "Terraria tshock REST user token",
+            "type": "string",
+            "options": {
+                "grid_columns": 12
+            }
+        },
+        
+
+        "updateIntervalMinutes": {
+            "title": "Update interval (minutes) [NOT IMPLEMENTED]",
+            "type": "integer",
+            "default": 5,
+            "minimum": 1,
+            "maximum": 60,
+            "format": "range",
+            "options": {
+                "grid_columns": 12
+            }
+        },
+        "graphHistoryHours": {
+            "title": "Graph history time span (hours)",
+            "type": "integer",
+            "default": 12,
+            "minimum": 1,
+            "maximum": 24,
+            "format": "range",
+            "options": {
+                "grid_columns": 12
+            }
+        },
+        "timezoneOffset": {
+            "title": "Time zone offset of the server",
+            "default": 0,
+            "type": "number",
+            "minimum": -12,
+            "maximum": 14,
+            "format": "range",
+            "options": {
+                "grid_columns": 6,
+                "grid_break": true
+            }
+        },
+        "discord": {
+            "type": "array",
+            "title": "Discord channels",
+            "description": "The simplest way to get a discord channel ID is to enable developer mode in settings, then right clicking on the channel name will give you the <b>Copy ID</b> option.",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "title": "Channel",
+                "required": [
+                    "channelId"
+                ],
+                "properties": {
+                    "channelId": {
+                        "title": "Channel ID",
+                        "type": "string"
+                    }
+                }
+            },
+            "format": "table",
+            "options": {
+                "grid_columns": 12
+            }
+        },
+        "telegram": {
+            "type": "array",
+            "title": "Telegram chats",
+            "description": "The simplest way to get a telegram chat ID is to invite <a target=\"_blank\" href=\"https://telegram.me/getidsbot\">@getidsbot</a> and use <code>/start</code> to make it post (among other data) the chat ID.",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "title": "Chat",
+                "required": [
+                    "chatId"
+                ],
+                "properties": {
+                    "chatId": {
+                        "type": "string",
+                        "title": "Chat ID"
+                    }
+                }
+            },
+            "format": "table",
+            "options": {
+                "grid_columns": 12
+            }
+        }
+    },
+    "format": "grid",
+    "headerTemplate": "{{#self.name}}{{self.name}}{{/self.name}}{{^self.name}}{{self.type}}:{{self.host}}:{{self.port}}{{/self.name}}"
+}
