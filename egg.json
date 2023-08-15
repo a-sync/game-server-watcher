@@ -51,6 +51,8 @@
             "description": "Game server info refresh interval in minutes",
             "env_variable": "REFRESH_TIME_MINUTES",
             "default_value": "2",
+            "user_viewable": true,
+            "user_editable": true,
             "field_type": "integer",
             "rules": "required|integer|min:1"
         },
@@ -104,6 +106,8 @@
             "description": "Enable or disable debug mode.",
             "env_variable": "DBG",
             "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|in:0,1"
         }
     ]
