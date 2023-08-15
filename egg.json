@@ -10,7 +10,7 @@
     "description": "A simple discord\/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
     "features": null,
     "docker_images": {
-        "NodeJS 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+        "Node.js 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
     },
     "file_denylist": [],
     "startup": "env PORT={{SERVER_PORT}} \/usr\/local\/bin\/node \/home\/container\/dist\/server.js",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\ncd \/mnt\/server\r\napt-get update && apt-get install git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\ngit clone https:\/\/github.com\/a-sync\/game-server-watcher.git .\r\nnpm install\r\nnpm run build\r\nnpm prune --production",
+            "script": "#!\/bin\/bash\r\napt-get update && apt-get install ca-certificates git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\ncd \/mnt\/server\r\ngit clone https:\/\/github.com\/a-sync\/game-server-watcher.git . && npm install && npm run build && npm prune --production",
             "container": "node:20-bookworm-slim",
             "entrypoint": "bash"
         }

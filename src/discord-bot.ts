@@ -4,7 +4,7 @@ import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
-const DBG = Boolean(process.env.DBG || false);
+const DBG = Boolean(Number(process.env.DBG));
 
 interface DiscordData {
     channelId: string;

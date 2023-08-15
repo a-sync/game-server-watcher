@@ -34,7 +34,7 @@ The project is in a very early stage. More detailed customization options and fe
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
  * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
- * pterodactyl egg release
+ * ~~pterodactyl egg release~~
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
@@ -104,7 +104,8 @@ If the original message created by the bot gets deleted, you need to flush the b
 _The bot has no cleanup functionality, left over messages must be removed manually._
 
 # Deployment
-Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).
+Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).  
+The latest Pterodactyl egg can always be found here: [🥚](https://raw.githubusercontent.com/a-sync/game-server-watcher/master/egg.json)
 <p align="center">
   <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>

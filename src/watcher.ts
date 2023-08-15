@@ -8,7 +8,7 @@ const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '2', 1
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
-const DBG = Boolean(process.env.DBG || false);
+const DBG = Boolean(Number(process.env.DBG));
 
 interface DiscordConfig {
     channelId: string;

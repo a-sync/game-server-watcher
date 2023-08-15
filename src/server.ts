@@ -12,7 +12,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8080', 10);
 const SECRET = process.env.SECRET || 'secret';
 const DATA_PATH = process.env.DATA_PATH || './data/';
-const DBG = Boolean(process.env.DBG || false);
+const DBG = Boolean(Number(process.env.DBG));
 
 let loop: NodeJS.Timeout | undefined;
 

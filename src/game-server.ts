@@ -7,7 +7,7 @@ import { GameServerConfig } from './watcher';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
-const DBG = Boolean(process.env.DBG || false);
+const DBG = Boolean(Number(process.env.DBG));
 
 interface GameServerDb {
     population: {
