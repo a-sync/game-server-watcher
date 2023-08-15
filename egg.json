@@ -1,104 +1,110 @@
 {
-    "name": "Node.js TypeScript App",
-    "description": "A custom egg for running a Node.js TypeScript app from https://github.com/a-sync/testapp",
-    "docker_image": "node:16",
-    "startup": "node dist/server.js",
+    "name": "Game Server Watcher",
+    "author": "a-sync@devs.space",
+    "description": "A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
+    "docker_image": "ghcr.io/parkervcp/yolks:nodejs_20",
+    "startup": "/usr/local/bin/node /home/container/dist/server.js",
     "config": {
-        "files": "{\n}",
-        "startup": "{\n    \"done\": \"listening on\"\n}",
-        "stop": "^C"
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"starting loop...\"\r\n}",
+        "logs": "{}",
+        "stop": "^^C"
     },
     "scripts": {
-      "installation": {
-        "script": "#!/bin/bash\n# Clone the repository\n\ngit clone https://github.com/a-sync/testapp.git\n\ncd testapp\n\n# Install dependencies\n\nnpm install\n\n# Build the TypeScript code\n\nnpm run build\n\n# Remove development dependencies (optional)\n\nnpm prune --production",
-        "container": "ubuntu:18.04",
-        "entrypoint": "bash"
-      }
+        "installation": {
+            "script": "#!/bin/bash\r\ncd /mnt/server\r\napt-get update && apt-get install git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\ngit clone https://github.com/a-sync/game-server-watcher.git .\r\nnpm install\r\nnpm run build\r\nnpm prune --production",
+            "container": "node:20-bookworm-slim",
+            "entrypoint": "bash"
+        }
     },
     "variables": [
-      {
-        "name": "SRV1_API_KEY",
-        "description": "API key for SRV1",
-        "env_variable": "SRV1_API_KEY",
-        "default_value": "",
-        "user_viewable": false,
-        "user_editable": true,
-        "rules": "required|string|max:255"
-      },
-      {
-        "name": "SRV2_TOKEN",
-        "description": "Token for SRV2",
-        "env_variable": "SRV2_TOKEN",
-        "default_value": "",
-        "user_viewable": false,
-        "user_editable": true,
-        "rules": "required|string|max:255"
-      },
-      {
-        "name": "SRV3_TOKEN",
-        "description": "Token for SRV3",
-        "env_variable": "SRV3_TOKEN",
-        "default_value": "",
-        "user_viewable": false,
-        "user_editable": true,
-        "rules": "required|string|max:255"
-      },
-      {
-        "name": "SECRET",
-        "description": "App secret",
-        "env_variable": "SECRET",
-        "default_value": "",
-        "user_viewable": false,
-        "user_editable": true,
-        "rules": "required|string|max:255"
-      },
-      {
-        "name": "OPT1_VALUE",
-        "description": "Configuration option 1",
-        "env_variable": "OPT1_VALUE",
-        "default_value": "",
-        "user_viewable": true,
-        "user_editable": true,
-        "rules": "string|max:255"
-      },
-      {
-        "name": "OPT2_VALUE",
-        "description": "Configuration option 2",
-        "env_variable": "OPT2_VALUE",
-        "default_value": "",
-        "user_viewable": true,
-        "user_editable": true,
-        "rules": "string|max:255"
-      },
-      {
-        "name": "APP_PORT",
-        "description": "Port on which the app listens",
-        "env_variable": "APP_PORT",
-        "default_value": "8080",
-        "user_viewable": true,
-        "user_editable": true,
-        "rules": "required|numeric|digits_between:1,5"
-      },
-
-    {
-        "name": "PORT",
-        "description": "The port on which the GSW control panel will listen",
-        "env_variable": "PORT",
-        "default_value": "{{server.build.default.port}}",
-        "user_viewable": true,
-        "user_editable": true,
-        "rules": "required|numeric|min:1|max:65535"
-    }
-
+        {
+            "name": "SECRET",
+            "description": "Admin secret",
+            "env_variable": "SECRET",
+            "default_value": "secret",
+            "user_viewable": true,
+            "user_editable": true,
+            "input_type": "password",
+            "rules": "required|string|min:1|max:255"
+        },
+        {
+            "name": "DATA_PATH",
+            "description": "Writable folder for data storage",
+            "env_variable": "DATA_PATH",
+            "default_value": "./data/",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|min:1|max:255"
+        },
+        {
+            "name": "REFRESH_TIME_MINUTES",
+            "description": "Game server info refresh interval in minutes",
+            "env_variable": "REFRESH_TIME_MINUTES",
+            "default_value": "2",
+            "input_type": "number",
+            "field_type": "integer",
+            "rules": "required|integer|min:1"
+        },
+        {
+            "name": "DISCORD_BOT_TOKEN",
+            "description": "Discord bot token",
+            "env_variable": "DISCORD_BOT_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "TELEGRAM_BOT_TOKEN",
+            "description": "Telegram bot token",
+            "env_variable": "TELEGRAM_BOT_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "STEAM_WEB_API_KEY",
+            "description": "Steam web API key",
+            "env_variable": "STEAM_WEB_API_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "HOST",
+            "description": "Host for the web service",
+            "env_variable": "HOST",
+            "default_value": "{{config.docker.interface}}",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:255"
+        },
+        {
+            "name": "PORT",
+            "description": "Port for the web service",
+            "env_variable": "PORT",
+            "default_value": "{{server.build.default.port}}",
+            "user_viewable": true,
+            "user_editable": true,
+            "input_type": "number",
+            "field_type": "integer",
+            "rules": "required|numeric|min:1|max:65535"
+        },
+        {
+            "name": "Debug Mode",
+            "description": "Enable or disable debug mode.",
+            "env_variable": "DBG",
+            "default_value": "0",
+            "input_type": "select",
+            "field_type": "integer",
+            "select_options": {
+                "0": "OFF",
+                "1": "ON"
+            },
+            "rules": "required|in:0,1"
+        }
     ]
-  }
-/*
-
-  “done”: This option represents a successful startup. The panel will look for the specified text or regex pattern in the server’s output to determine if the server has started successfully.
-  “error”: This option represents an error during the server startup. If the specified text or regex pattern is found in the server’s output, the panel will consider the server startup as unsuccessful due to an error.
-    
-
-  https://github.com/parkervcp/eggs/tree/master/generic/nodejs
-https://pterodactyl.io/community/config/eggs/creating_a_custom_egg.html
-  https://github.com/pterodactyl/panel/tree/develop/database/Seeds
-*/
+}

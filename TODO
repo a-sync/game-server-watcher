@@ -3,6 +3,6 @@
 // response normalization: https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/functions/query_gamedig.sh
 
 //v3
-// refactor config structure
+// refactor config structure (object first, nested settings for complex entities)
 // introduce storage layer and add free postgresql support
 // support gamedig udpListenPort config

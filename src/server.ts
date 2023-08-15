@@ -8,15 +8,11 @@ import 'dotenv/config';
 
 import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
 
-const CACHE_MAX_AGE = parseInt(process.env.CACHE_MAX_AGE || '0', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8080', 10);
 const SECRET = process.env.SECRET || 'secret';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(process.env.DBG || false);
-const FEET_STEAM = Boolean(process.env.STEAM_WEB_API_KEY);
-const FEET_DISCORD = Boolean(process.env.DISCORD_BOT_TOKEN);
-const FEET_TELEGRAM = Boolean(process.env.TELEGRAM_BOT_TOKEN);
 
 let loop: NodeJS.Timeout | undefined;
 
@@ -49,8 +45,7 @@ createServer(async (req, res) => {
     if (ext in EXT_MIME && !p.includes('/') && !p.includes('\\')) {
         if (SECRET !== '') {
             res.writeHead(200, {
-                'Content-Type': EXT_MIME[ext] || 'plain/text',
-                'Cache-Control': 'max-age=' + String(CACHE_MAX_AGE)
+                'Content-Type': EXT_MIME[ext] || 'plain/text'
             });
             fs.createReadStream(path.resolve('./public/', p)).pipe(res);
         } else {
@@ -68,9 +63,9 @@ createServer(async (req, res) => {
             try {
                 if (reqPath[0] === 'features') {
                     re.features = {
-                        steam: FEET_STEAM,
-                        discord: FEET_DISCORD,
-                        telegram: FEET_TELEGRAM
+                        steam: Boolean(process.env.STEAM_WEB_API_KEY),
+                        discord: Boolean(process.env.DISCORD_BOT_TOKEN),
+                        telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN)
                     };
                 } else if (reqPath[0] === 'config') {
                     if (req.method === 'GET') {
@@ -122,7 +117,7 @@ createServer(async (req, res) => {
         res.end('<html><head></head><body>404 &#x1F4A2</body></html>');
     }
 }).listen(PORT, HOST, () => {
-    console.log('Web service started %s:%s', HOST, PORT);
+    console.log('GSW Panel service started %s:%s', HOST, PORT);
 });
 
 main().then(l => {

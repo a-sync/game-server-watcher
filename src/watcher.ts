@@ -101,7 +101,7 @@ export async function main() {
     const watcher = new Watcher();
     await watcher.init(db.data);
 
-    console.log('starting loop...');
+    console.log('starting loop...'); // Note: pterodactyl depends on this
     const loop = setInterval(async () => {
         await watcher.check();
     }, 1000 * 60 * REFRESH_TIME_MINUTES);

@@ -57,17 +57,12 @@ Use npm or yarn to install/update all the dependencies:
 npm i
 ```
 
-If you don't want to build from source, you can skip the development dependencies:  
-```
-npm i --only=prod
-```
-
-## Usage
-Build the artifacts from source (optional):
+Build the artifacts from source:
 ```
 npm run build
 ```
 
+## Usage
 Start the built artifacts:
 ```
 npm start
@@ -207,3 +202,5 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/sbuggay/srcds-info-proxy
 * https://github.com/DiscordGSM/DiscordGSM
 * https://github.com/EndBug/game-tracker
+* https://github.com/fasko-web/discord-gameserver-bots
+* https://github.com/FlorianSW/discord-player-count-bot
