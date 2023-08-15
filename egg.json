@@ -4,13 +4,15 @@
         "version": "PTDL_v2",
         "update_url": null
     },
+    "exported_at": "2023-08-15T04:20:09+02:00",
     "name": "Game Server Watcher",
     "author": "a-sync@devs.space",
     "description": "A simple discord\/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
     "features": null,
     "docker_images": {
-        "ghcr.io\/parkervcp\/yolks:nodejs_20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+        "NodeJS 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
     },
+    "file_denylist": [],
     "startup": "\/usr\/local\/bin\/node \/home\/container\/dist\/server.js",
     "config": {
         "files": "{}",
@@ -33,7 +35,6 @@
             "default_value": "secret",
             "user_viewable": true,
             "user_editable": true,
-            "input_type": "password",
             "rules": "required|string|min:1|max:255"
         },
         {
@@ -50,7 +51,6 @@
             "description": "Game server info refresh interval in minutes",
             "env_variable": "REFRESH_TIME_MINUTES",
             "default_value": "2",
-            "input_type": "number",
             "field_type": "integer",
             "rules": "required|integer|min:1"
         },
@@ -97,21 +97,13 @@
             "default_value": "{{SERVER_PORT}}",
             "user_viewable": true,
             "user_editable": true,
-            "input_type": "number",
-            "field_type": "integer",
-            "rules": "required|numeric|min:1|max:65535"
+            "rules": "required|integer|min:1|max:65535"
         },
         {
             "name": "Debug Mode",
             "description": "Enable or disable debug mode.",
             "env_variable": "DBG",
             "default_value": "0",
-            "input_type": "select",
-            "field_type": "integer",
-            "select_options": {
-                "0": "OFF",
-                "1": "ON"
-            },
             "rules": "required|in:0,1"
         }
     ]
