@@ -1,9 +1,17 @@
 {
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
     "name": "Game Server Watcher",
     "author": "a-sync@devs.space",
-    "description": "A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
-    "docker_image": "ghcr.io/parkervcp/yolks:nodejs_20",
-    "startup": "/usr/local/bin/node /home/container/dist/server.js",
+    "description": "A simple discord\/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
+    "features": null,
+    "docker_images": {
+        "ghcr.io\/parkervcp\/yolks:nodejs_20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+    },
+    "startup": "\/usr\/local\/bin\/node \/home\/container\/dist\/server.js",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"starting loop...\"\r\n}",
@@ -12,7 +20,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!/bin/bash\r\ncd /mnt/server\r\napt-get update && apt-get install git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\ngit clone https://github.com/a-sync/game-server-watcher.git .\r\nnpm install\r\nnpm run build\r\nnpm prune --production",
+            "script": "#!\/bin\/bash\r\ncd \/mnt\/server\r\napt-get update && apt-get install git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\ngit clone https:\/\/github.com\/a-sync\/game-server-watcher.git .\r\nnpm install\r\nnpm run build\r\nnpm prune --production",
             "container": "node:20-bookworm-slim",
             "entrypoint": "bash"
         }
@@ -32,7 +40,7 @@
             "name": "DATA_PATH",
             "description": "Writable folder for data storage",
             "env_variable": "DATA_PATH",
-            "default_value": "./data/",
+            "default_value": ".\/data\/",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|min:1|max:255"
@@ -77,7 +85,7 @@
             "name": "HOST",
             "description": "Host for the web service",
             "env_variable": "HOST",
-            "default_value": "{{config.docker.interface}}",
+            "default_value": "0.0.0.0",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|max:255"
@@ -86,7 +94,7 @@
             "name": "PORT",
             "description": "Port for the web service",
             "env_variable": "PORT",
-            "default_value": "{{server.build.default.port}}",
+            "default_value": "{{SERVER_PORT}}",
             "user_viewable": true,
             "user_editable": true,
             "input_type": "number",
