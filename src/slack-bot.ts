@@ -1,4 +1,4 @@
-import { App } from '@slack/bolt';
+import { App, Block, KnownBlock, LogLevel } from '@slack/bolt';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
@@ -25,7 +25,8 @@ export async function init(token: string, appToken: string) {
         bot = new App({
             token,
             appToken,
-            socketMode: true
+            socketMode: true,
+            logLevel: LogLevel.ERROR
         });
 
         if (DBG) {
@@ -137,66 +138,127 @@ class ServerInfoMessage {
     }
 
     async updatePost(gs: GameServer) {
-        // const embed = new EmbedBuilder();
-        // const fields: APIEmbedField[] = [];
-        // embed.setFooter({ text: 'Last updated' });
-        // embed.setTimestamp();
-        // embed.setImage(gs.history.statsChart());
-
-        let text = this.escapeMarkdown(gs.niceName) + ' offline...';
+        const blocks: (KnownBlock | Block)[] = [];
+        let text;
 
         if (gs.info && gs.online) {
-            text = this.escapeMarkdown(gs.niceName) + ' online! game:' + gs.info.game + ' map:' + gs.info.map + ' players:' + gs.info.players.length;
-        //     embed.setTitle(gs.niceName.slice(0, 256));
-        //     embed.setColor('#000000');
+            text = this.escapeMarkdown(gs.niceName) + ' online!';
 
-        //     if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true });
-        //     if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true });
-        //     fields.push({ name: 'Players', value: gs.info.playersNum + '/' + gs.info.playersMax, inline: true });
-        //     fields.push({ name: 'Connect', value: 'steam://connect/' + gs.info.connect });
+            blocks.push({
+                type: 'header',
+                text: {
+                    type: 'plain_text',
+                    text: `${gs.niceName.slice(0, 256)}`
+                }
+            });
 
-        //     if (gs.info?.players.length > 0) {
-        //         const pNames: string[] = [];
-        //         const pTimes: string[] = [];
-        //         const pScores: string[] = [];
-        //         const pPings: string[] = [];
+            if (gs.info.game) {
+                text += ' Game: ' + gs.info.game;
+                blocks.push({
+                    type: 'section',
+                    text: {
+                        type: 'plain_text',
+                        text: 'Game: ' + String(gs.info.game)
+                    }
+                });
+            }
+            
+            if (gs.info.map) {
+                text += ' Map: ' + gs.info.map;
+                blocks.push({
+                    type: 'section',
+                    text: {
+                        type: 'plain_text',
+                        text: 'Map: ' + String(gs.info.map)
+                    }
+                });
+            }
 
-        //         for (const p of gs.info?.players) {
-        //             if (pNames.join('\n').length > 1016
-        //                 || pTimes.join('\n').length > 1016
-        //                 || pScores.join('\n').length > 1016
-        //                 || pPings.join('\n').length > 1016) {
-        //                 if (pNames.length) pNames.pop();
-        //                 if (pTimes.length) pTimes.pop();
-        //                 if (pScores.length) pScores.pop();
-        //                 if (pPings.length) pPings.pop();
-        //                 break;
-        //             }
+            text += ' Players: ' + gs.info.playersNum;
+            blocks.push({
+                type: 'section',
+                text: {
+                    type: 'plain_text',
+                    text: 'Players: ' + String(gs.info.playersNum + '/' + gs.info.playersMax)
+                }
+            });
 
-        //             if (p.get('name') !== undefined) pNames.push(p.get('name') || 'n/a');
-        //             if (p.get('time') !== undefined) pTimes.push(hhmmss(p.get('time') || 0));
-        //             if (p.get('score') !== undefined) pScores.push(p.get('score') || '0');
-        //             if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
-        //         }
+            text += ' Connect: steam://connect/' + gs.info.connect;
+            blocks.push({
+                type: 'section',
+                text: {
+                    type: 'plain_text',
+                    text: 'Connect: steam://connect/' + gs.info.connect
+                }
+            });
 
-        //         if (pNames.length) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true });
-        //         if (pTimes.length) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true });
-        //         if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
-        //         if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
-        //     }
+            //     if (gs.info?.players.length > 0) {
+            //         const pNames: string[] = [];
+            //         const pTimes: string[] = [];
+            //         const pScores: string[] = [];
+            //         const pPings: string[] = [];
+
+            //         for (const p of gs.info?.players) {
+            //             if (pNames.join('\n').length > 1016
+            //                 || pTimes.join('\n').length > 1016
+            //                 || pScores.join('\n').length > 1016
+            //                 || pPings.join('\n').length > 1016) {
+            //                 if (pNames.length) pNames.pop();
+            //                 if (pTimes.length) pTimes.pop();
+            //                 if (pScores.length) pScores.pop();
+            //                 if (pPings.length) pPings.pop();
+            //                 break;
+            //             }
+
+            //             if (p.get('name') !== undefined) pNames.push(p.get('name') || 'n/a');
+            //             if (p.get('time') !== undefined) pTimes.push(hhmmss(p.get('time') || 0));
+            //             if (p.get('score') !== undefined) pScores.push(p.get('score') || '0');
+            //             if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
+            //         }
+
+            //         if (pNames.length) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true });
+            //         if (pTimes.length) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true });
+            //         if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
+            //         if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
+            //     }
         } else {
-        //     embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');
-        //     embed.setColor('#ff0000');
+
+            text = this.escapeMarkdown(gs.niceName) + ' offline...';
+            blocks.push({
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `*${gs.niceName.slice(0, 245)} offline...* :red_circle:`
+                }
+            });
         }
 
-        // embed.setFields(fields);
+        blocks.push({
+            "type": "image",
+            "image_url": gs.history.statsChart(),
+            "alt_text": "Player numbers chart"
+        });
+
+        const unixTimestamp = Math.floor(+new Date() / 1000);
+
+        // text += ' Last updated at ' + new Date().toLocaleString();
+        blocks.push({
+            "type": "context",
+            "elements": [
+                {
+                    "type": "plain_text",
+                    "text": `Last updated: <!date^${unixTimestamp}^{date_num} {time_secs}|${new Date().toLocaleString()}>`
+                }
+            ]
+        });
 
         try {
             await bot.client.chat.update({
                 as_user: true,
                 channel: this.channelId,
                 ts: this.messageId,
-                text
+                text,
+                //blocks
             });
         } catch (e: any) {
             console.error(['slack.up', this.channelId, this.host, this.port].join(':'), e.message || e);
