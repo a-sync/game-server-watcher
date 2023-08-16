@@ -104,7 +104,7 @@ class ServerInfoMessage {
             this.messageId = msg.message_id;
         }
 
-        if (db.data) {
+        if (db.data && this.messageId) {
             const mi = db.data.findIndex(d => {
                 return d.chatId === this.chatId && d.host === this.host && d.port === this.port;
             });
@@ -160,11 +160,14 @@ class ServerInfoMessage {
     }
 
     escapeMarkdown(str: string): string {
-        return str
-            .replace(/_/g, '\\_')
-            .replace('~', '\\~')
-            .replace(/`/g, '\\`')
-            .replace(/\</g, '\\<')
-            .replace(/\>/g, '\\>');
+        const patterns = [
+            /_/g,
+            /~/g,
+            /`/g,
+            /</g,
+            />/g
+        ];
+
+        return patterns.reduce((acc: string, pattern: RegExp) => acc.replace(pattern, '\\$&'), str);
     }
 }

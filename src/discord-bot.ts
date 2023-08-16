@@ -131,7 +131,7 @@ class ServerInfoMessage {
             this.messageId = this.message.id;
         }
 
-        if (db.data) {
+        if (db.data && this.messageId) {
             const mi = db.data.findIndex(d => {
                 return d.channelId === this.channelId && d.host === this.host && d.port === this.port;
             });

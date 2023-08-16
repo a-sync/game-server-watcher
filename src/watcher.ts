@@ -3,10 +3,13 @@ import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer, initDb, saveDb } from './game-server';
 import * as discordBot from './discord-bot';
 import * as telegramBot from './telegram-bot';
+import * as slackBot from './slack-bot';
 
 const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '2', 10);
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || '';
+const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
 
@@ -18,6 +21,10 @@ interface TelegramConfig {
     chatId: string;
 }
 
+interface SlackConfig {
+    channelId: string;
+}
+
 export interface GameServerConfig {
     name: string;
     appId?: number;//0
@@ -26,6 +33,7 @@ export interface GameServerConfig {
     timezoneOffset?: number;//0
     discord?: DiscordConfig[];
     telegram?: TelegramConfig[];
+    slack?: SlackConfig[];
 
     // node-gamedig stuff
     type: Type;
@@ -57,7 +65,7 @@ export async function updateConfig(data: GameServerConfig[]) {
         db.data = data;
         return await db.write();
     } catch (e: any) {
-        console.error('w.saveDb', e.message || e);
+        console.error('w.updateConfig', e.message || e);
     }
 }
 
@@ -69,6 +77,7 @@ class Watcher {
 
         if (DISCORD_BOT_TOKEN) await discordBot.init(DISCORD_BOT_TOKEN);
         if (TELEGRAM_BOT_TOKEN) await telegramBot.init(TELEGRAM_BOT_TOKEN);
+        if (SLACK_BOT_TOKEN && SLACK_APP_TOKEN) await slackBot.init(SLACK_BOT_TOKEN, SLACK_APP_TOKEN);
 
         await initDb();
 
@@ -86,6 +95,7 @@ class Watcher {
             promises.push(gs.update().then(async () => {
                 if (DISCORD_BOT_TOKEN) await discordBot.serverUpdate(gs);
                 if (TELEGRAM_BOT_TOKEN) await telegramBot.serverUpdate(gs);
+                if (SLACK_BOT_TOKEN && SLACK_APP_TOKEN) await slackBot.serverUpdate(gs);
             }));
         }
 
