@@ -12,6 +12,12 @@ on:
       telegram_bot_token:
         description: 'Telegram bot token'
         type: string
+      slack_bot_token:
+        description: 'Slack bot token'
+        type: string
+      slack_app_token:
+        description: 'Slack app token'
+        type: string
       steam_web_api_key:
         description: 'Steam web API key'
         type: string
@@ -30,14 +36,20 @@ jobs:
           INP_SECRET=$(jq -r '.inputs.secret' $GITHUB_EVENT_PATH)
           INP_DISCORD_BOT_TOKEN=$(jq -r '.inputs.discord_bot_token' $GITHUB_EVENT_PATH)
           INP_TELEGRAM_BOT_TOKEN=$(jq -r '.inputs.telegram_bot_token' $GITHUB_EVENT_PATH)
+          INP_SLACK_BOT_TOKEN=$(jq -r '.inputs.slack_bot_token' $GITHUB_EVENT_PATH)
+          INP_SLACK_APP_TOKEN=$(jq -r '.inputs.slack_app_token' $GITHUB_EVENT_PATH)
           INP_STEAM_WEB_API_KEY=$(jq -r '.inputs.steam_web_api_key' $GITHUB_EVENT_PATH)
           echo ::add-mask::$INP_SECRET
           echo ::add-mask::$INP_DISCORD_BOT_TOKEN
           echo ::add-mask::$INP_TELEGRAM_BOT_TOKEN
+          echo ::add-mask::$INP_SLACK_BOT_TOKEN
+          echo ::add-mask::$INP_SLACK_APP_TOKEN
           echo ::add-mask::$INP_STEAM_WEB_API_KEY
           echo secret=$INP_SECRET >> $GITHUB_OUTPUT
           echo discord_bot_token=$INP_DISCORD_BOT_TOKEN >> $GITHUB_OUTPUT
           echo telegram_bot_token=$INP_TELEGRAM_BOT_TOKEN >> $GITHUB_OUTPUT
+          echo slack_bot_token=$INP_SLACK_BOT_TOKEN >> $GITHUB_OUTPUT
+          echo slack_app_token=$INP_SLACK_APP_TOKEN >> $GITHUB_OUTPUT
           echo steam_web_api_key=$INP_STEAM_WEB_API_KEY >> $GITHUB_OUTPUT
           echo SET_ARGS='' >> $GITHUB_ENV
           echo UNSET_ARGS='' >> $GITHUB_ENV
@@ -56,6 +68,16 @@ jobs:
         run: echo SET_ARGS='${{ env.SET_ARGS }} TELEGRAM_BOT_TOKEN="${{ steps.masked_inputs.outputs.telegram_bot_token }}"' >> $GITHUB_ENV
       - if: inputs.telegram_bot_token == '-'
         run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} TELEGRAM_BOT_TOKEN' >> $GITHUB_ENV
+
+      - if: inputs.slack_bot_token != '' && inputs.slack_bot_token != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} SLACK_BOT_TOKEN="${{ steps.masked_inputs.outputs.slack_bot_token }}"' >> $GITHUB_ENV
+      - if: inputs.slack_bot_token == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} SLACK_BOT_TOKEN' >> $GITHUB_ENV
+
+      - if: inputs.slack_app_token != '' && inputs.slack_app_token != '-'
+        run: echo SET_ARGS='${{ env.SET_ARGS }} SLACK_APP_TOKEN="${{ steps.masked_inputs.outputs.slack_app_token }}"' >> $GITHUB_ENV
+      - if: inputs.slack_app_token == '-'
+        run: echo UNSET_ARGS='${{ env.UNSET_ARGS }} SLACK_APP_TOKEN' >> $GITHUB_ENV
 
       - if: inputs.steam_web_api_key != '' && inputs.steam_web_api_key != '-'
         run: echo SET_ARGS='${{ env.SET_ARGS }} STEAM_WEB_API_KEY="${{ steps.masked_inputs.outputs.steam_web_api_key }}"' >> $GITHUB_ENV

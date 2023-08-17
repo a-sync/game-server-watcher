@@ -1,5 +1,5 @@
 # <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20" width="40" align="left"> Game Server Watcher
-A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
+A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
 # About the Project
 The main goals of this repo:
@@ -10,7 +10,7 @@ The main goals of this repo:
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 # Screenshots
-<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="360"> 
+<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="360"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="360"> <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/6c226306-b7a1-4ed6-9dd9-ab43a136e7e0" height="360"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="360"> 
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the master branch.  
@@ -22,13 +22,13 @@ The project is in a very early stage. More detailed customization options and fe
    * with configurable fields. eg.: time,name,ping,score
    * configurable field & order to sort by
    * max length for player names & nr of players
- * custom embed fields for discord
+ * custom embed fields for discord/slack
  * ~~configurable time zone offset for graph x-axis~~
  * refresh on reaction
  * watched players (notify when a watched player enters/leaves the server)
  * detect when the server goes offline, notify when player number crosses a threshold
  * bot commands (reinit message, cleanup, start/stop, post server status, configure)
- * more integrations: slack, ms teams, twillio (email, sms)
+ * more integrations: ~~telegram~~, ~~slack~~, ms teams, twillio (email, sms)
  * ~~web ui to manage & configure the servers and bots~~
  * put custom information in the channel name or bot status (online status indicator, number of players, map)
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
@@ -82,6 +82,7 @@ Refer to the wiki on how to acquire tokens for:
  * [steam](https://github.com/a-sync/game-server-watcher/wiki/Steam-Web-API-key)
  * [discord](https://github.com/a-sync/game-server-watcher/wiki/Discord-bot-token)
  * [telegram](https://github.com/a-sync/game-server-watcher/wiki/Telegram-bot-token)
+ * [slack](https://github.com/a-sync/game-server-watcher/wiki/Slack-bot-token)
 
 ## Managing the service
 **GSW Control Panel** is a web based UI that let's you configure and control the Game Server Watcher instance.  
@@ -97,11 +98,15 @@ Removes population history data. (configured by _Graph history time span_ server
 
 #### Flush discord data
 If the original message created by the bot gets deleted, you might need to flush the bot data to reinitialize the message.  
-_The bot has no cleanup functionality, left over messages must be removed manually._
+_The bot has no cleanup functionality, leftover messages must be removed manually._
 
 #### Flush telegram data
 If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
-_The bot has no cleanup functionality, left over messages must be removed manually._
+_The bot has no cleanup functionality, leftover messages must be removed manually._
+
+#### Flush slack data
+If the original message created by the bot gets deleted, you need to flush the bot data to reinitialize the message.  
+_The bot has no cleanup functionality, leftover messages must be removed manually._
 
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).  

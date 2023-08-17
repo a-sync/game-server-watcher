@@ -17,6 +17,12 @@ spec:
     - key: TELEGRAM_BOT_TOKEN
       scope: RUN_TIME
       value: ""
+    - key: SLACK_BOT_TOKEN
+      scope: RUN_TIME
+      value: ""
+    - key: SLACK_APP_TOKEN
+      scope: RUN_TIME
+      value: ""
     - key: STEAM_WEB_API_KEY
       scope: RUN_TIME
       value: ""

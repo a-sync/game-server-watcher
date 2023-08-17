@@ -1,6 +1,3 @@
-https://slack.dev/bolt-js/tutorial/getting-started
-https://api.slack.com/apis/connections/socket
-
 // move loop inside watcher instance
 // flush game server specific (d/t) data
 // response normalization: https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/functions/query_gamedig.sh

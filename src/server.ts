@@ -92,7 +92,7 @@ createServer(async (req, res) => {
                         status = 400;
                         re.error = 'Invalid Request';
                     }
-                } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram'].includes(reqPath[1])) {
+                } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram', 'slack'].includes(reqPath[1])) {
                     await restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
                 } else {

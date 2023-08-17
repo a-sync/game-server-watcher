@@ -1,7 +1,7 @@
 {
   "name": "game-server-watcher",
   "version": "2.2.0",
-  "description": "A simple discord/telegram bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
+  "description": "A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
   "main": "src/server",
   "scripts": {
     "start": "node ./dist/server.js",

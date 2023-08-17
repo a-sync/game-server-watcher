@@ -13,6 +13,8 @@ services:
             - SECRET=secret
             - DISCORD_BOT_TOKEN=
             - TELEGRAM_BOT_TOKEN=
+            - SLACK_BOT_TOKEN=
+            - SLACK_APP_TOKEN=
             - STEAM_WEB_API_KEY=
         # env_file:
         #     - .env.example

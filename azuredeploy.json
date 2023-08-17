@@ -45,6 +45,20 @@
                 "description": "Telegram bot token"
             }
         },
+        "slackBotToken": {
+            "type": "string",
+            "defaultValue": "-",
+            "metadata": {
+                "description": "Slack bot token"
+            }
+        },
+        "slackAppToken": {
+            "type": "string",
+            "defaultValue": "-",
+            "metadata": {
+                "description": "Slack app token"
+            }
+        },
         "steamWebApiKey": {
             "type": "string",
             "defaultValue": "-",
@@ -131,6 +145,8 @@
                         "REFRESH_TIME_MINUTES": "[parameters('refreshTimeMinutes')]",
                         "DISCORD_BOT_TOKEN": "[if(equals('-', parameters('discordBotToken')), '', parameters('discordBotToken'))]",
                         "TELEGRAM_BOT_TOKEN": "[if(equals('-', parameters('telegramBotToken')), '', parameters('telegramBotToken'))]",
+                        "SLACK_BOT_TOKEN": "[if(equals('-', parameters('slackBotToken')), '', parameters('slackBotToken'))]",
+                        "SLACK_APP_TOKEN": "[if(equals('-', parameters('slackAppToken')), '', parameters('slackAppToken'))]",
                         "STEAM_WEB_API_KEY": "[if(equals('-', parameters('steamWebApiKey')), '', parameters('steamWebApiKey'))]"
                     }
                 },
