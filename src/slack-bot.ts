@@ -142,7 +142,6 @@ class ServerInfoMessage {
         const blocks: (KnownBlock | Block)[] = [];
         const fields1: (PlainTextElement | MrkdwnElement)[] = [];
         const fields2: (PlainTextElement | MrkdwnElement)[] = [];
-        const playersFields: (PlainTextElement | MrkdwnElement)[] = [];
         let text;
 
         if (gs.info && gs.online) {
@@ -155,9 +154,9 @@ class ServerInfoMessage {
                     text: gs.niceName.slice(0, 256)
                 }
             },
-            {
-                type: 'divider',
-            });
+                {
+                    type: 'divider',
+                });
 
             if (gs.info.game) {
                 text += '\r\nGame: ' + gs.info.game;
@@ -166,12 +165,19 @@ class ServerInfoMessage {
                     text: '*Game*  \r\n' + String(gs.info.game)
                 });
             }
-            
+
             if (gs.info.map) {
                 text += '\r\nMap: ' + gs.info.map;
                 fields1.push({
                     type: 'mrkdwn',
                     text: '*Map*  \r\n' + String(gs.info.map)
+                });
+            }
+
+            if (fields1.length > 0) {
+                blocks.push({
+                    type: 'section',
+                    fields: fields1
                 });
             }
 
@@ -187,48 +193,39 @@ class ServerInfoMessage {
                 text: '*Connect*  \r\n' + getConnectUrl(gs.info.connect)
             });
 
-            //     if (gs.info?.players.length > 0) {
-            //         const pNames: string[] = [];
-            //         const pTimes: string[] = [];
-            //         const pScores: string[] = [];
-            //         const pPings: string[] = [];
+            if (fields2.length > 0) {
+                blocks.push({
+                    type: 'section',
+                    fields: fields2
+                });
+            }
 
-            //         for (const p of gs.info?.players) {
-            //             if (pNames.join('\n').length > 1016
-            //                 || pTimes.join('\n').length > 1016
-            //                 || pScores.join('\n').length > 1016
-            //                 || pPings.join('\n').length > 1016) {
-            //                 if (pNames.length) pNames.pop();
-            //                 if (pTimes.length) pTimes.pop();
-            //                 if (pScores.length) pScores.pop();
-            //                 if (pPings.length) pPings.pop();
-            //                 break;
-            //             }
+            if (gs.info?.players.length > 0) {
+                const pNames: string[] = [];
+                for (const p of gs.info?.players) {
+                    if (pNames.join('\n').length > 2992) { // Note: max length 3000 - wrapper
+                        if (pNames.length > 0) pNames.pop();
+                        break;
+                    }
 
-            //             if (p.get('name') !== undefined) pNames.push(p.get('name') || 'n/a');
-            //             if (p.get('time') !== undefined) pTimes.push(hhmmss(p.get('time') || 0));
-            //             if (p.get('score') !== undefined) pScores.push(p.get('score') || '0');
-            //             if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
-            //         }
+                    const line = [];
+                    if (p.get('time') !== undefined) line.push(hhmmss(p.get('time') || 0));
+                    if (p.get('name') !== undefined) line.push(p.get('name') || 'n/a');
+                    if (p.get('score') !== undefined) line.push('(' + (p.get('score') || '0') + ')');
 
-            //         if (pNames.length) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true });
-            //         if (pTimes.length) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true });
-            //         if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
-            //         if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
-            //     }
+                    pNames.push(line.join(' '));
+                }
 
-            blocks.push({
-                type: 'section',
-                fields: fields1
-            },
-            {
-                type: 'section',
-                fields: fields2
-            },
-            {
-                type: 'section',
-                fields: playersFields
-            });
+                if (pNames.length > 0) {
+                    blocks.push({
+                        type: 'section',
+                        text: {
+                            type: 'mrkdwn',
+                            text: '```\n' + pNames.join('\n') + '\n```'
+                        }
+                    });
+                }
+            }
         } else {
             text = this.escapeMarkdown(gs.niceName) + ' offline...';
             blocks.push({

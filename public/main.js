@@ -93,7 +93,7 @@ $(async () => {
                     $(e.currentTarget).addClass('_btn');
 
                     const uerr = configEditor.validate();
-                    if (uerr.length) {
+                    if (uerr.length > 0) {
                         notif('warning', 'Validation errors', uerr.map(err => err.path + ' ' + err.message).join('<br>'), undefined, 3 + uerr.length);
                     } else {
                         const res = await fetchApi('POST', 'config', configEditor.getValue());

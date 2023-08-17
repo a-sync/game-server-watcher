@@ -148,7 +148,10 @@ class ServerInfoMessage {
                     if (p.get('score') !== undefined) playerLine += ' (' + (p.get('score') || 0) + ')';
                     pnArr.push(playerLine);
                 }
-                if (pnArr.length > 0) infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```';
+
+                if (pnArr.length > 0) {
+                    infoText += '```\n' + pnArr.join('\n').slice(0, 4088 - infoText.length - chart.length) + '\n```'; // Note: max length 4096 - wrapper
+                }
             }
         }
         infoText += chart;

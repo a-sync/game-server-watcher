@@ -183,10 +183,10 @@ class ServerInfoMessage {
                     || pTimes.join('\n').length > 1016 
                     || pScores.join('\n').length > 1016 
                     || pPings.join('\n').length > 1016) {
-                        if (pNames.length) pNames.pop();
-                        if (pTimes.length) pTimes.pop();
-                        if (pScores.length) pScores.pop();
-                        if (pPings.length) pPings.pop();
+                        if (pNames.length > 0) pNames.pop();
+                        if (pTimes.length > 0) pTimes.pop();
+                        if (pScores.length > 0) pScores.pop();
+                        if (pPings.length > 0) pPings.pop();
                         break;
                     }
 
@@ -196,10 +196,10 @@ class ServerInfoMessage {
                     if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
 
-                if (pNames.length) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pTimes.length) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pNames.length > 0) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pTimes.length > 0) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pScores.length > 0) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pPings.length > 0) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true});
             }
         } else {
             embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');

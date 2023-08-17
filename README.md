@@ -162,10 +162,13 @@ node ./dist/server.js
 * [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
 * [discord API v10 documentation](https://discord.js.org/#/docs/discord.js/14.7.1/class/EmbedBuilder)
 * [telegram API documentation](https://core.telegram.org/bots/api#editmessagetext)
+* [slack API documentation](https://api.slack.com/apis)
+    * [block kit reference](https://api.slack.com/reference/block-kit#reference)
 * [json-editor documentation](https://github.com/json-editor/json-editor#json-schema-support)
     * [json-editor demos](https://pmk65.github.io/jedemov2/dist/demo.html)
 * [bootstrap 4 reference](https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp)
 * [mustache documentation](https://github.com/janl/mustache.js#templates)
+* [pterodactyl documentation](https://pterodactyl.io/community/config/eggs/creating_a_custom_egg.html)
 
 # Contributing
 Public contributions are welcome!  
