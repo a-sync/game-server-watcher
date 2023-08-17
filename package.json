@@ -13,7 +13,7 @@
     "gamedig",
     "discord-bot",
     "telegram-bot",
-    "slack-api",
+    "slack-bot",
     "steam-api"
   ],
   "repository": {
