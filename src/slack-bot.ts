@@ -1,7 +1,8 @@
-import { App, Block, KnownBlock, LogLevel } from '@slack/bolt';
+import { App, Block, KnownBlock, LogLevel, MrkdwnElement, PlainTextElement } from '@slack/bolt';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
+import getConnectUrl from './lib/connect-url';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -139,57 +140,51 @@ class ServerInfoMessage {
 
     async updatePost(gs: GameServer) {
         const blocks: (KnownBlock | Block)[] = [];
+        const fields1: (PlainTextElement | MrkdwnElement)[] = [];
+        const fields2: (PlainTextElement | MrkdwnElement)[] = [];
+        const playersFields: (PlainTextElement | MrkdwnElement)[] = [];
         let text;
 
         if (gs.info && gs.online) {
-            text = this.escapeMarkdown(gs.niceName) + ' online!';
+            text = this.escapeMarkdown(gs.niceName);
 
             blocks.push({
                 type: 'header',
                 text: {
                     type: 'plain_text',
-                    text: `${gs.niceName.slice(0, 256)}`
+                    text: gs.niceName.slice(0, 256)
                 }
+            },
+            {
+                type: 'divider',
             });
 
             if (gs.info.game) {
-                text += ' Game: ' + gs.info.game;
-                blocks.push({
-                    type: 'section',
-                    text: {
-                        type: 'plain_text',
-                        text: 'Game: ' + String(gs.info.game)
-                    }
+                text += '\r\nGame: ' + gs.info.game;
+                fields1.push({
+                    type: 'mrkdwn',
+                    text: '*Game*  \r\n' + String(gs.info.game)
                 });
             }
             
             if (gs.info.map) {
-                text += ' Map: ' + gs.info.map;
-                blocks.push({
-                    type: 'section',
-                    text: {
-                        type: 'plain_text',
-                        text: 'Map: ' + String(gs.info.map)
-                    }
+                text += '\r\nMap: ' + gs.info.map;
+                fields1.push({
+                    type: 'mrkdwn',
+                    text: '*Map*  \r\n' + String(gs.info.map)
                 });
             }
 
-            text += ' Players: ' + gs.info.playersNum;
-            blocks.push({
-                type: 'section',
-                text: {
-                    type: 'plain_text',
-                    text: 'Players: ' + String(gs.info.playersNum + '/' + gs.info.playersMax)
-                }
+            text += '\r\nPlayers: ' + gs.info.playersNum;
+            fields2.push({
+                type: 'mrkdwn',
+                text: '*Players*  \r\n' + String(gs.info.playersNum + '/' + gs.info.playersMax)
             });
 
-            text += ' Connect: steam://connect/' + gs.info.connect;
-            blocks.push({
-                type: 'section',
-                text: {
-                    type: 'plain_text',
-                    text: 'Connect: steam://connect/' + gs.info.connect
-                }
+            text += '\r\nConnect: ' + getConnectUrl(gs.info.connect);
+            fields2.push({
+                type: 'mrkdwn',
+                text: '*Connect*  \r\n' + getConnectUrl(gs.info.connect)
             });
 
             //     if (gs.info?.players.length > 0) {
@@ -221,33 +216,48 @@ class ServerInfoMessage {
             //         if (pScores.length) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
             //         if (pPings.length) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
             //     }
-        } else {
 
+            blocks.push({
+                type: 'section',
+                fields: fields1
+            },
+            {
+                type: 'section',
+                fields: fields2
+            },
+            {
+                type: 'section',
+                fields: playersFields
+            });
+        } else {
             text = this.escapeMarkdown(gs.niceName) + ' offline...';
             blocks.push({
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": `*${gs.niceName.slice(0, 245)} offline...* :red_circle:`
+                type: 'header',
+                text: {
+                    type: 'plain_text',
+                    text: `${gs.niceName.slice(0, 245)} offline... :red_circle:`
                 }
             });
         }
 
-        blocks.push({
-            "type": "image",
-            "image_url": gs.history.statsChart(),
-            "alt_text": "Player numbers chart"
-        });
-
         const unixTimestamp = Math.floor(+new Date() / 1000);
+        blocks.push({
+            type: 'image',
+            image_url: gs.history.statsChart(),
+            alt_text: 'Player numbers chart',
+            title: {
+                type: 'plain_text',
+                text: `📈`
+            }
+        });
 
         // text += ' Last updated at ' + new Date().toLocaleString();
         blocks.push({
             "type": "context",
             "elements": [
                 {
-                    "type": "plain_text",
-                    "text": `Last updated: <!date^${unixTimestamp}^{date_num} {time_secs}|${new Date().toLocaleString()}>`
+                    type: 'mrkdwn',
+                    text: `Last updated: <!date^${unixTimestamp}^{date_num} {time_secs}|${new Date().toLocaleString()}>`
                 }
             ]
         });
@@ -258,7 +268,7 @@ class ServerInfoMessage {
                 channel: this.channelId,
                 ts: this.messageId,
                 text,
-                //blocks
+                blocks
             });
         } catch (e: any) {
             console.error(['slack.up', this.channelId, this.host, this.port].join(':'), e.message || e);

@@ -106,6 +106,30 @@
                 "grid_columns": 12
             }
         },
+        "slack": {
+            "type": "array",
+            "title": "Slack channels",
+            "description": "The simplest way to get a slack channel ID is to right clicking on the channel name, then go to <b>View channel details</b> and scroll down to the very bottom where you can copy the <i>Channel ID</i>.",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "title": "Channel",
+                "required": [
+                    "channelId"
+                ],
+                "properties": {
+                    "channelId": {
+                        "title": "Channel ID",
+                        "type": "string"
+                    }
+                }
+            },
+            "format": "table",
+            "options": {
+                "grid_columns": 12
+            }
+        },
         "graphHistoryHours": {
             "title": "Graph history time span (hours)",
             "type": "integer",

@@ -2,6 +2,7 @@ import { Bot } from 'grammy';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
+import getConnectUrl from './lib/connect-url';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -127,14 +128,14 @@ class ServerInfoMessage {
     }
 
     async updatePost(gs: GameServer) {
-        const chart = '[📊](' + gs.history.statsChart() + ')';
+        const chart = '[📈](' + gs.history.statsChart() + ')';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
 
         if (gs.info && gs.online) {
             infoText = [
                 this.escapeMarkdown(gs.niceName),
                 this.escapeMarkdown(gs.info.game) + ' / ' + this.escapeMarkdown(gs.info.map),
-                '`' + gs.info.connect + '`',
+                getConnectUrl(gs.info.connect),
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
 

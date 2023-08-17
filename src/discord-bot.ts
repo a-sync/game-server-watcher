@@ -2,6 +2,7 @@ import { Client, GatewayIntentBits, TextChannel, Message, EmbedBuilder, APIEmbed
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
+import getConnectUrl from './lib/connect-url';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -169,7 +170,7 @@ class ServerInfoMessage {
             if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true});
             if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true});
             fields.push({ name: 'Players', value: gs.info.playersNum + '/' + gs.info.playersMax, inline: true});
-            fields.push({ name: 'Connect', value: 'steam://connect/' + gs.info.connect});
+            fields.push({ name: 'Connect', value: getConnectUrl(gs.info.connect)});
 
             if (gs.info?.players.length > 0) {
                 const pNames: string[] = [];
