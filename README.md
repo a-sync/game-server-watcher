@@ -10,7 +10,7 @@ The main goals of this repo:
  1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 # Screenshots
-<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="540"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="540"> <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/6c226306-b7a1-4ed6-9dd9-ab43a136e7e0" height="540"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="540"> 
+<img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="540"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="540"> <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/0461ad76-bb13-468c-a7b3-437d6a3cea63" height="540"> <img src="https://user-images.githubusercontent.com/14183614/167517240-a4d02cb2-8037-44c0-abaa-c92901357e35.png" height="540"> 
 
 # Project Status
 The code itself is stable and continuously tested/deployed from the master branch.  
