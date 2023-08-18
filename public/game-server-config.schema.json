@@ -109,7 +109,7 @@
         "slack": {
             "type": "array",
             "title": "Slack channels",
-            "description": "The simplest way to get a slack channel ID is to right clicking on the channel name, then go to <b>View channel details</b> and scroll down to the very bottom where you can copy the <i>Channel ID</i>.",
+            "description": "The simplest way to get a slack channel ID is to right click on the channel name, then go to <b>View channel details</b> and scroll down to the very bottom where you can copy the <i>Channel ID</i>.",
             "minItems": 0,
             "uniqueItems": true,
             "items": {
