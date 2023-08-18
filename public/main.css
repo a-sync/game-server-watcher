@@ -139,6 +139,14 @@ footer>a>svg {
     fill: #c6cbd1;
 }
 
+#toast-containers {
+    pointer-events: none;
+}
+
+#toast-containers > div > div {
+    pointer-events: auto;
+}
+
 #save-config {
     background-color: rgba(15, 20, 25, 0.9);
 }
