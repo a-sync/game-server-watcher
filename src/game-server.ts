@@ -83,7 +83,7 @@ export class GameServer {
         this.ip = '0.0.0.0';
         this.config = config;
         this.history = new ServerHistory(config.host + ':' + config.port, config.graphHistoryHours, config.timezoneOffset);
-        this._niceName = config.host + ':' + config.port;
+        this._niceName = String(config.name) || config.host + ':' + config.port;
     }
 
     async update() {
