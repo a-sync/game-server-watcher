@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-09-13T18:34:19+00:00",
+    "exported_at": "2023-10-24T16:33:47+00:00",
     "name": "Game Server Watcher",
     "author": "a-sync@devs.space",
     "description": "A simple discord\/telegram\/slack bot that can be hosted on a free service to monitor your game servers and players in style. \ud83d\ude0e",
@@ -32,10 +32,10 @@
             "name": "SECRET",
             "description": "Admin secret",
             "env_variable": "SECRET",
-            "default_value": "secret",
+            "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|min:1|max:255",
+            "rules": "required|string|min:8|max:255",
             "field_type": "text"
         },
         {

@@ -174,6 +174,7 @@ node ./dist/server.js
 * [bootstrap 4 reference](https://www.w3schools.com/bootstrap4/bootstrap_ref_all_classes.asp)
 * [mustache documentation](https://github.com/janl/mustache.js#templates)
 * [pterodactyl documentation](https://pterodactyl.io/community/config/eggs/creating_a_custom_egg.html)
+    * [community docu fork](https://quintenqvd0.github.io/pterodactyl-documentation/docs/community/creating_eggs/creating_a_custom_egg)
 
 # Contributing
 Public contributions are welcome!  

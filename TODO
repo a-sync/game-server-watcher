@@ -4,5 +4,5 @@
 
 //v3
 // refactor config structure (object first, nested settings for complex entities)
-// introduce storage layer system and add free postgresql/redis support
+// introduce storage layer system and add free postgresql/redis/json store support
 // support gamedig udpListenPort config
