@@ -28,7 +28,7 @@
     "axios": "^1.4.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "gamedig": "^4.0.6",
+    "gamedig": "^4.1.0",
     "grammy": "^1.14.1",
     "mustache": "^4.2.0"
   },

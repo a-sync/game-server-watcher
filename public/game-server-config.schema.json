@@ -18,7 +18,7 @@
         },
         "type": {
             "title": "Gamedig type",
-            "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig#games-list\">games list</a>.",
+            "description": "Look for the <i>GameDig Type ID</i> in the <a href=\"https://github.com/gamedig/node-gamedig/blob/master/GAMES_LIST.md\">games list</a>.",
             "type": "string",
             "minLength": 1,
             "options": {

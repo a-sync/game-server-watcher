@@ -112,6 +112,7 @@ _The bot has no cleanup functionality, leftover messages must be removed manuall
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).  
 The latest Pterodactyl egg can always be found here: [🥚](https://raw.githubusercontent.com/a-sync/game-server-watcher/master/egg.json)
 <p align="center">
+  <!--<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/a-sync/game-server-watcher&branch=master&name=gsw"><img src="https://www.koyeb.com/static/images/deploy/button.svg" height="32" alt="Deploy to Koyeb"></a>//TODO: support ephemeral storage-->
   <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fa-sync%2Fgame-server-watcher%2Fmaster%2Fazuredeploy.json"><img src="https://aka.ms/deploytoazurebutton" height="32" alt="Deploy to Azure"></a>
   <a href="https://deploy.cloud.run?git_repo=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://deploy.cloud.run/button.svg" height="32" alt="Run on Google Cloud"></a>
@@ -162,7 +163,7 @@ node ./dist/server.js
 * Join the support / test [discord](https://discord.gg/4tsbftsGJz)
 
 # Further Reading
-* [gamedig supported games list](https://raw.githubusercontent.com/gamedig/node-gamedig/master/games.txt)
+* [gamedig supported games list](https://github.com/gamedig/node-gamedig/blob/master/GAMES_LIST.md)
 * [steamDB](https://steamdb.info/apps/)
 * [steam web API documentation](https://steamapi.xpaw.me/#IGameServersService/GetServerList)
 * [discord API v10 documentation](https://discord.js.org/#/docs/discord.js/14.7.1/class/EmbedBuilder)
@@ -202,7 +203,7 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/Douile/discord-gamestatus
 * https://github.com/Ramzi-Sah/game-status-discordbot
 * https://github.com/Ramzi-Sah/game-status-discordbot-selfhosted  
-* https://github.com/msniveau/discord-statusbotv2
+* https://github.com/msniveau/discord-statusbot
 * https://github.com/kevinkjt2000/bowser
 * https://github.com/negrifelipe/ServerStatusBot
 * https://gitlab.com/lxndr-ab/gswatcher
