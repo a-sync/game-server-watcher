@@ -24,28 +24,28 @@
   "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@commonify/lowdb": "^3.0.0",
-    "@slack/bolt": "^3.13.3",
-    "axios": "^1.4.0",
-    "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3",
+    "@slack/bolt": "^3.14.0",
+    "axios": "^1.6.0",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
     "gamedig": "^4.1.0",
-    "grammy": "^1.14.1",
+    "grammy": "^1.19.2",
     "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "@types/gamedig": "^4.0.1",
-    "@types/node": "^16.9.0",
-    "eslint": "^8.34.0",
+    "@types/gamedig": "^4.0.4",
+    "@types/node": "^16.18.60",
+    "eslint": "^8.52.0",
     "nodemon": "^3.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "engines": {
     "node": ">=16.9.0"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.7",
+    "bufferutil": "^4.0.8",
     "erlpack": "github:discord/erlpack",
-    "utf-8-validate": "^6.0.2",
-    "zlib-sync": "^0.1.8"
+    "utf-8-validate": "^6.0.3",
+    "zlib-sync": "^0.1.9"
   }
 }
