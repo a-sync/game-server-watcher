@@ -130,7 +130,7 @@ docker-compose up
 ## Hosting via NodeJS runtime
 Make sure all the [requirements](#requirements) are met!  
 
-### Build artifacts (optional)
+### Build artifacts
 ```
 npm i
 npm run build

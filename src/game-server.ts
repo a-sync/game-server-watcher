@@ -128,7 +128,7 @@ export class GameServer {
                 token: this.config.token
             } as QueryOptions) as qRes;
 
-            const raw = res.raw as { game: string; folder: string; };
+            const raw = res.raw as { game?: string; folder?: string; presence_count?: number; };
             const game = raw.game || raw.folder || this.config.type;
 
             const players: GsPlayer[] = res.players.map((p: Player) => {
@@ -140,7 +140,7 @@ export class GameServer {
                 name: res.name,
                 game: game,
                 map: res.map || '',
-                playersNum: res.numplayers || res.players.length,
+                playersNum: res.numplayers || raw.presence_count || res.players.length,
                 playersMax: res.maxplayers,
                 players
             };
