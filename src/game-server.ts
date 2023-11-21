@@ -270,6 +270,7 @@ class ServerHistory {
     }
 
     formatHour(h: number): string {
+        // return String(h).padStart(2, '0'); // 24 hour format
         const ampm = (h >= 12) ? 'pm' : 'am';
         const hours = (h > 12) ? h - 12 : h;
         return hours + ampm;
