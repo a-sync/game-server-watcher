@@ -18,8 +18,8 @@ The code itself is stable and continuously tested/deployed from the master branc
 The project is in a very early stage. More detailed customization options and features will be added as requested.  
 
 ### Possible features and configuration options to add in the future
- * optional player list
-   * with configurable fields. eg.: time,name,ping,score
+ * ~~optional player list~~
+   * customizable fields (time, name, ping, score)
    * configurable field & order to sort by
    * max length for player names & nr of players
  * custom embed fields for discord/slack
