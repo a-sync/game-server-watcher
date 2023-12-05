@@ -3,6 +3,7 @@ import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
 import getConnectUrl from './lib/connect-url';
+import { TelegramConfig } from './watcher';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -75,12 +76,12 @@ export async function serverUpdate(gs: GameServer) {
     if (DBG) console.log('telegram.serverUpdate', gs.config.host, gs.config.port, gs.config.telegram);
 
     if (gs.config.telegram) {
-        for (const ch of gs.config.telegram) {
+        for (const conf of gs.config.telegram) {
             try {
-                let m = await getServerInfoMessage(ch.chatId, gs.config.host, gs.config.port);
-                await m.updatePost(gs);
+                let m = await getServerInfoMessage(conf.chatId, gs.config.host, gs.config.port);
+                await m.updatePost(gs, conf);
             } catch (e: any) {
-                console.error(['telegram-bot.sup', ch.chatId, gs.config.host, gs.config.port].join(':'), e.message || e);
+                console.error(['telegram-bot.sup', conf.chatId, gs.config.host, gs.config.port].join(':'), e.message || e);
             }
         }
     }
@@ -127,9 +128,11 @@ class ServerInfoMessage {
         }
     }
 
-    async updatePost(gs: GameServer) {
+    async updatePost(gs: GameServer, conf: TelegramConfig) {
         const chart = '[📈](' + gs.history.statsChart() + ')';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
+
+        const showPlayersList = Boolean(conf.showPlayersList);
 
         if (gs.info && gs.online) {
             infoText = [
@@ -139,7 +142,7 @@ class ServerInfoMessage {
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
 
-            if (gs.info.players.length > 0) {
+            if (showPlayersList && gs.info.players.length > 0) {
                 const pnArr: string[] = [];
                 for (const p of gs.info.players) {
                     let playerLine = '';

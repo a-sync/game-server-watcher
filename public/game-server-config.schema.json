@@ -74,6 +74,24 @@
                     "channelId": {
                         "title": "Channel ID",
                         "type": "string"
+                    },
+                    "showPlayersList": {
+                        "title": "Show players list",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
+                    },
+                    "onlineColor": {
+                        "title": "Online color",
+                        "default": "#000000",
+                        "type": "string",
+                        "format": "color"
+                    },
+                    "offlineColor": {
+                        "title": "Offline color",
+                        "default": "#ff0000",
+                        "type": "string",
+                        "format": "color"
                     }
                 }
             },
@@ -98,6 +116,12 @@
                     "chatId": {
                         "type": "string",
                         "title": "Chat ID"
+                    },
+                    "showPlayersList": {
+                        "title": "Show players list",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
                     }
                 }
             },
@@ -122,6 +146,12 @@
                     "channelId": {
                         "title": "Channel ID",
                         "type": "string"
+                    },
+                    "showPlayersList": {
+                        "title": "Show players list",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
                     }
                 }
             },

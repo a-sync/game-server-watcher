@@ -3,6 +3,7 @@ import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
 import getConnectUrl from './lib/connect-url';
+import { SlackConfig } from './watcher';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -54,12 +55,12 @@ export async function serverUpdate(gs: GameServer) {
     if (DBG) console.log('slack.serverUpdate', gs.config.host, gs.config.port, gs.config.slack);
 
     if (gs.config.slack) {
-        for (const ch of gs.config.slack) {
+        for (const conf of gs.config.slack) {
             try {
-                let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
-                await m.updatePost(gs);
+                let m = await getServerInfoMessage(conf.channelId, gs.config.host, gs.config.port);
+                await m.updatePost(gs, conf);
             } catch (e: any) {
-                console.error(['slack-bot.sup', ch.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
+                console.error(['slack-bot.sup', conf.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
             }
         }
     }
@@ -138,11 +139,13 @@ class ServerInfoMessage {
         }
     }
 
-    async updatePost(gs: GameServer) {
+    async updatePost(gs: GameServer, conf: SlackConfig) {
         const blocks: (KnownBlock | Block)[] = [];
         const fields1: (PlainTextElement | MrkdwnElement)[] = [];
         const fields2: (PlainTextElement | MrkdwnElement)[] = [];
         let text;
+
+        const showPlayersList = Boolean(conf.showPlayersList);
 
         if (gs.info && gs.online) {
             text = this.escapeMarkdown(gs.niceName);
@@ -200,7 +203,7 @@ class ServerInfoMessage {
                 });
             }
 
-            if (gs.info?.players.length > 0) {
+            if (showPlayersList && gs.info?.players.length > 0) {
                 const pNames: string[] = [];
                 for (const p of gs.info?.players) {
                     if (pNames.join('\n').length > 2992) { // Note: max length 3000 - wrapper

@@ -1,8 +1,9 @@
-import { Client, GatewayIntentBits, TextChannel, Message, EmbedBuilder, APIEmbedField } from 'discord.js';
+import { Client, GatewayIntentBits, TextChannel, Message, EmbedBuilder, APIEmbedField, HexColorString } from 'discord.js';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
 import getConnectUrl from './lib/connect-url';
+import { DiscordConfig } from './watcher';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -62,12 +63,12 @@ export async function serverUpdate(gs: GameServer) {
     if (DBG) console.log('discord.serverUpdate', gs.config.host, gs.config.port, gs.config.discord);
 
     if (gs.config.discord) {
-        for (const ch of gs.config.discord) {
+        for (const conf of gs.config.discord) {
             try {
-                let m = await getServerInfoMessage(ch.channelId, gs.config.host, gs.config.port);
-                await m.updatePost(gs);
+                let m = await getServerInfoMessage(conf.channelId, gs.config.host, gs.config.port);
+                await m.updatePost(gs, conf);
             } catch (e: any) {
-                console.error(['discord-bot.sup', ch.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
+                console.error(['discord-bot.sup', conf.channelId, gs.config.host, gs.config.port].join(':'), e.message || e);
             }
         }
     }
@@ -126,7 +127,7 @@ class ServerInfoMessage {
         if (!msgId || !this.message) {
             let embed = new EmbedBuilder();
             embed.setTitle('Initializing server info... ' + (new Date()).toISOString());
-            embed.setColor('#00ff00');
+            // embed.setColor('#00ff00');
 
             this.message = await this.channel.send({ embeds: [embed] });
             this.messageId = this.message.id;
@@ -154,7 +155,7 @@ class ServerInfoMessage {
         }
     }
 
-    async updatePost(gs: GameServer) {
+    async updatePost(gs: GameServer, conf: DiscordConfig) {
         if (!this.message) return;
 
         const embed = new EmbedBuilder();
@@ -163,16 +164,20 @@ class ServerInfoMessage {
         embed.setTimestamp();
         embed.setImage(gs.history.statsChart());
 
+        const onlineColor = conf.onlineColor || '#000000';
+        const offlineColor = conf.offlineColor || '#FF0000';
+        const showPlayersList = Boolean(conf.showPlayersList);
+
         if (gs.info && gs.online) {
             embed.setTitle(gs.niceName.slice(0, 256));
-            embed.setColor('#000000');
+            embed.setColor(onlineColor as HexColorString);
 
             if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true});
             if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true});
             fields.push({ name: 'Players', value: gs.info.playersNum + '/' + gs.info.playersMax, inline: true});
             fields.push({ name: 'Connect', value: getConnectUrl(gs.info.connect)});
 
-            if (gs.info?.players.length > 0) {
+            if (showPlayersList && gs.info?.players.length > 0) {
                 const pNames: string[] = [];
                 const pTimes: string[] = [];
                 const pScores: string[] = [];
@@ -203,7 +208,7 @@ class ServerInfoMessage {
             }
         } else {
             embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');
-            embed.setColor('#ff0000');
+            embed.setColor(offlineColor as HexColorString);
         }
 
         embed.setFields(fields);

@@ -13,16 +13,21 @@ const SLACK_APP_TOKEN = process.env.SLACK_APP_TOKEN || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
 
-interface DiscordConfig {
+export interface DiscordConfig {
     channelId: string;
+    showPlayersList?: boolean;
+    onlineColor?: string;
+    offlineColor?: string;
 }
 
-interface TelegramConfig {
+export interface TelegramConfig {
     chatId: string;
+    showPlayersList?: boolean;
 }
 
-interface SlackConfig {
+export interface SlackConfig {
     channelId: string;
+    showPlayersList?: boolean;
 }
 
 export interface GameServerConfig {

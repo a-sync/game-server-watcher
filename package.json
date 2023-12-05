@@ -1,6 +1,6 @@
 {
   "name": "game-server-watcher",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
   "main": "src/server",
   "scripts": {
@@ -28,7 +28,7 @@
     "axios": "^1.6.0",
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
-    "gamedig": "^4.1.0",
+    "gamedig": "^4.3.0",
     "grammy": "^1.19.2",
     "mustache": "^4.2.0"
   },

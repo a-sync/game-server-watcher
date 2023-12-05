@@ -135,6 +135,16 @@ body>nav {
     padding-left: 5px !important;
 }
 
+/* fixes no_additional_properties not hiding inputs */
+#config-form .property-selector-input, 
+#config-form .property-selector-input + button {
+    display: none;
+}
+
+#config-form td[data-schematype="boolean"] > div.form-group > input[type="checkbox"] {
+    zoom: 2.5;
+}
+
 footer>a>svg {
     fill: #c6cbd1;
 }
