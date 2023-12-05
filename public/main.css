@@ -142,7 +142,8 @@ body>nav {
 }
 
 #config-form td[data-schematype="boolean"] > div.form-group > input[type="checkbox"] {
-    zoom: 2.5;
+    transform: scale(2.5);
+    margin: 10px 0 0 10px;
 }
 
 footer>a>svg {
