@@ -75,7 +75,7 @@ npm run dev
 
 ## Settings
 The behaviour of the watcher service can be configured via environmental variables (env vars).  
-`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the avaialable values and defaults check the [.env.example](./.env.example) file.  
+`.env` ([dotenv](https://www.npmjs.com/package/dotenv)) file is also supported, to look at the available values and defaults check the [.env.example](./.env.example) file.  
 To get started, you can simply rename the `.env.example` file to `.env`.  
 
 Refer to the wiki on how to acquire tokens for:
@@ -188,7 +188,7 @@ This project is licensed under the AGPL License - see [LICENSE](./LICENSE) file 
 Check the list of [contributors](https://github.com/a-sync/game-server-watcher/contributors) who participated in this project.
 
 # Acknowledgments
-This project was inpired by (the sudden disappearance of) "_Game Status#5371_" bot and its creator [Ramzi Saheb](https://github.com/Ramzi-Sah) on discord.  
+This project was inspired by (the sudden disappearance of) "_Game Status#5371_" bot and its creator [Ramzi Saheb](https://github.com/Ramzi-Sah) on discord.  
 
 IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
 
