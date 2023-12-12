@@ -87,10 +87,20 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
         if: env.SET_ARGS != '' || env.UNSET_ARGS != ''
 
+      - name: Set app name
+        run: |
+          if [[ -n "${{ secrets.FLY_APP_NAME }}" ]]; then
+            echo "APP_NAME=${{ secrets.FLY_APP_NAME }}" >> $GITHUB_ENV
+          else
+            echo "APP_NAME=${REPO_OWNER,,}-gsw" >> $GITHUB_ENV
+          fi
+        env:
+          REPO_OWNER: '${{ github.repository_owner }}'
+
       - name: 💼 Set secrets on fly.io
         if: env.SET_ARGS != ''
-        run: flyctl secrets set${{ env.SET_ARGS }} --app ${{ github.repository_owner }}-gsw
+        run: flyctl secrets set${{ env.SET_ARGS }} --app ${{ env.APP_NAME }}
 
       - name: 🗑 Unset secrets on fly.io
         if: env.UNSET_ARGS != ''
-        run: flyctl secrets unset${{ env.UNSET_ARGS }} --app ${{ github.repository_owner }}-gsw
+        run: flyctl secrets unset${{ env.UNSET_ARGS }} --app ${{ env.APP_NAME }}

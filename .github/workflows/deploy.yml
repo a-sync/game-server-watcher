@@ -20,5 +20,15 @@ jobs:
           fetch-depth: 0
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Set app name
+        run: |
+          if [[ -n "${{ secrets.FLY_APP_NAME }}" ]]; then
+            echo "APP_NAME=${{ secrets.FLY_APP_NAME }}" >> $GITHUB_ENV
+          else
+            echo "APP_NAME=${REPO_OWNER,,}-gsw" >> $GITHUB_ENV
+          fi
+        env:
+          REPO_OWNER: '${{ github.repository_owner }}'
+
       - name: 🛩 Deploy to fly.io
-        run: flyctl deploy --remote-only --auto-confirm --region ${{ secrets.FLY_REGION }} --app ${{ github.repository_owner }}-gsw
+        run: flyctl deploy --remote-only --auto-confirm --region ${{ secrets.FLY_REGION }} --app ${{ env.APP_NAME }}

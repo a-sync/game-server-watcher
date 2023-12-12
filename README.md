@@ -206,7 +206,7 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/msniveau/discord-statusbot
 * https://github.com/kevinkjt2000/bowser
 * https://github.com/negrifelipe/ServerStatusBot
-* https://gitlab.com/lxndr-ab/gswatcher
+* https://gitlab.com/lxndr/gswatcher
 * https://github.com/Unity-Technologies/qstat
 * https://github.com/GiyoMoon/steam-server-query
 * https://github.com/Fabricio-191/valve-server-query

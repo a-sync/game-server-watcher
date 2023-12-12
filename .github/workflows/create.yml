@@ -12,8 +12,18 @@ jobs:
 
     steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Set app name
+        run: |
+          if [[ -n "${{ secrets.FLY_APP_NAME }}" ]]; then
+            echo "APP_NAME=${{ secrets.FLY_APP_NAME }}" >> $GITHUB_ENV
+          else
+            echo "APP_NAME=${REPO_OWNER,,}-gsw" >> $GITHUB_ENV
+          fi
+        env:
+          REPO_OWNER: '${{ github.repository_owner }}'
+
       - name: 🧱 Create fly.io app
-        run: flyctl apps create ${{ github.repository_owner }}-gsw --org personal
+        run: flyctl apps create ${{ env.APP_NAME }} --org personal
 
       - name: 💽 Create fly.io volume
-        run: flyctl volumes create gsw_data --size 1 --region ${{ secrets.FLY_REGION }} --app ${{ github.repository_owner }}-gsw --yes
+        run: flyctl volumes create gsw_data --size 1 --region ${{ secrets.FLY_REGION }} --app ${{ env.APP_NAME }} --yes
