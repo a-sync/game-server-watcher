@@ -7,7 +7,7 @@ The main goals of this repo:
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
  1. should be able to host on a free service (_target atm. is fly.io (node.js 18)_)
- 1. graciously add more features based on community feedback via [discord](https://discord.gg/4tsbftsGJz) and [github](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
+ 1. graciously add more features based on community feedback via [discord <img src="https://cdn.discordapp.com/icons/935911764023996527/1b791c9533f24a6bc23dbf5b2c134436.png?size=20" width="20" align="absmiddle" title="ACME Corp." alt="">](https://discord.gg/4tsbftsGJz) and [github :octocat:](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 # Screenshots
 <img src="https://user-images.githubusercontent.com/14183614/162092529-e1645b44-2650-4893-8123-7ba187b1f51c.png" height="520"> <img src="https://user-images.githubusercontent.com/14183614/162092488-f28bd60c-88bf-4b1e-a31e-d7dca51d8c28.png" height="520"> <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/0461ad76-bb13-468c-a7b3-437d6a3cea63" height="520"> <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/ee0ef0de-83bc-42ae-8f64-62f481f6ba8f" height="520"> 
@@ -22,6 +22,7 @@ The project is in a very early stage. More detailed customization options and fe
    * customizable fields (time, name, ping, score)
    * configurable field & order to sort by
    * max length for player names & nr of players
+ * ~~optional graph chart~~
  * custom embed fields for discord/slack
  * ~~configurable time zone offset for graph x-axis~~
  * refresh on reaction
