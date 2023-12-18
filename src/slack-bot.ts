@@ -140,13 +140,14 @@ class ServerInfoMessage {
     }
 
     async updatePost(gs: GameServer, conf: SlackConfig) {
+        const showPlayersList = Boolean(conf.showPlayersList);
+        const showGraph = Boolean(conf.showGraph);
+
         const blocks: (KnownBlock | Block)[] = [];
         const fields1: (PlainTextElement | MrkdwnElement)[] = [];
         const fields2: (PlainTextElement | MrkdwnElement)[] = [];
+
         let text;
-
-        const showPlayersList = Boolean(conf.showPlayersList);
-
         if (gs.info && gs.online) {
             text = this.escapeMarkdown(gs.niceName);
 
@@ -240,17 +241,19 @@ class ServerInfoMessage {
             });
         }
 
-        const unixTimestamp = Math.floor(+new Date() / 1000);
-        blocks.push({
-            type: 'image',
-            image_url: gs.history.statsChart(),
-            alt_text: 'Player numbers chart',
-            title: {
-                type: 'plain_text',
-                text: `📈`
-            }
-        });
+        if (showGraph) {
+            blocks.push({
+                type: 'image',
+                image_url: gs.history.statsChart(),
+                alt_text: 'Player numbers chart',
+                title: {
+                    type: 'plain_text',
+                    text: `📈`
+                }
+            });
+        }
 
+        const unixTimestamp = Math.floor(+new Date() / 1000);
         // text += ' Last updated at ' + new Date().toLocaleString();
         blocks.push({
             "type": "context",

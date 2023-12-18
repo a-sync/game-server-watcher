@@ -162,11 +162,15 @@ class ServerInfoMessage {
         const fields: APIEmbedField[] = [];
         embed.setFooter({ text: 'Last updated' });
         embed.setTimestamp();
-        embed.setImage(gs.history.statsChart());
 
         const onlineColor = conf.onlineColor || '#000000';
         const offlineColor = conf.offlineColor || '#FF0000';
         const showPlayersList = Boolean(conf.showPlayersList);
+        const showGraph = Boolean(conf.showGraph);
+
+        if (showGraph) {
+            embed.setImage(gs.history.statsChart());
+        }
 
         if (gs.info && gs.online) {
             embed.setTitle(gs.niceName.slice(0, 256));

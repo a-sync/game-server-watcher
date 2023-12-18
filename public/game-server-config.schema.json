@@ -81,6 +81,12 @@
                         "type": "boolean",
                         "format": "checkbox"
                     },
+                    "showGraph": {
+                        "title": "Show graph",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
+                    },
                     "onlineColor": {
                         "title": "Online color",
                         "default": "#000000",
@@ -122,6 +128,12 @@
                         "default": true,
                         "type": "boolean",
                         "format": "checkbox"
+                    },
+                    "showGraph": {
+                        "title": "Show graph",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
                     }
                 }
             },
@@ -149,6 +161,12 @@
                     },
                     "showPlayersList": {
                         "title": "Show players list",
+                        "default": true,
+                        "type": "boolean",
+                        "format": "checkbox"
+                    },
+                    "showGraph": {
+                        "title": "Show graph",
                         "default": true,
                         "type": "boolean",
                         "format": "checkbox"

@@ -129,11 +129,11 @@ class ServerInfoMessage {
     }
 
     async updatePost(gs: GameServer, conf: TelegramConfig) {
-        const chart = '[📈](' + gs.history.statsChart() + ')';
-        let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
-
         const showPlayersList = Boolean(conf.showPlayersList);
+        const showGraph = Boolean(conf.showGraph);
 
+        const chart = showGraph ? '[📈](' + gs.history.statsChart() + ')' : '';
+        let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
         if (gs.info && gs.online) {
             infoText = [
                 this.escapeMarkdown(gs.niceName),

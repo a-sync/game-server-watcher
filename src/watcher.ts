@@ -18,16 +18,19 @@ export interface DiscordConfig {
     showPlayersList?: boolean;
     onlineColor?: string;
     offlineColor?: string;
+    showGraph?: boolean;
 }
 
 export interface TelegramConfig {
     chatId: string;
     showPlayersList?: boolean;
+    showGraph?: boolean;
 }
 
 export interface SlackConfig {
     channelId: string;
     showPlayersList?: boolean;
+    showGraph?: boolean;
 }
 
 export interface GameServerConfig {
