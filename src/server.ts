@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
+import { games } from 'gamedig';
 
 import 'dotenv/config';
 
@@ -95,6 +96,9 @@ createServer(async (req, res) => {
                 } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram', 'slack'].includes(reqPath[1])) {
                     await restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
+                } else if (reqPath[0] === 'gamedig-games') {
+                    re.version = 'v00';
+                    re.games = games;
                 } else {
                     status = 400;
                     re.error = 'Invalid Request';
