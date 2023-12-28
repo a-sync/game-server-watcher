@@ -204,6 +204,7 @@
             "title": "givenPortOnly",
             "description": "Only attempt to query server on given port.",
             "type": "boolean",
+            "format": "checkbox",
             "options": {
                 "grid_columns": 3
             }
@@ -212,6 +213,7 @@
             "title": "requestRules (Valve)",
             "description": "Additional server info may be fetched into the <code>raw</code> field.",
             "type": "boolean",
+            "format": "checkbox",
             "options": {
                 "grid_columns": 3
             }
