@@ -2,7 +2,6 @@ import { Bot } from 'grammy';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
-import getConnectUrl from './lib/connect-url';
 import { TelegramConfig } from './watcher';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
@@ -138,7 +137,7 @@ class ServerInfoMessage {
             infoText = [
                 this.escapeMarkdown(gs.niceName),
                 this.escapeMarkdown(gs.info.game) + ' / ' + this.escapeMarkdown(gs.info.map),
-                getConnectUrl(gs.info.connect),
+                this.escapeMarkdown(gs.info.connect),
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
 

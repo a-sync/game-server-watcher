@@ -2,7 +2,6 @@ import { App, Block, KnownBlock, LogLevel, MrkdwnElement, PlainTextElement } fro
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server';
 import hhmmss from './lib/hhmmss';
-import getConnectUrl from './lib/connect-url';
 import { SlackConfig } from './watcher';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
@@ -185,16 +184,16 @@ class ServerInfoMessage {
                 });
             }
 
-            text += '\r\nPlayers: ' + gs.info.playersNum;
+            text += '\r\nPlayers: ' + String(gs.info.playersNum);
             fields2.push({
                 type: 'mrkdwn',
                 text: '*Players*  \r\n' + String(gs.info.playersNum + '/' + gs.info.playersMax)
             });
 
-            text += '\r\nConnect: ' + getConnectUrl(gs.info.connect);
+            text += '\r\nAddress: ' + String(gs.info.connect);
             fields2.push({
                 type: 'mrkdwn',
-                text: '*Connect*  \r\n' + getConnectUrl(gs.info.connect)
+                text: '*Address*  \r\n' + String(gs.info.connect)
             });
 
             if (fields2.length > 0) {
