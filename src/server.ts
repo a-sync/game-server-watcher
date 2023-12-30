@@ -4,6 +4,9 @@ import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { games } from 'gamedig';
+//import gamedigPjson from '../node_modules/node-gamedig/package.json' assert {type: 'json'};
+const gamedigPjson = fs.readFileSync('../node_modules/node-gamedig/package.json');
+const gamedigVerson = JSON.parse(gamedigPjson).version || 0;
 
 import 'dotenv/config';
 
@@ -97,7 +100,8 @@ createServer(async (req, res) => {
                     await restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
                 } else if (reqPath[0] === 'gamedig-games') {
-                    re.version = 'v00';
+                    //re.version = gamedigPjson.version;
+                    re.version = gamedigVersion;
                     re.games = games;
                 } else {
                     status = 400;
