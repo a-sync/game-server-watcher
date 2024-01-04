@@ -183,7 +183,7 @@ Public contributions are welcome!
 You can create a [new issue](https://github.com/a-sync/game-server-watcher/issues/new) for bugs, or feel free to open a [pull request](https://github.com/a-sync/game-server-watcher/pulls) for any and all your changes or work-in-progress features.
 
 # License
-This project is licensed under the AGPL License - see [LICENSE](./LICENSE) file for details.
+This project is licensed under the [AGPL License](./LICENSE.md) by default for public use. Businesses or organizations seeking a commercial license, please contact gsw@devs.space.
 
 # Authors
 Check the list of [contributors](https://github.com/a-sync/game-server-watcher/contributors) who participated in this project.
