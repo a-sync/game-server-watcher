@@ -36,7 +36,7 @@ $(async () => {
                 "compact": 0,
                 "show_errors": "always",
                 "required_by_default": 0,
-                "no_additional_properties": 1,
+                "no_additional_properties": true,
                 "display_required_only": 1,
                 "show_opt_in": 0,
                 "remove_empty_properties": 0,

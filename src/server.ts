@@ -4,8 +4,8 @@ import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { getInstance } from 'gamedig';
-//import gamedigPjson from '../node_modules/node-gamedig/package.json' assert {type: 'json'};
-const gamedigPjson = fs.readFileSync('../node_modules/node-gamedig/package.json', 'utf-8');
+//import gamedigPjson from '../node_modules/gamedig/package.json' assert {type: 'json'};
+const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
 const gamedigVersion = JSON.parse(gamedigPjson).version || 0;
 
 import 'dotenv/config';
@@ -20,18 +20,30 @@ const DBG = Boolean(Number(process.env.DBG));
 
 let loop: NodeJS.Timeout | undefined;
 
-interface ApiResponse {
+interface ApiResponse extends FeaturesResponse, ConfigResponse {
     message?: string;
     error?: string;
-    config?: GameServerConfig[];
+}
+
+interface FeaturesResponse{
     features?: {
+        gamedig: string;
         steam: boolean;
         discord: boolean;
         telegram: boolean;
         slack: boolean;
     };
-    version?: string;
-    games?: any[];//debug
+}
+
+interface ConfigResponse{
+    config?: GameServerConfig[];
+}
+
+interface SelectOptionsResponse {
+    options: {
+        enum_titles: string[];
+    };
+    enum: string[];
 }
 
 const EXT_MIME: Record<string, string> = {
@@ -61,6 +73,23 @@ createServer(async (req, res) => {
     } else if (p === 'ping') {
         if (DBG) console.log('ping');
         res.end('pong');
+    } else if (p === 'gamedig-games') {
+        //re.version = gamedigPjson.version;
+        const gd = getInstance();
+        // @ts-ignore
+        const games: Map<string,{pretty: string}> = gd.queryRunner.gameResolver.gamesByKey || new Map();
+        let status = 200;
+        let re: SelectOptionsResponse = {
+            enum: Array.from(games.keys()),
+            options: {
+                enum_titles: Array.from(games.values()).map(g=>g.pretty)
+            }
+        };
+        res.writeHead(status, {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'max-age=0'
+        });
+        res.end(JSON.stringify(re, null, DBG ? 2 : 0));
     } else if (SECRET !== '' && req.headers['x-btoken']) {
         let status = 200;
         let re: ApiResponse = {};
@@ -70,6 +99,7 @@ createServer(async (req, res) => {
             try {
                 if (reqPath[0] === 'features') {
                     re.features = {
+                        gamedig: String(gamedigVersion),
                         steam: Boolean(process.env.STEAM_WEB_API_KEY),
                         discord: Boolean(process.env.DISCORD_BOT_TOKEN),
                         telegram: Boolean(process.env.TELEGRAM_BOT_TOKEN),
@@ -101,13 +131,6 @@ createServer(async (req, res) => {
                 } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram', 'slack'].includes(reqPath[1])) {
                     await restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
-                } else if (reqPath[0] === 'gamedig-games') {
-                    //re.version = gamedigPjson.version;
-                    const gd = getInstance();
-                    // @ts-ignore
-                    const games = gd.queryRunner.gameResolver.games || [];
-                    re.version = gamedigVersion;
-                    re.games = games;
                 } else {
                     status = 400;
                     re.error = 'Invalid Request';
