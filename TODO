@@ -1,5 +1,3 @@
-// list game id's from gamedig module and replace type text field with a dropdown
-
 // move loop inside watcher instance
 // flush game server specific (d/t) data
 // response normalization: https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/functions/query_gamedig.sh

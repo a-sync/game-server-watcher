@@ -4,13 +4,11 @@ import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { getInstance } from 'gamedig';
-//import gamedigPjson from '../node_modules/gamedig/package.json' assert {type: 'json'};
+import 'dotenv/config';
+import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
+
 const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
 const gamedigVersion = JSON.parse(gamedigPjson).version || 0;
-
-import 'dotenv/config';
-
-import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
 
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8080', 10);
@@ -74,22 +72,21 @@ createServer(async (req, res) => {
         if (DBG) console.log('ping');
         res.end('pong');
     } else if (p === 'gamedig-games') {
-        //re.version = gamedigPjson.version;
         const gd = getInstance();
         // @ts-ignore
         const games: Map<string,{pretty: string}> = gd.queryRunner.gameResolver.gamesByKey || new Map();
-        let status = 200;
-        let re: SelectOptionsResponse = {
+
+        res.writeHead(200, {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'max-age=0'
+        });
+
+        res.end(JSON.stringify({
             enum: Array.from(games.keys()),
             options: {
                 enum_titles: Array.from(games.values()).map(g=>g.pretty)
             }
-        };
-        res.writeHead(status, {
-            'Content-Type': 'application/json',
-            'Cache-Control': 'max-age=0'
-        });
-        res.end(JSON.stringify(re, null, DBG ? 2 : 0));
+        } as SelectOptionsResponse, null, DBG ? 2 : 0));
     } else if (SECRET !== '' && req.headers['x-btoken']) {
         let status = 200;
         let re: ApiResponse = {};
