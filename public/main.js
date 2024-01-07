@@ -43,6 +43,8 @@ $(async () => {
                 "use_default_values": true,
                 "ajax": true,
                 "ajaxCredentials": false,
+                "ajax_cache_responses": true,
+                "ajax_cache_buster": 'gsw-v' + gswFeatures.features.version + '+gamedig-v' + gswFeatures.features.gamedig,
                 "disable_edit_json": false,
                 "disable_collapse": true,
                 "disable_properties": false,

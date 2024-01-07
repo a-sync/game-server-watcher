@@ -10,6 +10,9 @@ import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
 const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
 const gamedigVersion = JSON.parse(gamedigPjson).version || 0;
 
+const gswPjson = fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8');
+const gswVersion = JSON.parse(gswPjson).version || 0;
+
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8080', 10);
 const SECRET = process.env.SECRET || 'secret';
@@ -25,6 +28,7 @@ interface ApiResponse extends FeaturesResponse, ConfigResponse {
 
 interface FeaturesResponse{
     features?: {
+        version: string;
         gamedig: string;
         steam: boolean;
         discord: boolean;
@@ -96,6 +100,7 @@ createServer(async (req, res) => {
             try {
                 if (reqPath[0] === 'features') {
                     re.features = {
+                        version: String(gswVersion),
                         gamedig: String(gamedigVersion),
                         steam: Boolean(process.env.STEAM_WEB_API_KEY),
                         discord: Boolean(process.env.DISCORD_BOT_TOKEN),
