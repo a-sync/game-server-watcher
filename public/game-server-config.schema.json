@@ -219,6 +219,24 @@
                 "grid_columns": 3
             }
         },
+        "requestRulesRequired": {
+            "title": "requestRulesRequired (Valve)",
+            "description": "<code>requestRules</code> is always required to have a response or the query will timeout.",
+            "type": "boolean",
+            "format": "checkbox",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "requestPlayersRequired": {
+            "title": "requestPlayersRequired (Valve)",
+            "description": "Querying players is always required to have a response or the query will timeout. Some <a href=\"https://github.com/gamedig/node-gamedig/blob/master/GAMES_LIST.md\">games</a> may not provide a players response.",
+            "type": "boolean",
+            "format": "checkbox",
+            "options": {
+                "grid_columns": 3
+            }
+        },
         "teamspeakQueryPort": {
             "title": "teamspeakQueryPort (TeamSpeak 3)",
             "type": "integer",

@@ -48,15 +48,18 @@ export interface GameServerConfig {
     host: string;
     port: number;
     givenPortOnly?: boolean;
+    // Valve
     requestRules?: boolean;
-    // * Discord
+    requestRulesRequired?: boolean;
+    requestPlayersRequired?: boolean;
+    // Discord
     guildId?: string;
-    // * Nadeo
+    // Nadeo
     login?: string;
     password?: string;
-    // * Teamspeak 3
+    // Teamspeak 3
     teamspeakQueryPort?: number;
-    // * Terraria
+    // Terraria
     token?: string;
 }
 

@@ -58,7 +58,10 @@ export interface QueryOptions {
     givenPortOnly?: boolean;
     ipfamily?: 0 | 4 | 6 | undefined;
     debug?: boolean;
+    // Valve
     requestRules?: boolean;
+    requestRulesRequired?: boolean;
+    requestPlayersRequired?: boolean;
     // Discord
     guildId?: string;
     // Nadeo
@@ -121,6 +124,8 @@ export class GameServer {
                 port: this.config.port,
                 givenPortOnly: this.config.givenPortOnly,
                 requestRules: this.config.requestRules,
+                requestRulesRequired: this.config.requestRulesRequired,
+                requestPlayersRequired: this.config.requestPlayersRequired,
                 guildId: this.config.guildId,
                 login: this.config.login,
                 password: this.config.password,
