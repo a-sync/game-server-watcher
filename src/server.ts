@@ -85,10 +85,13 @@ createServer(async (req, res) => {
             'Cache-Control': 'max-age=0'
         });
 
+        const gdProtocols = ['protocol-ase', 'protocol-battlefield', 'protocol-doom3', 'protocol-epic', 'protocol-gamespy1', 'protocol-gamespy2', 'protocol-gamespy3', 'protocol-goldsrc', 'protocol-nadeo', 'protocol-quake2', 'protocol-quake3', 'protocol-unreal2', 'protocol-valve'];
+        const types = Array.from(games.keys());
+        const names = Array.from(games.values()).map(g=>g.pretty);
         res.end(JSON.stringify({
-            enum: Array.from(games.keys()),
+            enum: [...types, ...gdProtocols],
             options: {
-                enum_titles: Array.from(games.values()).map(g=>g.pretty)
+                enum_titles: [...names, ...gdProtocols]
             }
         } as SelectOptionsResponse, null, DBG ? 2 : 0));
     } else if (SECRET !== '' && req.headers['x-btoken']) {
