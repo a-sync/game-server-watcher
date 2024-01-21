@@ -12,8 +12,10 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
-const gamedigVersion = JSON.parse(gamedigPjson).version || 0;
+// const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
+// const gamedigVersion = JSON.parse(gamedigPjson).version || 0;
+const { mtimeMs } = fs.statSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'));
+const gamedigVersion = String(mtimeMs); // Note: package.version is unmaintained on the master branch
 
 const gswPjson = fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8');
 const gswVersion = JSON.parse(gswPjson).version || 0;
