@@ -57,6 +57,9 @@ export interface QueryOptions {
     socketTimeout?: number;
     attemptTimeout?: number;
     givenPortOnly?: boolean;
+    portCache?: boolean;
+    stripColors?: boolean;
+    noBreadthOrder?: boolean;
     ipfamily?: 0 | 4 | 6 | undefined;
     debug?: boolean;
     // Valve

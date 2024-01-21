@@ -3,7 +3,8 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
-import { getInstance } from 'gamedig';
+// @ts-ignore
+import { games, protocols } from 'gamedig';
 import 'dotenv/config';
 import { GameServerConfig, main, readConfig, updateConfig } from './watcher.js';
 import { fileURLToPath } from 'node:url';
@@ -52,6 +53,21 @@ interface SelectOptionsResponse {
     enum: string[];
 }
 
+interface GameDigGame {
+    name: string;
+    release_year: number;
+    options?: {
+        protocol?: string;
+        port?: number;
+        query_port?: number;
+        port_query?: number;
+        port_query_offset?: number;
+    },
+    extra?: {
+        doc_notes?: string;
+    }
+}
+
 const EXT_MIME: Record<string, string> = {
     'html': 'text/html',
     'css': 'text/css',
@@ -80,22 +96,24 @@ createServer(async (req, res) => {
         if (DBG) console.log('ping');
         res.end('pong');
     } else if (p === 'gamedig-games') {
-        const gd = getInstance();
-        // @ts-ignore
-        const games: Map<string,{pretty: string}> = gd.queryRunner.gameResolver.gamesByKey || new Map();
+        const gdProtocols = Object.keys(protocols).map(p => `protocol-${p}`);
+        const gdGameTypes = [];
+        const gdGamesNames = [];
+
+        for (const [type, g] of Object.entries(games) as Array<[string, GameDigGame]>) {
+            gdGameTypes.push(type);
+            gdGamesNames.push(g.name + ' (' + g.release_year + ')');
+        }
 
         res.writeHead(200, {
             'Content-Type': 'application/json',
             'Cache-Control': 'max-age=0'
         });
 
-        const gdProtocols = ['protocol-ase', 'protocol-battlefield', 'protocol-doom3', 'protocol-epic', 'protocol-gamespy1', 'protocol-gamespy2', 'protocol-gamespy3', 'protocol-goldsrc', 'protocol-nadeo', 'protocol-quake2', 'protocol-quake3', 'protocol-unreal2', 'protocol-valve'];
-        const types = Array.from(games.keys());
-        const names = Array.from(games.values()).map(g=>g.pretty);
         res.end(JSON.stringify({
-            enum: [...types, ...gdProtocols],
+            enum: [...gdGameTypes, ...gdProtocols],
             options: {
-                enum_titles: [...names, ...gdProtocols]
+                enum_titles: [...gdGamesNames, ...gdProtocols]
             }
         } as SelectOptionsResponse, null, DBG ? 2 : 0));
     } else if (SECRET !== '' && req.headers['x-btoken']) {
