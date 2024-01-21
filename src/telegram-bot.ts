@@ -1,8 +1,8 @@
 import { Bot } from 'grammy';
 import { Low, JSONFile } from '@commonify/lowdb';
-import { GameServer } from './game-server';
-import hhmmss from './lib/hhmmss';
-import { TelegramConfig } from './watcher';
+import { GameServer } from './game-server.js';
+import hhmmss from './lib/hhmmss.js';
+import { TelegramConfig } from './watcher.js';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));

@@ -6,13 +6,13 @@
         "lib": [
             "es2020"
         ],
-        "module": "commonjs",
+        "module": "esnext",
         "target": "es2019",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true,
-        "resolveJsonModule" : true
+        "moduleResolution": "node"
     },
     "include": [
         "src/**/*"

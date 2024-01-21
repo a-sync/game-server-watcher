@@ -5,7 +5,11 @@ import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { getInstance } from 'gamedig';
 import 'dotenv/config';
-import { GameServerConfig, main, readConfig, updateConfig } from './watcher';
+import { GameServerConfig, main, readConfig, updateConfig } from './watcher.js';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const gamedigPjson = fs.readFileSync(path.resolve(__dirname, '../node_modules/gamedig/package.json'), 'utf-8');
 const gamedigVersion = JSON.parse(gamedigPjson).version || 0;

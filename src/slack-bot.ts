@@ -1,8 +1,10 @@
-import { App, Block, KnownBlock, LogLevel, MrkdwnElement, PlainTextElement } from '@slack/bolt';
+import { App as AppType, Block, KnownBlock, MrkdwnElement, PlainTextElement } from '@slack/bolt';
+import slack_pkg from '@slack/bolt';
+const { App, LogLevel } = slack_pkg;
 import { Low, JSONFile } from '@commonify/lowdb';
-import { GameServer } from './game-server';
-import hhmmss from './lib/hhmmss';
-import { SlackConfig } from './watcher';
+import { GameServer } from './game-server.js';
+import hhmmss from './lib/hhmmss.js';
+import { SlackConfig } from './watcher.js';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -19,7 +21,7 @@ const db = new Low<SlackData[]>(adapter);
 
 const serverInfoMessages: ServerInfoMessage[] = [];
 
-let bot: App;
+let bot: AppType;
 export async function init(token: string, appToken: string) {
     if (!bot) {
         console.log('slack-bot starting...');

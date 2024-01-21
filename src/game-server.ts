@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { Player, query, QueryResult, Type } from 'gamedig';
+// @ts-ignore
+import { GameDig, Player, QueryResult, Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
-import ipRegex from './lib/ipregex';
-import getIP from './lib/getip';
-import { GameServerConfig } from './watcher';
+import ipRegex from './lib/ipregex.js';
+import getIP from './lib/getip.js';
+import { GameServerConfig } from './watcher.js';
 
 const STEAM_WEB_API_KEY = process.env.STEAM_WEB_API_KEY || '';
 const DATA_PATH = process.env.DATA_PATH || './data/';
@@ -52,7 +53,7 @@ export interface QueryOptions {
     type: Type;
     host: string;
     port: number;
-    maxAttempts?: number;
+    maxRetries?: number;
     socketTimeout?: number;
     attemptTimeout?: number;
     givenPortOnly?: boolean;
@@ -118,7 +119,7 @@ export class GameServer {
 
     async gamedig(): Promise<Info | null> {
         try {
-            const res = await query({
+            const res = await GameDig.query({
                 type: this.config.type,
                 host: this.config.host,
                 port: this.config.port,

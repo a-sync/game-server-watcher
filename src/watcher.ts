@@ -1,9 +1,9 @@
 import { Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
-import { GameServer, initDb, saveDb } from './game-server';
-import * as discordBot from './discord-bot';
-import * as telegramBot from './telegram-bot';
-import * as slackBot from './slack-bot';
+import { GameServer, initDb, saveDb } from './game-server.js';
+import * as discordBot from './discord-bot.js';
+import * as telegramBot from './telegram-bot.js';
+import * as slackBot from './slack-bot.js';
 
 const REFRESH_TIME_MINUTES = parseInt(process.env.REFRESH_TIME_MINUTES || '2', 10);
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
