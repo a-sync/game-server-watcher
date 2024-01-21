@@ -42,7 +42,6 @@ export interface GameServerConfig {
     discord?: DiscordConfig[];
     telegram?: TelegramConfig[];
     slack?: SlackConfig[];
-
     // node-gamedig stuff
     type: Type;
     host: string;

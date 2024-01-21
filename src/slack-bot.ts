@@ -1,6 +1,5 @@
 import { App as AppType, Block, KnownBlock, MrkdwnElement, PlainTextElement } from '@slack/bolt';
-import slack_pkg from '@slack/bolt';
-const { App, LogLevel } = slack_pkg;
+import bolt from '@slack/bolt';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
@@ -25,11 +24,11 @@ let bot: AppType;
 export async function init(token: string, appToken: string) {
     if (!bot) {
         console.log('slack-bot starting...');
-        bot = new App({
+        bot = new bolt.App({
             token,
             appToken,
             socketMode: true,
-            logLevel: LogLevel.ERROR
+            logLevel: bolt.LogLevel.ERROR
         });
 
         if (DBG) {

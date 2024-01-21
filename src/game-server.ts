@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Player, QueryResult, Type } from 'gamedig';
 // @ts-ignore
-import { GameDig, Player, QueryResult, Type } from 'gamedig';
+import { GameDig } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex.js';
 import getIP from './lib/getip.js';

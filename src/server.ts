@@ -56,8 +56,8 @@ interface SelectOptionsResponse {
 interface GameDigGame {
     name: string;
     release_year: number;
-    options?: {
-        protocol?: string;
+    options: {
+        protocol: string;
         port?: number;
         query_port?: number;
         port_query?: number;
