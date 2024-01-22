@@ -1,6 +1,6 @@
 import { App as AppType, Block, KnownBlock, MrkdwnElement, PlainTextElement } from '@slack/bolt';
 import bolt from '@slack/bolt';
-import { Low, JSONFile } from '@commonify/lowdb';
+import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { SlackConfig } from './watcher.js';
@@ -15,8 +15,7 @@ interface SlackData {
     messageId: string;
 }
 
-const adapter = new JSONFile<SlackData[]>(DATA_PATH + 'slack.json');
-const db = new Low<SlackData[]>(adapter);
+const db = await JSONPreset<SlackData[]>(DATA_PATH + 'slack.json', []);
 
 const serverInfoMessages: ServerInfoMessage[] = [];
 
@@ -48,7 +47,6 @@ export async function init(token: string, appToken: string) {
 
     serverInfoMessages.length = 0;
     await db.read();
-    db.data = db.data || [];
 }
 
 export async function serverUpdate(gs: GameServer) {

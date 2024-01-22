@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GameDig, Player, QueryResult, QueryOptions } from 'gamedig';
-import { Low, JSONFile } from '@commonify/lowdb';
+import { JSONPreset } from 'lowdb/node';
 import ipRegex from './lib/ipregex.js';
 import getIP from './lib/getip.js';
 import { GameServerConfig } from './watcher.js';
@@ -15,14 +15,10 @@ interface GameServerDb {
     }
 }
 
-const adapter = new JSONFile<GameServerDb>(DATA_PATH + 'servers.json');
-const db = new Low<GameServerDb>(adapter);
+const db = await JSONPreset<GameServerDb>(DATA_PATH + 'servers.json', { population: {} });
 
 export async function initDb() {
     await db.read();
-    db.data = db.data || {
-        population: {}
-    };
 }
 
 export async function saveDb() {

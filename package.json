@@ -1,6 +1,6 @@
 {
   "name": "game-server-watcher",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
   "exports": "./dist/server.js",
   "type": "module",
@@ -24,13 +24,13 @@
   "author": "a-sync@devs.space",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@commonify/lowdb": "^3.0.0",
     "@slack/bolt": "^3.17.1",
     "axios": "^1.6.5",
     "discord.js": "^14.14.1",
     "dotenv": "^16.3.2",
     "gamedig": "github:gamedig/node-gamedig",
     "grammy": "^1.20.3",
+    "lowdb": "^6.1.1",
     "mustache": "^4.2.0"
   },
   "devDependencies": {

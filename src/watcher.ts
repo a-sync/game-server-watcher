@@ -1,4 +1,4 @@
-import { Low, JSONFile } from '@commonify/lowdb';
+import { JSONPreset } from 'lowdb/node';
 import { GameServer, initDb, saveDb } from './game-server.js';
 import * as discordBot from './discord-bot.js';
 import * as telegramBot from './telegram-bot.js';
@@ -61,12 +61,11 @@ export interface GameServerConfig {
     token?: string;
 }
 
-const adapter = new JSONFile<GameServerConfig[]>(DATA_PATH + 'default.config.json');
-const db = new Low<GameServerConfig[]>(adapter);
+const db = await JSONPreset<GameServerConfig[]>(DATA_PATH + 'default.config.json', []);
 
 export async function readConfig(): Promise<GameServerConfig[]> {
     await db.read();
-    return db.data || [];
+    return db.data;
 }
 
 export async function updateConfig(data: GameServerConfig[]) {
@@ -115,7 +114,6 @@ class Watcher {
 
 export async function main() {
     await db.read();
-    db.data = db.data || [];
 
     const watcher = new Watcher();
     await watcher.init(db.data);

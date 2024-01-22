@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, TextChannel, Message, EmbedBuilder, APIEmbedField, HexColorString } from 'discord.js';
-import { Low, JSONFile } from '@commonify/lowdb';
+import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { DiscordConfig } from './watcher.js';
@@ -14,8 +14,7 @@ interface DiscordData {
     messageId: string;
 }
 
-const adapter = new JSONFile<DiscordData[]>(DATA_PATH + 'discord.json');
-const db = new Low<DiscordData[]>(adapter);
+const db = await JSONPreset<DiscordData[]>(DATA_PATH + 'discord.json', []);
 
 const serverInfoMessages: ServerInfoMessage[] = [];
 
@@ -55,7 +54,6 @@ export async function init(token: string) {
 
     serverInfoMessages.length = 0;
     await db.read();
-    db.data = db.data || [];
 }
 
 export async function serverUpdate(gs: GameServer) {

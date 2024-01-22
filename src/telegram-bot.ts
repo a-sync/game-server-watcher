@@ -1,5 +1,5 @@
 import { Bot } from 'grammy';
-import { Low, JSONFile } from '@commonify/lowdb';
+import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { TelegramConfig } from './watcher.js';
@@ -14,8 +14,7 @@ interface TelegramData {
     messageId: number;
 }
 
-const adapter = new JSONFile<TelegramData[]>(DATA_PATH + 'telegram.json');
-const db = new Low<TelegramData[]>(adapter);
+const db = await JSONPreset<TelegramData[]>(DATA_PATH + 'telegram.json', []);
 
 const serverInfoMessages: ServerInfoMessage[] = [];
 
@@ -44,7 +43,6 @@ export async function init(token: string) {
 
     serverInfoMessages.length = 0;
     await db.read();
-    db.data = db.data || [];
 }
 
 async function getServerInfoMessage(cid: string, host: string, port: number) {
