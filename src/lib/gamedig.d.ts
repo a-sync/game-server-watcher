@@ -8,7 +8,7 @@ declare module "gamedig" {
         static query(options: QueryOptions, callback: (error: Error, state: QueryResult) => void): void;
         static getInstance(): GameDig;
     }
-    
+
     export interface games {
         [key: string]: {
             name: string;
@@ -16,20 +16,20 @@ declare module "gamedig" {
             options: {
                 protocol: string;
                 port?: number;
-                query_port?: number;
                 port_query?: number;
                 port_query_offset?: number;
             };
             extra?: {
                 doc_notes?: string;
+                old_id?: string;
             };
         };
     }
-    
+
     export interface protocols {
         [key: string]: object;
     }
-    
+
     export interface Player {
         name?: string;
         raw?: object;
@@ -38,7 +38,7 @@ declare module "gamedig" {
         team?: string;
         address?: string;
     }
-    
+
     export interface QueryOptions {
         type: string;
         host: string;
@@ -53,6 +53,7 @@ declare module "gamedig" {
         portCache?: boolean;
         stripColors?: boolean;
         noBreadthOrder?: boolean;
+        skipOldIDs?: boolean;
         // Valve
         requestRules?: boolean;
         requestRulesRequired?: boolean;
@@ -67,7 +68,7 @@ declare module "gamedig" {
         // Terraria
         token?: string;
     }
-    
+
     export interface QueryResult {
         name: string;
         map: string;
@@ -81,9 +82,9 @@ declare module "gamedig" {
         queryPort: number;
         raw?: object;
     }
-    
+
     export const games: games;
     export const protocols: protocols;
-    
+
     export as namespace gamedig;    
 }
