@@ -1,3 +1,6 @@
+# ⚠ gamedig-next uses `github:node-gamedig/gamedig` as dependency which is unstable 🙃!
+# ⚠ This branch also switched over to ESM as per the upcoming gamedig release!
+
 # <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20" width="40" align="left"> Game Server Watcher
 A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
@@ -41,7 +44,7 @@ The project is in a very early stage. More detailed customization options and fe
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
 
 ## Requirements
-[node.js](https://nodejs.org/) _(version 16.9.0 or later)_  
+[node.js](https://nodejs.org/) _(version 16.20.0 or later)_  
 
 ## Getting the source
 This project is [hosted on github](https://github.com/a-sync/game-server-watcher). You can clone this project directly using this command:
