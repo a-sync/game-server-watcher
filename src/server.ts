@@ -3,7 +3,6 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { createServer } from 'node:http';
 import { URL } from 'node:url';
-// @ts-ignore
 import { games, protocols } from 'gamedig';
 import 'dotenv/config';
 import { GameServerConfig, main, readConfig, updateConfig } from './watcher.js';

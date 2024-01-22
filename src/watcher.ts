@@ -1,4 +1,3 @@
-import { Type } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import { GameServer, initDb, saveDb } from './game-server.js';
 import * as discordBot from './discord-bot.js';
@@ -43,7 +42,7 @@ export interface GameServerConfig {
     telegram?: TelegramConfig[];
     slack?: SlackConfig[];
     // node-gamedig stuff
-    type: Type;
+    type: string;
     host: string;
     port: number;
     givenPortOnly?: boolean;

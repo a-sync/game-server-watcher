@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { Player, QueryResult, Type } from 'gamedig';
-// @ts-ignore
-import { GameDig } from 'gamedig';
+import { GameDig, Player, QueryResult } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex.js';
 import getIP from './lib/getip.js';
@@ -47,11 +45,10 @@ export interface Info {
 
 interface qRes extends QueryResult {
     game: string;
-    numplayers: number;
 }
 
 export interface QueryOptions {
-    type: Type;
+    type: string;
     host: string;
     port: number;
     maxRetries?: number;
