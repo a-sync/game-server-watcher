@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GameDig, Player, QueryResult } from 'gamedig';
+import { GameDig, Player, QueryResult, QueryOptions } from 'gamedig';
 import { Low, JSONFile } from '@commonify/lowdb';
 import ipRegex from './lib/ipregex.js';
 import getIP from './lib/getip.js';
@@ -45,34 +45,6 @@ export interface Info {
 
 interface qRes extends QueryResult {
     game: string;
-}
-
-export interface QueryOptions {
-    type: string;
-    host: string;
-    port: number;
-    maxRetries?: number;
-    socketTimeout?: number;
-    attemptTimeout?: number;
-    givenPortOnly?: boolean;
-    portCache?: boolean;
-    stripColors?: boolean;
-    noBreadthOrder?: boolean;
-    ipfamily?: 0 | 4 | 6 | undefined;
-    debug?: boolean;
-    // Valve
-    requestRules?: boolean;
-    requestRulesRequired?: boolean;
-    requestPlayersRequired?: boolean;
-    // Discord
-    guildId?: string;
-    // Nadeo
-    login?: string;
-    password?: string;
-    // Teamspeak 3
-    teamspeakQueryPort?: number;
-    // Terraria
-    token?: string;
 }
 
 export class GameServer {

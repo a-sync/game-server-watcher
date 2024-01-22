@@ -34,7 +34,6 @@
     "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "@types/gamedig": "^4.0.5",
     "@types/node": "^16.18.73",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.3",

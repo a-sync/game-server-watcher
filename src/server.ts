@@ -54,21 +54,6 @@ interface SelectOptionsResponse {
     enum: string[];
 }
 
-interface GameDigGame {
-    name: string;
-    release_year: number;
-    options: {
-        protocol: string;
-        port?: number;
-        query_port?: number;
-        port_query?: number;
-        port_query_offset?: number;
-    },
-    extra?: {
-        doc_notes?: string;
-    }
-}
-
 const EXT_MIME: Record<string, string> = {
     'html': 'text/html',
     'css': 'text/css',
@@ -101,7 +86,7 @@ createServer(async (req, res) => {
         const gdGameTypes = [];
         const gdGamesNames = [];
 
-        for (const [type, g] of Object.entries(games) as Array<[string, GameDigGame]>) {
+        for (const [type, g] of Object.entries(games)) {
             gdGameTypes.push(type);
             gdGamesNames.push(g.name + ' (' + g.release_year + ')');
         }
