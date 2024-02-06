@@ -274,6 +274,13 @@
             "options": {
                 "grid_columns": 3
             }
+        },
+        "serverPassword": {
+            "title": "server passoword",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
         }
     },
     "format": "grid-strict",
