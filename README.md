@@ -1,6 +1,3 @@
-# ⚠ gamedig-next uses `github:node-gamedig/gamedig` as dependency which is unstable 🙃!
-# ⚠ This branch also switched over to ESM as per the upcoming gamedig release!
-
 # <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20" width="40" align="left"> Game Server Watcher
 A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
@@ -22,7 +19,7 @@ The project is in a very early stage. More detailed customization options and fe
 
 ### Possible features and configuration options to add in the future
  * ~~optional player list~~
-   * customizable fields (time, name, ping, score)
+   * customizable fields (time, name, ping, score, address)
    * configurable field & order to sort by
    * max length for player names & nr of players
  * ~~optional graph chart~~
@@ -219,3 +216,5 @@ All other libraries and dependencies are listed in the _package.json file (depen
 * https://github.com/EndBug/game-tracker
 * https://github.com/fasko-web/discord-gameserver-bots
 * https://github.com/FlorianSW/discord-player-count-bot
+* https://github.com/Destarianon/FawxGameDigBot
+* https://github.com/patriksh/gameserver-bot
