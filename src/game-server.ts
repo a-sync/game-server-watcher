@@ -39,10 +39,6 @@ export interface Info {
     players: GsPlayer[];
 }
 
-interface qRes extends QueryResult {
-    game: string;
-}
-
 export class GameServer {
     public ip: string;
     public info?: Info;
@@ -101,7 +97,7 @@ export class GameServer {
                 password: this.config.password,
                 teamspeakQueryPort: this.config.teamspeakQueryPort,
                 token: this.config.token
-            } as QueryOptions) as qRes;
+            } as QueryOptions);
 
             const raw = res.raw as { game?: string; folder?: string; presence_count?: number; };
             const game = raw.game || raw.folder || this.config.type;
