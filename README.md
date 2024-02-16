@@ -19,7 +19,7 @@ The project is in a very early stage. More detailed customization options and fe
 
 ### Possible features and configuration options to add in the future
  * ~~optional player list~~
-   * customizable fields (time, name, ping, score, address)
+   * customizable fields (time, name, ping, score)
    * configurable field & order to sort by
    * max length for player names & nr of players
  * ~~optional graph chart~~
