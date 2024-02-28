@@ -1,4 +1,4 @@
-FROM node:18 as builder
+FROM node:20 as builder
 
 RUN mkdir /app
 WORKDIR /app
@@ -9,9 +9,9 @@ RUN npm install
 COPY . .
 RUN npm run build && rm -rf node_modules
 
-#######################################################################
+##########
 
-FROM node:18
+FROM node:20
 LABEL fly_launch_runtime="nodejs"
 
 WORKDIR /app

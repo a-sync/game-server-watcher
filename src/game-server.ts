@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GameDig, Player, QueryResult, QueryOptions } from 'gamedig';
+import { GameDig, Player, QueryOptions } from 'gamedig';
 import { JSONPreset } from 'lowdb/node';
 import ipRegex from './lib/ipregex.js';
 import getIP from './lib/getip.js';
