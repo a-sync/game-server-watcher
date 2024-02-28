@@ -140,7 +140,7 @@ body>nav {
     margin: 10px 0 0 10px;
 }
 
-footer>a>svg {
+footer > p > a > svg {
     fill: #c6cbd1;
 }
 
