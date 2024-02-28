@@ -3,6 +3,7 @@ services:
 
     gsw:
         build: .
+        # image: "ghcr.io/a-sync/game-server-watcher:latest"
         container_name: gsw
         ports:
             - "8080:8080"
