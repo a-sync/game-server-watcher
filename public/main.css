@@ -179,3 +179,8 @@ footer>a>svg {
 #bye kbd {
     box-shadow: 0 0.125rem 0.25rem rgb(255, 255, 255, 0.75) !important;
 }
+
+#versions {
+    color: #fff;
+    text-shadow: 0 0 3px #fff;
+}

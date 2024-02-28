@@ -3,8 +3,6 @@ name: 🐳 Release a Docker image
 on:
   push:
     tags: [ 'v*.*.*' ]
-    # branches: ['release']
-  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -40,4 +38,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          annotations: ${{ steps.meta.outputs.annotations }}

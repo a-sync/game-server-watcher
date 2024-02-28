@@ -2,6 +2,8 @@ let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
+        $('#versions').html('gsw v' + gswFeatures.features.version + '<br>gamedig v' + gswFeatures.features.gamedig);
+
         await setRandomBg().catch(() => { });
         setInterval(setRandomBg, 60000);
 
