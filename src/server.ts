@@ -142,6 +142,7 @@ createServer(async (req, res) => {
                         re.error = 'Invalid Request';
                     }
                 } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram', 'slack'].includes(reqPath[1])) {
+                    //TODO: check for and append host:port if available
                     await watcher.restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
                 } else {

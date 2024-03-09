@@ -82,21 +82,6 @@ export class Watcher {
     private servers: GameServer[] = [];
     public loop?: NodeJS.Timer;
 
-    async init(config: GameServerConfig[]) {
-        console.log('watcher starting...');
-
-        if (DISCORD_BOT_TOKEN) await discordBot.init(DISCORD_BOT_TOKEN);
-        if (TELEGRAM_BOT_TOKEN) await telegramBot.init(TELEGRAM_BOT_TOKEN);
-        if (SLACK_BOT_TOKEN && SLACK_APP_TOKEN) await slackBot.init(SLACK_BOT_TOKEN, SLACK_APP_TOKEN);
-
-        await initDb();
-
-        for (const c of config) {
-            const gs = new GameServer(c);
-            this.servers.push(gs);
-        }
-    }
-
     async check() {
         if (DBG) console.log('watcher checking...');
 
@@ -114,9 +99,20 @@ export class Watcher {
     }
 
     async start() {
+        console.log('watcher starting...');
+
+        if (DISCORD_BOT_TOKEN) await discordBot.init(DISCORD_BOT_TOKEN);
+        if (TELEGRAM_BOT_TOKEN) await telegramBot.init(TELEGRAM_BOT_TOKEN);
+        if (SLACK_BOT_TOKEN && SLACK_APP_TOKEN) await slackBot.init(SLACK_BOT_TOKEN, SLACK_APP_TOKEN);
+        await initDb();
+
         await db.read();
-        await this.init(db.data);
-    
+        this.servers.length = 0;
+        for (const c of db.data) {
+            const gs = new GameServer(c);
+            this.servers.push(gs);
+        }
+
         console.log('starting loop...'); // Note: pterodactyl depends on this
         this.loop = setInterval(async () => {
             await this.check();
@@ -134,10 +130,14 @@ export class Watcher {
         }
 
         if (flush) {
-            if (DBG) console.log('Deleting ' + flush + ' data');
-            try {
-                fs.unlinkSync(DATA_PATH + flush + '.json');
-            } catch (e) { }
+            if (!host) {
+                if (DBG) console.log('deleting ' + flush + ' data');
+                try {
+                    fs.unlinkSync(DATA_PATH + flush + '.json');
+                } catch (e) { }
+            } else {
+                //TODO: filter by host, or if port is specified then both
+            }
         }
 
         await this.start();
