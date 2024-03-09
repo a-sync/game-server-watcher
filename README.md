@@ -15,7 +15,7 @@ The main goals of this repo:
 # Project Status
 The code itself is stable and continuously tested/deployed from the master branch.  
 
-The project is in a very early stage. More detailed customization options and features will be added as requested.  
+The project is in a mature stage. New customization options and features are added as requested.  
 
 ### Possible features and configuration options to add in the future
  * ~~optional player list~~

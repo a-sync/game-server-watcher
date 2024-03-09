@@ -5,7 +5,7 @@ import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { games, protocols } from 'gamedig';
 import 'dotenv/config';
-import { GameServerConfig, main, readConfig, updateConfig } from './watcher.js';
+import { GameServerConfig, readConfig, updateConfig, Watcher } from './watcher.js';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,8 +22,6 @@ const PORT = parseInt(process.env.PORT || '8080', 10);
 const SECRET = process.env.SECRET || 'secret';
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
-
-let loop: NodeJS.Timeout | undefined;
 
 interface ApiResponse extends FeaturesResponse, ConfigResponse {
     message?: string;
@@ -60,6 +58,11 @@ const EXT_MIME: Record<string, string> = {
     'png': 'image/png'
 };
 
+// Start Watcher service
+const watcher = new Watcher();
+watcher.start();
+
+// Start Control Panel service
 createServer(async (req, res) => {
     if (DBG) console.log('DBG: %j %j', (new Date()), req.url);
 
@@ -132,7 +135,7 @@ createServer(async (req, res) => {
 
                         // TODO: validate (ajv)
                         await updateConfig(JSON.parse(String(body)) || [] as GameServerConfig[]);
-                        await restart();
+                        await watcher.restart();
 
                         re.message = 'Configuration updated. Watcher restarted.';
                     } else {
@@ -140,7 +143,7 @@ createServer(async (req, res) => {
                         re.error = 'Invalid Request';
                     }
                 } else if (reqPath[0] === 'flush' && ['servers', 'discord', 'telegram', 'slack'].includes(reqPath[1])) {
-                    await restart(reqPath[1]);
+                    await watcher.restart(reqPath[1]);
                     re.message = '🗑️ ' + reqPath[1].slice(0, 1).toUpperCase() + reqPath[1].slice(1) + ' data flushed.';
                 } else {
                     status = 400;
@@ -166,29 +169,8 @@ createServer(async (req, res) => {
         res.end('<html><head></head><body>404 &#x1F4A2</body></html>');
     }
 }).listen(PORT, HOST, () => {
-    console.log('GSW Panel service started %s:%s', HOST, PORT);
+    console.log('GSW Control Panel service started %s:%s', HOST, PORT);
 });
-
-main().then(l => {
-    loop = l;
-});
-
-async function restart(flush?: string) {
-    if (DBG) console.log('stopping loop');
-    if (loop) {
-        clearInterval(loop);
-        loop = undefined;
-    }
-
-    if (flush) {
-        if (DBG) console.log('Deleting ' + flush + ' data');
-        try {
-            fs.unlinkSync(DATA_PATH + flush + '.json');
-        } catch (e) { }
-    }
-
-    loop = await main();
-}
 
 function validateBearerToken(btoken: string) {
     const salt = btoken.slice(0, btoken.length - 141);

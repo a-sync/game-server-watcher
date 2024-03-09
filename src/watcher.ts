@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { JSONPreset } from 'lowdb/node';
 import { GameServer, initDb, saveDb } from './game-server.js';
 import * as discordBot from './discord-bot.js';
@@ -77,8 +78,9 @@ export async function updateConfig(data: GameServerConfig[]) {
     }
 }
 
-class Watcher {
+export class Watcher {
     private servers: GameServer[] = [];
+    public loop?: NodeJS.Timer;
 
     async init(config: GameServerConfig[]) {
         console.log('watcher starting...');
@@ -110,19 +112,34 @@ class Watcher {
         await Promise.allSettled(promises);
         await saveDb();
     }
-}
 
-export async function main() {
-    await db.read();
+    async start() {
+        await db.read();
+        await this.init(db.data);
+    
+        console.log('starting loop...'); // Note: pterodactyl depends on this
+        this.loop = setInterval(async () => {
+            await this.check();
+        }, 1000 * 60 * REFRESH_TIME_MINUTES);
 
-    const watcher = new Watcher();
-    await watcher.init(db.data);
+        await this.check();
+    }
 
-    console.log('starting loop...'); // Note: pterodactyl depends on this
-    const loop = setInterval(async () => {
-        await watcher.check();
-    }, 1000 * 60 * REFRESH_TIME_MINUTES);
-    await watcher.check();
+    async restart(flush?: string, host?: string, port?: number) {
+        if (DBG) console.log('stopping loop');
 
-    return loop;
+        if (this.loop) {
+            clearInterval(this.loop);
+            this.loop = undefined;
+        }
+
+        if (flush) {
+            if (DBG) console.log('Deleting ' + flush + ' data');
+            try {
+                fs.unlinkSync(DATA_PATH + flush + '.json');
+            } catch (e) { }
+        }
+
+        await this.start();
+    }
 }
