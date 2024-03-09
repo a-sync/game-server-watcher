@@ -20,7 +20,6 @@ const gswVersion = JSON.parse(gswPjson).version || '0';
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = parseInt(process.env.PORT || '8080', 10);
 const SECRET = process.env.SECRET || 'secret';
-const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
 
 interface ApiResponse extends FeaturesResponse, ConfigResponse {
@@ -67,7 +66,7 @@ createServer(async (req, res) => {
     if (DBG) console.log('DBG: %j %j', (new Date()), req.url);
 
     const reqUrl = new URL(req.url || '', 'http://localhost');
-    const p = reqUrl.pathname === '/' ? 'index.html' : path.normalize(reqUrl.pathname).slice(1);
+    const p = reqUrl.pathname === '/' ? 'index.html' : reqUrl.pathname.slice(1);
     const ext = path.extname(p).slice(1);
 
     if (ext in EXT_MIME && !p.includes('/') && !p.includes('\\')) {
