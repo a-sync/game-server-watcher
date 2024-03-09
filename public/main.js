@@ -133,9 +133,11 @@ $(async () => {
             if (confirm('Are you sure you want to call `' + endpoint + '`?')) {
                 const res = await fetchApi('GET', endpoint);
                 if (res && res.message) notif('success', res.message, undefined, undefined, 3);
-                else notif('danger', (res ? res.error : undefined), undefined, undefined, 3);
+                else notif('danger', '⚠️ Error while calling ' + endpoint, (res ? res.error : undefined), undefined, 3);
             }
         });
+    } else {
+        notif('danger', '⚠️ Error while loading features.');
     }
 });
 
@@ -339,23 +341,28 @@ async function fetchApi(method, endpoint, body) {
                     re = false;
                     window.localStorage.removeItem('btoken');
                     errMsg = 'Invalid token.';
-                } else if (res.status === 200) {
+                } else {
                     re = await res.json();
-                    break;
-                } else errMsg = 'Unexpected API status.';
+                    if (res.status === 200) {
+                        break;
+                    }
+                    errMsg = re.error || 'Unexpected API status.';
+                }
             } else {
                 re = false;
                 errMsg = 'Authentication error.';
             }
-            if (errMsg !== '') console.error(errMsg + ' method, endpoint', method, endpoint);
+
+            if (errMsg !== '') {
+                console.error(errMsg + ' method, endpoint', method, endpoint);
+            }
         }
     } catch (err) {
         re = null;
-        errMsg = 'Unexpected error.';
-        console.error('fetchApi: method, endpoint, err, re', method, endpoint, err, re);
+        console.error('fetchApi: errMsg, method, endpoint, err', errMsg, method, endpoint, err);
     }
 
-    if (!re) {
+    if (re === false) {
         logout();
         notif('danger', '⚠️ ' + errMsg, undefined, undefined, 3);
     }
