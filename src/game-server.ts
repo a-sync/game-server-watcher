@@ -17,15 +17,15 @@ interface GameServerDb {
 
 const db = await JSONPreset<GameServerDb>(DATA_PATH + 'servers.json', { population: {} });
 
-export async function initDb() {
+export async function initPopulationDb() {
     await db.read();
 }
 
-export async function saveDb() {
+export async function savePopulationDb() {
     try {
         return await db.write();
     } catch (e: any) {
-        console.error('gs.saveDb', e.message || e);
+        console.error('gs.savePopulationDb', e.message || e);
     }
 }
 

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import { JSONPreset } from 'lowdb/node';
-import { GameServer, initDb, saveDb } from './game-server.js';
+import { GameServer, initPopulationDb, savePopulationDb } from './game-server.js';
 import * as discordBot from './discord-bot.js';
 import * as telegramBot from './telegram-bot.js';
 import * as slackBot from './slack-bot.js';
@@ -95,7 +95,7 @@ export class Watcher {
         }
 
         await Promise.allSettled(promises);
-        await saveDb();
+        await savePopulationDb();
     }
 
     async start() {
@@ -104,7 +104,7 @@ export class Watcher {
         if (DISCORD_BOT_TOKEN) await discordBot.init(DISCORD_BOT_TOKEN);
         if (TELEGRAM_BOT_TOKEN) await telegramBot.init(TELEGRAM_BOT_TOKEN);
         if (SLACK_BOT_TOKEN && SLACK_APP_TOKEN) await slackBot.init(SLACK_BOT_TOKEN, SLACK_APP_TOKEN);
-        await initDb();
+        await initPopulationDb();
 
         await db.read();
         this.servers.length = 0;
