@@ -320,10 +320,10 @@ function activateMenu(target) {
 async function fetchApi(method, endpoint, body) {
     let re = null;
     let errMsg = '';
-    const retries = 2;
+    const tries = 2;
 
     try {
-        for (let i = 1; i <= retries; i++) {
+        for (let i = 1; i <= tries; i++) {
             errMsg = '';
             const btoken = await getBearerToken();
             if (btoken) {
@@ -343,10 +343,7 @@ async function fetchApi(method, endpoint, body) {
                     errMsg = 'Invalid token.';
                 } else {
                     re = await res.json();
-                    if (res.status === 200) {
-                        break;
-                    }
-                    errMsg = re.error || 'Unexpected API status.';
+                    break;
                 }
             } else {
                 re = false;
