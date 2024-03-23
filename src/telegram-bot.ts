@@ -131,6 +131,7 @@ class ServerInfoMessage {
 
         const chart = showGraph ? '[📈](' + gs.history.statsChart() + ')' : '';
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
+
         if (gs.info && gs.online) {
             infoText = [
                 this.escapeMarkdown(gs.niceName),
@@ -138,6 +139,8 @@ class ServerInfoMessage {
                 this.escapeMarkdown(gs.info.connect),
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
+
+            if (gs.config.description) infoText += 'Description:\n' + String(gs.config.description).slice(0, 1024) + '\n';
 
             if (showPlayersList && gs.info.players.length > 0) {
                 const pnArr: string[] = [];
@@ -154,6 +157,7 @@ class ServerInfoMessage {
                 }
             }
         }
+
         infoText += chart;
 
         try {

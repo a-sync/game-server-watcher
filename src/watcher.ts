@@ -39,6 +39,7 @@ export interface GameServerConfig {
     updateIntervalMinutes?: number;//5
     graphHistoryHours?: number;//12
     timezoneOffset?: number;//0
+    description?: string;
     discord?: DiscordConfig[];
     telegram?: TelegramConfig[];
     slack?: SlackConfig[];

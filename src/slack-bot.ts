@@ -202,6 +202,17 @@ class ServerInfoMessage {
                 });
             }
 
+            if (gs.config.description) {
+                text += '\r\nDescription:\r\n' + String(gs.config.description).slice(0, 1024);
+                blocks.push({
+                    type: 'section',
+                    fields: [{
+                        type: 'mrkdwn',
+                        text: '*Description* \r\n' + String(gs.config.description).slice(0, 1024)
+                    }]
+                });
+            }
+
             if (showPlayersList && gs.info?.players.length > 0) {
                 const pNames: string[] = [];
                 for (const p of gs.info?.players) {

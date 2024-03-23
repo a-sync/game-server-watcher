@@ -201,6 +201,30 @@
                 "grid_columns": 12
             }
         },
+        "description": {
+            "title": "Description",
+            "type": "string",
+            "format": "markdown",
+            "options": {
+                "simplemde": {
+                    "spellChecker": false,
+                    "toolbar": [
+                        "bold",
+                        "italic",
+                        "|",
+                        "unordered-list",
+                        "ordered-list",
+                        "|",
+                        "code",
+                        "link",
+                        "quote",
+                        "|",
+                        "side-by-side",
+                        "preview"
+                      ]
+                }
+            }
+        },
         "givenPortOnly": {
             "title": "givenPortOnly",
             "description": "Only attempt to query server on given port.",
