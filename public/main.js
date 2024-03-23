@@ -45,7 +45,7 @@ $(async () => {
                 "use_default_values": true,
                 "ajax": true,
                 "ajaxCredentials": false,
-                "ajax_cache_responses": !Boolean(location.hostname === "localhost" || location.hostname === "127.0.0.1"),
+                "ajax_cache_responses": !Boolean(gswFeatures.debug),
                 "ajax_cache_buster": 'gsw-v' + gswFeatures.features.version + '+gamedig-v' + gswFeatures.features.gamedig,
                 "disable_edit_json": false,
                 "disable_collapse": true,

@@ -36,6 +36,7 @@ interface FeaturesResponse{
         telegram: boolean;
         slack: boolean;
     };
+    debug?: boolean;
 }
 
 interface ConfigResponse{
@@ -105,6 +106,8 @@ createServer(async (req, res) => {
     } else if (SECRET !== '' && req.headers['x-btoken']) {
         let status = 200;
         let re: ApiResponse = {};
+
+        if (DBG) re.debug = true;
 
         if (validateBearerToken(String(req.headers['x-btoken']))) {
             const reqPath = p.split('/');
