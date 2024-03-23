@@ -22,9 +22,7 @@
             "type": "string",
             "minLength": 1,
             "options": {
-                "grid_columns": 3,
-                "has_placeholder_option": true,
-                "placeholder_option_text": " "
+                "grid_columns": 3
             },
             "$ref": "gamedig-games"
         },
