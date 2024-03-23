@@ -178,7 +178,7 @@ class ServerInfoMessage {
             fields.push({ name: 'Players', value: String(gs.info.playersNum + '/' + gs.info.playersMax), inline: true});
             fields.push({ name: 'Address', value: String(gs.info.connect)});
 
-            if (gs.config.description) fields.push({ name: 'Description', value: String(gs.config.description).slice(0, 1024)});
+            if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024)});
 
             if (showPlayersList && gs.info?.players.length > 0) {
                 const pNames: string[] = [];

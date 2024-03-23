@@ -201,8 +201,8 @@
                 "grid_columns": 12
             }
         },
-        "description": {
-            "title": "Description",
+        "infoText": {
+            "title": "Info text",
             "type": "string",
             "format": "markdown",
             "options": {

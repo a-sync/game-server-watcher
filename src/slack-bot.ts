@@ -202,13 +202,13 @@ class ServerInfoMessage {
                 });
             }
 
-            if (gs.config.description) {
-                text += '\r\nDescription:\r\n' + String(gs.config.description).slice(0, 1024);
+            if (gs.config.infoText) {
+                text += '\r\nInfo:\r\n' + String(gs.config.infoText).slice(0, 1024);
                 blocks.push({
                     type: 'section',
                     fields: [{
                         type: 'mrkdwn',
-                        text: '*Description* \r\n' + String(gs.config.description).slice(0, 1024)
+                        text: '*Info* \r\n' + String(gs.config.infoText).slice(0, 1024)
                     }]
                 });
             }

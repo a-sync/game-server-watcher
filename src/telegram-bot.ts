@@ -140,7 +140,7 @@ class ServerInfoMessage {
                 'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
             ].join('\n');
 
-            if (gs.config.description) infoText += 'Description:\n' + String(gs.config.description).slice(0, 1024) + '\n';
+            if (gs.config.infoText) infoText += 'Info:\n' + String(gs.config.infoText).slice(0, 1024) + '\n';
 
             if (showPlayersList && gs.info.players.length > 0) {
                 const pnArr: string[] = [];
