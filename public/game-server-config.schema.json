@@ -207,6 +207,7 @@
             "format": "markdown",
             "options": {
                 "simplemde": {
+                    "autorefresh": true,
                     "spellChecker": false,
                     "toolbar": [
                         "bold",
