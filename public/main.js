@@ -2,7 +2,7 @@ let configEditor;
 $(async () => {
     const gswFeatures = await fetchApi('GET', 'features');
     if (gswFeatures) {
-        $('#versions').html('gsw v' + gswFeatures.features.version + '<br>gamedig v' + gswFeatures.features.gamedig);
+        $('#versions').html('gsw v' + gswFeatures.versions.gsw + '<br>gamedig v' + gswFeatures.versions.gamedig);
 
         await setRandomBg().catch(() => { });
         setInterval(setRandomBg, 60000);
@@ -46,7 +46,7 @@ $(async () => {
                 "ajax": true,
                 "ajaxCredentials": false,
                 "ajax_cache_responses": !Boolean(gswFeatures.debug),
-                "ajax_cache_buster": 'gsw-v' + gswFeatures.features.version + '+gamedig-v' + gswFeatures.features.gamedig,
+                "ajax_cache_buster": 'gsw-v' + gswFeatures.versions.gsw + '+gamedig-v' + gswFeatures.versions.gamedig,
                 "disable_edit_json": false,
                 "disable_collapse": true,
                 "disable_properties": false,
