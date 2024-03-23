@@ -136,7 +136,7 @@ $(async () => {
                 else notif('danger', '⚠️ Error while calling ' + endpoint, (res ? res.error : undefined), undefined, 3);
             }
         });
-    } else {
+    } else if (gswFeatures !== false) {
         notif('danger', '⚠️ Error while loading features.');
     }
 });
