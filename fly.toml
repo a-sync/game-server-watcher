@@ -1,5 +1,4 @@
 app = "game-server-watcher"
-primary_region = "ams"
 
 [env]
   DBG = "0"
