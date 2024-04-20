@@ -23,26 +23,30 @@ let bot: AppType;
 export async function init(token: string, appToken: string) {
     if (!bot) {
         console.log('slack-bot starting...');
-        bot = new bolt.App({
-            token,
-            appToken,
-            socketMode: true,
-            logLevel: bolt.LogLevel.ERROR
-        });
-
-        if (DBG) {
-            bot.message('ping', async ({ message, say }) => {
-                // Handle only newly posted messages here
-                if (message.subtype === undefined
-                    || message.subtype === 'bot_message'
-                    || message.subtype === 'file_share'
-                    || message.subtype === 'thread_broadcast') {
-                    await say(`<@${message.user}> pong`);
-                }
+        try {
+            bot = new bolt.App({
+                token,
+                appToken,
+                socketMode: true,
+                logLevel: bolt.LogLevel.ERROR
             });
-        }
 
-        await bot.start();
+            if (DBG) {
+                bot.message('ping', async ({ message, say }) => {
+                    // Handle only newly posted messages here
+                    if (message.subtype === undefined
+                        || message.subtype === 'bot_message'
+                        || message.subtype === 'file_share'
+                        || message.subtype === 'thread_broadcast') {
+                        await say(`<@${message.user}> pong`);
+                    }
+                });
+            }
+
+            await bot.start();
+        } catch (e: any) {
+            console.error('slack-bot init ERROR', e.message || e);
+        }
     }
 
     serverInfoMessages.length = 0;

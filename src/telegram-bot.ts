@@ -22,22 +22,26 @@ let bot: Bot;
 export async function init(token: string) {
     if (!bot) {
         console.log('telegram-bot starting...');
-        bot = new Bot(token);
+        try {
+            bot = new Bot(token);
 
-        bot.catch(e => {
-            console.error('telegram-bot ERROR', e.message || e);
-        });
-
-        const me = await bot.api.getMe();
-        console.log('telegram-bot ready', me);
-
-        if (DBG) {
-            bot.on('message:text', ctx => {
-                if (ctx.message.text === 'ping')
-                    ctx.reply('pong');
+            bot.catch(e => {
+                console.error('telegram-bot ERROR', e.message || e);
             });
-            // bot.command('ping', ctx => ctx.reply('/pong'));
-            bot.start();
+
+            const me = await bot.api.getMe();
+            console.log('telegram-bot ready', me);
+
+            if (DBG) {
+                bot.on('message:text', ctx => {
+                    if (ctx.message.text === 'ping')
+                        ctx.reply('pong');
+                });
+                // bot.command('ping', ctx => ctx.reply('/pong'));
+                bot.start();
+            }
+        } catch (e: any) {
+            console.error('telegram-bot init ERROR', e.message || e);
         }
     }
 

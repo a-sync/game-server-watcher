@@ -22,34 +22,38 @@ let bot: Client;
 export async function init(token: string) {
     if (!bot) {
         console.log('discord-bot starting...');
-        bot = new Client({
-            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
-        });
-
-        bot.on('error', e => {
-            console.error('discord-bot ERROR', e.message || e);
-        });
-
-        await new Promise<void>((resolve, reject) => {
-            bot.once('ready', () => {
-                console.log('discord-bot ready', bot.user);
-
-                bot.removeListener('error', reject);
-                resolve();
+        try {
+            bot = new Client({
+                intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
             });
 
-            bot.once('error', reject);
+            bot.on('error', e => {
+                console.error('discord-bot ERROR', e.message || e);
+            });
 
-            if (DBG) {
-                bot.on('messageCreate', msg => {
-                    if (msg.content === 'ping') {
-                        msg.reply('pong');
-                    }
+            await new Promise<void>((resolve, reject) => {
+                bot.once('ready', () => {
+                    console.log('discord-bot ready', bot.user);
+
+                    bot.removeListener('error', reject);
+                    resolve();
                 });
-            }
 
-            return bot.login(token);
-        });
+                bot.once('error', reject);
+
+                if (DBG) {
+                    bot.on('messageCreate', msg => {
+                        if (msg.content === 'ping') {
+                            msg.reply('pong');
+                        }
+                    });
+                }
+
+                return bot.login(token);
+            });
+        } catch (e: any) {
+            console.error('discord-bot init ERROR', e.message || e);
+        }
     }
 
     serverInfoMessages.length = 0;
@@ -173,12 +177,12 @@ class ServerInfoMessage {
             embed.setTitle(gs.niceName.slice(0, 256));
             embed.setColor(onlineColor as HexColorString);
 
-            if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true});
-            if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true});
-            fields.push({ name: 'Players', value: String(gs.info.playersNum + '/' + gs.info.playersMax), inline: true});
-            fields.push({ name: 'Address', value: String(gs.info.connect)});
+            if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true });
+            if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true });
+            fields.push({ name: 'Players', value: String(gs.info.playersNum + '/' + gs.info.playersMax), inline: true });
+            fields.push({ name: 'Address', value: String(gs.info.connect) });
 
-            if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024)});
+            if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024) });
 
             if (showPlayersList && gs.info?.players.length > 0) {
                 const pNames: string[] = [];
@@ -187,10 +191,10 @@ class ServerInfoMessage {
                 const pPings: string[] = [];
 
                 for (const p of gs.info?.players) {
-                    if (pNames.join('\n').length > 1016 
-                    || pTimes.join('\n').length > 1016 
-                    || pScores.join('\n').length > 1016 
-                    || pPings.join('\n').length > 1016) {
+                    if (pNames.join('\n').length > 1016
+                        || pTimes.join('\n').length > 1016
+                        || pScores.join('\n').length > 1016
+                        || pPings.join('\n').length > 1016) {
                         if (pNames.length > 0) pNames.pop();
                         if (pTimes.length > 0) pTimes.pop();
                         if (pScores.length > 0) pScores.pop();
@@ -204,10 +208,10 @@ class ServerInfoMessage {
                     if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
 
-                if (pNames.length > 0) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pTimes.length > 0) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pScores.length > 0) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true});
-                if (pPings.length > 0) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true});
+                if (pNames.length > 0) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true });
+                if (pTimes.length > 0) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true });
+                if (pScores.length > 0) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
+                if (pPings.length > 0) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
             }
         } else {
             embed.setTitle(gs.niceName.slice(0, 245) + ' offline...');
