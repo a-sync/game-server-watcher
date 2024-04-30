@@ -6,7 +6,7 @@ The main goals of this repo:
  1. create a (simple, but capable) service/bot to monitor game servers
     1. get gamedig & steam api server info (_eg.: server name, map, players, etc._)
     1. relay real time server information to various channels via APIs (_eg.: discord, telegram, slack etc._)
- 1. should be able to host on a free service (_target atm. is fly.io (node.js 18)_)
+ 1. should be able to host on a free service (_target atm. is fly.io (node.js 20)_)
  1. graciously add more features based on community feedback via [discord <img src="https://cdn.discordapp.com/icons/935911764023996527/1b791c9533f24a6bc23dbf5b2c134436.png?size=20" width="20" align="absmiddle" title="ACME Corp." alt="">](https://discord.gg/4tsbftsGJz) and [github :octocat:](https://github.com/a-sync/game-server-watcher/discussions/new?category=ideas-requests)
 
 # Screenshots
@@ -111,7 +111,8 @@ _The bot has no cleanup functionality, leftover messages must be removed manuall
 
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).  
-The latest Pterodactyl egg can always be found here: [🥚](https://raw.githubusercontent.com/a-sync/game-server-watcher/master/egg.json)
+The latest Pterodactyl egg can always be found here: [🥚](https://raw.githubusercontent.com/a-sync/game-server-watcher/master/egg.json)  
+Pre-built container images can be downloaded from the github container registry: `docker pull ghcr.io/a-sync/game-server-watcher`  
 <p align="center">
   <!--<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/a-sync/game-server-watcher&branch=master&name=gsw"><img src="https://www.koyeb.com/static/images/deploy/button.svg" height="32" alt="Deploy to Koyeb"></a>//TODO: support ephemeral storage-->
   <!--<a href="https://heroku.com/deploy?template=https%3A%2F%2Fgithub.com%2Fa-sync%2Fgame-server-watcher"><img src="https://www.herokucdn.com/deploy/button.svg" height="32" alt="Deploy to Heroku"></a>//TODO: support ephemeral storage-->

@@ -84,7 +84,7 @@
     "variables": {
         "sku": "Basic",
         "skuCode": "B1",
-        "linuxFxVersion": "NODE|16-lts",
+        "linuxFxVersion": "NODE|18-lts",
         "hostingPlanName": "[format('AppServicePlan-{0}', parameters('siteName'))]"
     },
     "resources": [
