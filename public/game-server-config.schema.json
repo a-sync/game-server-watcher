@@ -289,7 +289,7 @@
             }
         },
         "password": {
-            "title": "password (Nadeo)",
+            "title": "password (Nadeo / Palworld)",
             "type": "string",
             "options": {
                 "grid_columns": 3
@@ -297,6 +297,13 @@
         },
         "token": {
             "title": "token (Terraria)",
+            "type": "string",
+            "options": {
+                "grid_columns": 3
+            }
+        },
+        "username": {
+            "title": "username (Palworld)",
             "type": "string",
             "options": {
                 "grid_columns": 3

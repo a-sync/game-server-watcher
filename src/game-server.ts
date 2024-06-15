@@ -96,7 +96,8 @@ export class GameServer {
                 login: this.config.login,
                 password: this.config.password,
                 teamspeakQueryPort: this.config.teamspeakQueryPort,
-                token: this.config.token
+                token: this.config.token,
+                username: this.config.username
             } as QueryOptions);
 
             const raw = res.raw as { game?: string; folder?: string; presence_count?: number; };

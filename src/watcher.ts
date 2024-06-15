@@ -56,11 +56,14 @@ export interface GameServerConfig {
     guildId?: string;
     // Nadeo
     login?: string;
+    // Nadeo / Palworld
     password?: string;
     // Teamspeak 3
     teamspeakQueryPort?: number;
     // Terraria
     token?: string;
+    // Palworld
+    username?: string;
 }
 
 const db = await JSONPreset<GameServerConfig[]>(DATA_PATH + 'default.config.json', []);
