@@ -14,10 +14,8 @@ jobs:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: 🚚 Get latest code
-        with:
-          fetch-depth: 0
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Set app name
