@@ -22,7 +22,7 @@ RUN rm -rf node_modules
 FROM base
 
 COPY --from=builder /app /app
-RUN npm ci
+RUN npm ci --omit=dev
 
 EXPOSE 8080
 CMD [ "npm", "run", "start" ]
