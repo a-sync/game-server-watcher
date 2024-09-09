@@ -146,14 +146,21 @@ export class GameServer {
             if (Array.isArray(data.response.servers)) {
                 const matching = data.response.servers.find((s: any) => s.gameport === this.config.port);
                 if (matching) {
+                    const queryAddr = matching.addr.split(':');
+                    const queryHost = queryAddr[0];
+                    const queryPort = queryAddr[1];
                     return {
-                        connect: matching.addr,
+                        connect: `${queryHost}:${matching.gameport}`,
                         name: matching.name,
                         game: matching.gamedir,
                         map: matching.map,
                         playersNum: matching.players,
                         playersMax: matching.max_players,
-                        players: []
+                        players: [],
+                        password: matching.secure,
+                        ping: 0,
+                        version: matching.version,
+                        queryPort
                     }
                 }
             }
