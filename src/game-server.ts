@@ -34,9 +34,16 @@ export interface Info {
     name: string;
     game: string;
     map: string;
+    password: boolean;
     playersNum: number;
     playersMax: number;
     players: GsPlayer[];
+    ping: number;
+    queryPort: number;
+    version: string;
+    raw?: {
+        [key: string]: any;
+    };
 }
 
 export class GameServer {
@@ -101,7 +108,7 @@ export class GameServer {
             } as QueryOptions);
 
             const raw = res.raw as { game?: string; folder?: string; presence_count?: number; };
-            const game = raw.game || raw.folder || this.config.type;
+            const game = raw?.game || raw?.folder || this.config.type;
 
             const players: GsPlayer[] = res.players.map((p: Player) => {
                 return new GsPlayer(p);
@@ -112,9 +119,14 @@ export class GameServer {
                 name: res.name,
                 game: game,
                 map: res.map || '',
-                playersNum: res.numplayers || raw.presence_count || res.players.length,
+                password: res.password,
+                playersNum: res.numplayers || raw?.presence_count || res.players.length,
                 playersMax: res.maxplayers,
-                players
+                players,
+                ping: res.ping,
+                queryPort: res.queryPort,
+                version: res.version,
+                raw
             };
         } catch (e: any) {
             console.error(['gs.gamedig', this.config.host, this.config.port].join(':'), e.message || e);
