@@ -154,13 +154,20 @@ export class GameServer {
                         name: matching.name,
                         game: matching.gamedir,
                         map: matching.map,
+                        password: matching.secure,
                         playersNum: matching.players,
                         playersMax: matching.max_players,
                         players: [],
-                        password: matching.secure,
                         ping: 0,
+                        queryPort,
                         version: matching.version,
-                        queryPort
+                        raw: {
+                            steamid: matching.steamid,
+                            product: matching.product,
+                            dedicated: matching.dedicated,
+                            os: matching.os,
+                            gametype: matching.gametype,
+                        }
                     }
                 }
             }
