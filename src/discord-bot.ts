@@ -35,7 +35,7 @@ export async function init(token: string) {
                 bot.once('ready', () => {
                     console.log('discord-bot ready', bot.user);
 
-                    bot.removeListener('error', reject);
+                    bot.off('error', reject);
                     resolve();
                 });
 
