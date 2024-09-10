@@ -185,31 +185,34 @@ class ServerInfoMessage {
             if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024) });
 
             if (showPlayersList && gs.info?.players.length > 0) {
+                const teamNames = ['Red', 'Blue', 'Green', 'Gold'];
                 const pNames: string[] = [];
-                const pTimes: string[] = [];
+                const pTeams: string[] = [];
                 const pScores: string[] = [];
                 const pPings: string[] = [];
 
                 for (const p of gs.info?.players) {
                     if (pNames.join('\n').length > 1016
-                        || pTimes.join('\n').length > 1016
+                        || pTeams.join('\n').length > 1016
                         || pScores.join('\n').length > 1016
                         || pPings.join('\n').length > 1016) {
                         if (pNames.length > 0) pNames.pop();
-                        if (pTimes.length > 0) pTimes.pop();
+                        if (pTeams.length > 0) pTeams.pop();
                         if (pScores.length > 0) pScores.pop();
                         if (pPings.length > 0) pPings.pop();
                         break;
                     }
 
+                    const teamNum = p.get('team');
+                    if (teamNum !== undefined) pTeams.push(teamNames[Number(teamNum)] || '');
                     if (p.get('name') !== undefined) pNames.push(p.get('name') || 'n/a');
-                    if (p.get('time') !== undefined) pTimes.push(hhmmss(p.get('time') || 0));
                     if (p.get('score') !== undefined) pScores.push(p.get('score') || '0');
+                    else if (p.get('frags') !== undefined) pScores.push(p.get('frags') || '0');
                     if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
 
+                if (pTeams.length > 0) fields.push({ name: 'Team', value: '```\n' + pTeams.join('\n').slice(0, 1016) + '\n```', inline: true });
                 if (pNames.length > 0) fields.push({ name: 'Name', value: '```\n' + pNames.join('\n').slice(0, 1016) + '\n```', inline: true });
-                if (pTimes.length > 0) fields.push({ name: 'Time', value: '```\n' + pTimes.join('\n').slice(0, 1016) + '\n```', inline: true });
                 if (pScores.length > 0) fields.push({ name: 'Score', value: '```\n' + pScores.join('\n').slice(0, 1016) + '\n```', inline: true });
                 if (pPings.length > 0) fields.push({ name: 'Ping', value: '```\n' + pPings.join('\n').slice(0, 1016) + '\n```', inline: true });
             }
