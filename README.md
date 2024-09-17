@@ -192,8 +192,6 @@ Check the list of [contributors](https://github.com/a-sync/game-server-watcher/c
 # Acknowledgments
 This project was inspired by (the sudden disappearance of) "_Game Status#5371_" bot and its creator [Ramzi Saheb](https://github.com/Ramzi-Sah) on discord.  
 
-IP regex stolen from the [ip-regex](https://github.com/sindresorhus/ip-regex) package source.  
-
 GSW icon stolen from _Marvel’s Voices: Indigenous Voices #1_ "_The Watcher_" by [Jeffrey Veregge](https://www.jeffreyveregge.com).  
 
 Backgrounds stolen from [purple nebulas](https://opengameart.org/content/seamless-space-backgrounds) by [Screaming Brain Studios](https://screamingbrainstudios.com) and [imgur](https://imgur.com).  

@@ -3,6 +3,7 @@ import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { TelegramConfig } from './watcher.js';
+import ip from 'ip';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -137,12 +138,16 @@ class ServerInfoMessage {
         let infoText = this.escapeMarkdown(gs.niceName) + ' offline...';
 
         if (gs.info && gs.online) {
-            infoText = [
+            const infoBlocks = [
                 this.escapeMarkdown(gs.niceName),
-                this.escapeMarkdown(gs.info.game) + ' / ' + this.escapeMarkdown(gs.info.map),
-                this.escapeMarkdown(gs.info.connect),
-                'Players ' + gs.info.playersNum + '/' + gs.info.playersMax
-            ].join('\n');
+                this.escapeMarkdown(gs.info.game) + ' / ' + this.escapeMarkdown(gs.info.map)
+            ];
+
+            const connectIp = gs.info.connect.split(':')[0];
+            if (ip.isPublic(connectIp)) infoBlocks.push(this.escapeMarkdown(gs.info.connect));
+
+            infoBlocks.push('Players ' + gs.info.playersNum + '/' + gs.info.playersMax);
+            infoText = infoBlocks.join('\n');
 
             if (gs.config.infoText) infoText += 'Info:\n' + String(gs.config.infoText).slice(0, 1024) + '\n';
 

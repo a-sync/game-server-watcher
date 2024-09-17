@@ -3,6 +3,7 @@ import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { DiscordConfig } from './watcher.js';
+import ip from 'ip';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -180,7 +181,9 @@ class ServerInfoMessage {
             if (gs.info.game) fields.push({ name: 'Game', value: String(gs.info.game), inline: true });
             if (gs.info.map) fields.push({ name: 'Map', value: String(gs.info.map), inline: true });
             fields.push({ name: 'Players', value: String(gs.info.playersNum + '/' + gs.info.playersMax), inline: true });
-            fields.push({ name: 'Address', value: String(gs.info.connect) });
+
+            const connectIp = gs.info.connect.split(':')[0];
+            if (ip.isPublic(connectIp)) fields.push({ name: 'Address', value: String(gs.info.connect) });
 
             if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024) });
 

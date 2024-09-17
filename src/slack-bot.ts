@@ -4,6 +4,7 @@ import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { SlackConfig } from './watcher.js';
+import ip from 'ip';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));
@@ -193,11 +194,14 @@ class ServerInfoMessage {
                 text: '*Players*  \r\n' + String(gs.info.playersNum + '/' + gs.info.playersMax)
             });
 
-            text += '\r\nAddress: ' + String(gs.info.connect);
-            fields2.push({
-                type: 'mrkdwn',
-                text: '*Address*  \r\n' + String(gs.info.connect)
-            });
+            const connectIp = gs.info.connect.split(':')[0];
+            if (ip.isPublic(connectIp)) {
+                text += '\r\nAddress: ' + String(gs.info.connect);
+                fields2.push({
+                    type: 'mrkdwn',
+                    text: '*Address*  \r\n' + String(gs.info.connect)
+                });
+            }
 
             if (fields2.length > 0) {
                 blocks.push({

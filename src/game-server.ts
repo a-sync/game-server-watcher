@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GameDig, Player, QueryOptions } from 'gamedig';
 import { JSONPreset } from 'lowdb/node';
-import ipRegex from './lib/ipregex.js';
+import ip from 'ip';
 import getIP from './lib/getip.js';
 import { GameServerConfig } from './watcher.js';
 
@@ -205,7 +205,7 @@ export class GameServer {
 
     async getIp() {
         if (this.ip === '0.0.0.0') {
-            if (ipRegex.test(this.config.host)) {
+            if (ip.isV4Format(this.config.host) || ip.isV6Format(this.config.host)) {
                 this.ip = this.config.host;
             } else {
                 this.ip = await getIP(this.config.host) || '0.0.0.0';
