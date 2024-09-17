@@ -114,13 +114,18 @@ export class GameServer {
                 return new GsPlayer(p);
             });
 
+            const playersNum = res.bots.length ? 
+                Number(res.players.length || res.numplayers || raw?.presence_count)
+                :
+                Number(res.numplayers || raw?.presence_count || res.players.length);
+
             return {
                 connect: res.connect,
                 name: res.name,
                 game: game,
                 map: res.map || '',
                 password: res.password,
-                playersNum: res.numplayers || raw?.presence_count || res.players.length,
+                playersNum,
                 playersMax: res.maxplayers,
                 players,
                 ping: res.ping,
