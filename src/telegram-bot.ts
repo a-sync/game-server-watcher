@@ -3,7 +3,7 @@ import { JSONPreset } from 'lowdb/node';
 import { GameServer } from './game-server.js';
 import hhmmss from './lib/hhmmss.js';
 import { TelegramConfig } from './watcher.js';
-import ip from 'ip';
+import * as ip from 'neoip';
 
 const DATA_PATH = process.env.DATA_PATH || './data/';
 const DBG = Boolean(Number(process.env.DBG));

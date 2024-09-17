@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GameDig, Player, QueryOptions } from 'gamedig';
 import { JSONPreset } from 'lowdb/node';
-import ip from 'ip';
+import * as ip from 'neoip';
 import getIP from './lib/getip.js';
 import { GameServerConfig } from './watcher.js';
 
