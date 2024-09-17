@@ -233,6 +233,7 @@ class ServerInfoMessage {
                     if (p.get('time') !== undefined) line.push(hhmmss(p.get('time') || 0));
                     if (p.get('name') !== undefined) line.push(p.get('name') || 'n/a');
                     if (p.get('score') !== undefined) line.push('(' + (p.get('score') || '0') + ')');
+                    else if (p.get('frags') !== undefined) line.push('(' + (p.get('frags') || '0') + ')');
 
                     pNames.push(line.join(' '));
                 }

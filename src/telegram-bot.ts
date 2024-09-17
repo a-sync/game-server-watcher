@@ -158,6 +158,7 @@ class ServerInfoMessage {
                     if (p.get('time') !== undefined) playerLine += hhmmss(p.get('time') || '0') + ' ';
                     if (p.get('name') !== undefined) playerLine += p.get('name') || 'n/a';
                     if (p.get('score') !== undefined) playerLine += ' (' + (p.get('score') || 0) + ')';
+                    else if (p.get('frags') !== undefined) playerLine += ' (' + (p.get('frags') || 0) + ')';
                     pnArr.push(playerLine);
                 }
 

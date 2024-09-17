@@ -208,6 +208,7 @@ class ServerInfoMessage {
                     if (p.get('name') !== undefined) pNames.push(p.get('name') || 'n/a');
                     if (p.get('time') !== undefined) pTimes.push(hhmmss(p.get('time') || 0));
                     if (p.get('score') !== undefined) pScores.push(p.get('score') || '0');
+                    else if (p.get('frags') !== undefined) pScores.push(p.get('frags') || '0');
                     if (p.get('ping') !== undefined) pPings.push(String(p.get('ping') || 0) + ' ms');
                 }
 
