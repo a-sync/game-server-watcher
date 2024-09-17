@@ -144,7 +144,7 @@ class ServerInfoMessage {
             ];
 
             const connectIp = gs.info.connect.split(':')[0];
-            if (ip.isPublic(connectIp)) infoBlocks.push(this.escapeMarkdown(gs.info.connect));
+            if (!ip.isPrivate(connectIp)) infoBlocks.push(this.escapeMarkdown(gs.info.connect));
 
             infoBlocks.push('Players ' + gs.info.playersNum + '/' + gs.info.playersMax);
             infoText = infoBlocks.join('\n');

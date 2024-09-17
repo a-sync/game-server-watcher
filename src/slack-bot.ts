@@ -195,7 +195,7 @@ class ServerInfoMessage {
             });
 
             const connectIp = gs.info.connect.split(':')[0];
-            if (ip.isPublic(connectIp)) {
+            if (!ip.isPrivate(connectIp)) {
                 text += '\r\nAddress: ' + String(gs.info.connect);
                 fields2.push({
                     type: 'mrkdwn',

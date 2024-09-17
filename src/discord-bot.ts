@@ -183,7 +183,7 @@ class ServerInfoMessage {
             fields.push({ name: 'Players', value: String(gs.info.playersNum + '/' + gs.info.playersMax), inline: true });
 
             const connectIp = gs.info.connect.split(':')[0];
-            if (ip.isPublic(connectIp)) fields.push({ name: 'Address', value: String(gs.info.connect) });
+            if (!ip.isPrivate(connectIp)) fields.push({ name: 'Address', value: String(gs.info.connect) });
 
             if (gs.config.infoText) fields.push({ name: 'Info', value: String(gs.config.infoText).slice(0, 1024) });
 
