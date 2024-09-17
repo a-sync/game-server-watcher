@@ -1,6 +1,6 @@
 {
   "name": "game-server-watcher",
-  "version": "3.1.19",
+  "version": "3.1.20",
   "description": "A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
   "exports": "./dist/server.js",
   "type": "module",
