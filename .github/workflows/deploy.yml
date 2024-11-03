@@ -6,6 +6,10 @@ on:
     branches:
       - master
 
+concurrency:
+  group: deployment
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: 🚀 Deploy app
@@ -14,11 +18,11 @@ jobs:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v4
-        name: 🚚 Get latest code
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Set app name
+      - name: ✍ Set app name
         run: |
           if [[ -n "${{ secrets.FLY_APP_NAME }}" ]]; then
             echo "APP_NAME=${{ secrets.FLY_APP_NAME }}" >> $GITHUB_ENV
