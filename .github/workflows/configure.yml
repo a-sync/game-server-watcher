@@ -1,4 +1,4 @@
-name: ⚙ Configure cloud app
+name: 2. ⚙ Configure cloud app
 
 on:
   workflow_dispatch:

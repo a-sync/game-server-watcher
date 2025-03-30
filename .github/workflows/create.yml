@@ -1,4 +1,4 @@
-name: 🏗 Create cloud app
+name: 1. 🏗 Create cloud app
 
 on:
   workflow_dispatch:
