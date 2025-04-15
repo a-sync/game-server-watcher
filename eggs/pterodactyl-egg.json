@@ -1,30 +1,30 @@
 {
-    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
     "meta": {
-        "version": "PTDL_v2",
-        "update_url": null
+        "update_url": null,
+        "version": "PTDL_v2"
     },
-    "exported_at": "2024-04-02T14:15:38+02:00",
+    "exported_at": "2024-06-01T19:44:15+00:00",
     "name": "Game Server Watcher",
     "author": "a-sync@devs.space",
-    "description": "A simple discord\/telegram\/slack bot that can be hosted on a free service to monitor your game servers and players in style. \ud83d\ude0e",
+    "description": "A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎",
     "features": null,
     "docker_images": {
-        "Node.js 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+        "Node.js 20": "ghcr.io/parkervcp/yolks:nodejs_20"
     },
     "file_denylist": [],
-    "startup": "env PORT={{SERVER_PORT}} \/usr\/local\/bin\/node \/home\/container\/dist\/server.js",
+    "startup": "env PORT={{SERVER_PORT}} /usr/local/bin/node /home/container/dist/server.js",
     "config": {
         "files": "{}",
-        "startup": "{\r\n    \"done\": \"starting loop...\"\r\n}",
         "logs": "{}",
+        "startup": "{\r\n    \"done\": \"starting loop...\"\r\n}",
         "stop": "^^C"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n\r\napt-get update && apt-get install ca-certificates git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\n\r\n\r\ncd \/mnt\/server\r\n\r\ngit config --global --add safe.directory \/mnt\/server\r\ngit clone https:\/\/github.com\/a-sync\/game-server-watcher.git . || git pull\r\n\r\n\r\nnpm install --no-save && npm update gamedig && npm run build\r\nnpm prune --omit=dev\r\n\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
             "container": "node:20-bookworm-slim",
-            "entrypoint": "bash"
+            "entrypoint": "bash",
+            "script": "#!/bin/bash\r\n\r\napt-get update \u0026\u0026 apt-get install ca-certificates git -yq --no-install-suggests --no-install-recommends --allow-downgrades --allow-remove-essential --allow-change-held-packages\r\n\r\n\r\ncd /mnt/server\r\n\r\ngit config --global --add safe.directory /mnt/server\r\ngit clone https://github.com/a-sync/game-server-watcher.git . || git pull\r\n\r\n\r\nnpm install --no-save \u0026\u0026 npm update gamedig \u0026\u0026 npm run build\r\nnpm prune --omit=dev\r\n\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\""
         }
     },
     "variables": [
@@ -42,7 +42,7 @@
             "name": "DATA_PATH",
             "description": "Writable folder for data storage",
             "env_variable": "DATA_PATH",
-            "default_value": ".\/data\/",
+            "default_value": "./data/",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|min:1|max:255",

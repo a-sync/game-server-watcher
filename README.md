@@ -35,7 +35,7 @@ The project is in a mature stage. New customization options and features are add
  * github action workflows to deploy to other cloud providers (aws, linode, atlantic, vultr, pikapods, okteto, ibm cloud etc.)
  * SQL, JSON or object store database support (postgres, redis etc.)
  * run as stateless serverless function (aws lambda, azure function, heroku, vercel, fly.io machines etc.)
- * ~~pterodactyl egg release~~
+ * ~~pterodactyl/pelican egg release~~
 
 # Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.  
@@ -111,7 +111,7 @@ _The bot has no cleanup functionality, leftover messages must be removed manuall
 
 # Deployment
 Check the wiki page for detailed instructions on [how to setup a self deploying free cloud instance at fly.io](https://github.com/a-sync/game-server-watcher/wiki/Free-hosting-via-fly.io).  
-The latest Pterodactyl egg can always be found here: [🥚](https://raw.githubusercontent.com/a-sync/game-server-watcher/master/egg.json)  
+The latest Pterodactyl and Pelican eggs can always be found here: [🥚](./eggs/).  
 Pre-built container images can be downloaded from the github container registry: `docker pull ghcr.io/a-sync/game-server-watcher`  
 <p align="center">
   <!--<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/a-sync/game-server-watcher&branch=master&name=gsw"><img src="https://www.koyeb.com/static/images/deploy/button.svg" height="32" alt="Deploy to Koyeb"></a>//TODO: support ephemeral storage-->

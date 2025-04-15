@@ -14,7 +14,7 @@ app.json
 azuredeploy.json
 docker-compose.yml
 Dockerfile
-egg.json
+eggs
 fly.toml
 Procfile
 TODO
