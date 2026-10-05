@@ -1,4 +1,6 @@
 # <img src="https://github.com/a-sync/game-server-watcher/assets/14183614/66a8ffa8-c547-4f9c-b312-4c855da80c20" width="40" align="left"> Game Server Watcher
+
+[![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/a-sync/game-server-watcher)
 A simple discord/telegram/slack bot that can be hosted on a free service to monitor your game servers and players in style. 😎  
 
 # About the Project
