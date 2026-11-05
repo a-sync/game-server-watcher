@@ -1,29 +1,29 @@
 app = "game-server-watcher"
 
 [env]
-  DBG = "0"
-  DATA_PATH = "/data/"
-  REFRESH_TIME_MINUTES = "2"
+  DATA_PATH = '/data/'
+  DBG = '0'
+  REFRESH_TIME_MINUTES = '2'
 
-[mounts]
-  source = "gsw_data"
-  destination = "/data"
+[[mounts]]
+  source = 'gsw_data'
+  destination = '/data'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "off"
+  auto_stop_machines = 'off'
   auto_start_machines = false
   min_machines_running = 0
 
   [http_service.concurrency]
-    type = "requests"
-    soft_limit = 25
+    type = 'requests'
     hard_limit = 50
+    soft_limit = 25
 
   [[http_service.checks]]
-    grace_period = "10s"
-    interval = "30s"
-    method = "GET"
-    timeout = "5s"
-    path = "/"
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/'
